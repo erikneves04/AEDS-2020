@@ -1,6 +1,6 @@
 /*
  * @file   funcoes.c
- * @brief  Implementaçao das funçoes de manipulaçao de lista encadeada.
+ * @brief  Implementaçao das funçoes de manipulaçao de lista duplamente encadeada.
  * @author <Erik Neves>
  * @date   2020-08-31
 */
@@ -77,9 +77,13 @@ Error Imprimir_lista(Lista * lista){
 
     if(Lista_vazia(lista) != true){
         printf("Imprimindo dados da lista: \n");
-        printf("Indi.       Info.\n");
+        printf("Indi.       Info.       Ant.\n");
         for(i=0;i<(lista->Numero_de_itens);i++){
-            printf(" %.2d          %.2d\n",i,Dados_lista->Dado);
+            if(Dados_lista->anterior != NULL){
+                printf(" %.2d          %.2d          %.2d\n",i,Dados_lista->Dado,Dados_lista->anterior->Dado);
+            }else{
+                printf(" %.2d          %.2d          NULL\n",i,Dados_lista->Dado);
+            }
             Dados_lista = Dados_lista->proximo; 
         }
         printf("\n");
