@@ -1,6 +1,6 @@
 /*
  * @file   funcoes.c
- * @brief  Implementaçao das funçoes de manipulaçao de lista encadeada.
+ * @brief  Implementaçao das funçoes de manipulaçao de lista encadeada circular.
  * @author <Erik Neves>
  * @date   2020-08-31
 */
@@ -16,10 +16,28 @@ void Inicializar_lista(Lista * lista){
 }
 Error Insere_dado(int Valor,Lista * lista){
     /* INSERE NO INICIO DA LISTA */
+    int i;
     Item_lista * Novo_dado = (Item_lista*)malloc(sizeof(Item_lista));
+    Item_lista * Dados_lista = lista->primeiro;
+    Item_lista * Ultimo_dado = NULL;
+    Boolean Ultimo_encontrado = false;
+
+    for(i=0;i<lista->Numero_de_itens;i++){
+        if(i == (lista->Numero_de_itens - 1) && Dados_lista != NULL){
+            Ultimo_encontrado = true;
+            Ultimo_dado = Dados_lista;
+        }
+        Dados_lista = Dados_lista->proximo;
+    }
+
+    if(Ultimo_encontrado == true){
+        Novo_dado->proximo = lista->primeiro;
+        Ultimo_dado->proximo = Novo_dado;
+    }else{
+        Novo_dado->proximo = Novo_dado;
+    }
 
     Novo_dado->Dado = Valor;
-    Novo_dado->proximo = lista->primeiro;
     lista->Numero_de_itens++;
     lista->primeiro = Novo_dado;
 
@@ -70,7 +88,7 @@ Error Imprimir_lista(Lista * lista){
     if(Lista_vazia(lista) != true){
         printf("Imprimindo dados da lista: \n");
         printf("Indi.       Info.\n");
-        for(i=0;i<(lista->Numero_de_itens);i++){
+        for(i=0;i<lista->Numero_de_itens;i++){
             printf(" %.2d          %.2d\n",i,Dados_lista->Dado);
             Dados_lista = Dados_lista->proximo; 
         }
