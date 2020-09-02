@@ -11,13 +11,16 @@
 #include "const.h"
 #include "funcoes.h"
 
-static int Int_iteract(){
-    int Interact_aux;
+static DataType UserIteract(void){
+    DataType Interact_aux;
+    char Identifier[] = "%";
 
-    printf("\nDigite o valor: ");
-    scanf("%d", &Interact_aux);
+    strcat(Identifier,PrintfType);
+
+    printf("\nDigite o dado(%s): ",Identifier);
+    scanf(Identifier,&Interact_aux);
+
     printf("\n");
-
     return Interact_aux;
 }
 
@@ -27,7 +30,7 @@ int main(void){
     int Escolha_do_usuario=Variavel_de_inicio;
 
     Inicializar_lista(lista);
-    while(Escolha_do_usuario!=0){
+    while(Escolha_do_usuario!=Encerrar_loop){
 
         printf("+---------------------------------------+\n");
         printf("| Implementacao lista encadeada simples |\n");
@@ -49,16 +52,20 @@ int main(void){
                 printf(" Encerrando. \n\n");
             break;
             case 1:
-                Insere_dado(Int_iteract(),lista);
+                Insere_dado(UserIteract(),lista);
             break;
             case 2:
-                Remove_dado(Int_iteract(),lista);
+                Remove_dado(UserIteract(),lista);
             break;
             case 3:
                 Imprimir_lista(lista);
             break;
             case 4:
-                printf("\n%d\n\n",Lista_vazia(lista));
+                if(Lista_vazia(lista) == true){
+                    printf("\n Esta vazia: true\n\n");
+                }else{
+                    printf("\n Esta vazia: false\n\n");
+                }
             break;
             case 5:
                 Limpar_lista(lista);

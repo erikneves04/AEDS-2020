@@ -14,7 +14,7 @@ void Inicializar_lista(Lista * lista){
     lista->Numero_de_itens = 0;
     lista->primeiro = NULL;
 }
-Error Insere_dado(int Valor,Lista * lista){
+Error Insere_dado(DataType Valor,Lista * lista){
     /* INSERE NO INICIO DA LISTA */
     Item_lista * Novo_dado = (Item_lista*)malloc(sizeof(Item_lista));
 
@@ -25,7 +25,7 @@ Error Insere_dado(int Valor,Lista * lista){
 
     return Sucesso;
 }
-Error Remove_dado(int Valor,Lista * lista){
+Error Remove_dado(DataType Valor,Lista * lista){
     int i;
     Item_lista * Dado_anterior = NULL;
     Item_lista * Dado_proximo  = NULL;
@@ -65,13 +65,15 @@ Boolean Lista_vazia(Lista * lista){
 }
 Error Imprimir_lista(Lista * lista){
     int i;
+    char LinhaImpressao[(21 + sizeof(DataType))];
     Item_lista * Dados_lista = lista->primeiro;
 
     if(Lista_vazia(lista) != true){
         printf("Imprimindo dados da lista: \n");
         printf("Indi.       Info.\n");
-        for(i=0;i<(lista->Numero_de_itens);i++){
-            printf(" %.2d          %.2d\n",i,Dados_lista->Dado);
+        for(i=0;i<(lista->Numero_de_itens);i++){ 
+            (void)sprintf(LinhaImpressao," %%%s          %%%s\n",".2d",PrintfType);
+            (void)printf(LinhaImpressao,i,Dados_lista->Dado);
             Dados_lista = Dados_lista->proximo; 
         }
         printf("\n");

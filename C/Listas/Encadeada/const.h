@@ -14,13 +14,17 @@ typedef unsigned int Boolean;
 #define false               (!true)
 
 typedef unsigned int Error;
+#define Encerrar_loop       (00)
 #define Sucesso             (00)
 #define Erro_lista_vazia    (01)
 #define Dado_nao_encontrado (02)
 #define Variavel_de_inicio  (-1)
 
+typedef double DataType; // Nao utlize strings <Estou resolvendo esse bug>
+#define PrintfType "d"
+#define PrintfType_descripition "Inteiro"
 typedef struct item_list {
-    int Dado;
+    DataType Dado;
     struct item_list * proximo;
 }Item_lista;
 typedef struct lista {

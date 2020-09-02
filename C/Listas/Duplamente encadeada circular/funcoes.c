@@ -14,7 +14,7 @@ void Inicializar_lista(Lista * lista){
     lista->Numero_de_itens = 0;
     lista->primeiro = NULL;
 }
-Error Insere_dado(int Valor,Lista * lista){
+Error Insere_dado(DataType Valor,Lista * lista){
     /* INSERE NO INICIO DA LISTA */
 
     int i;
@@ -47,7 +47,7 @@ Error Insere_dado(int Valor,Lista * lista){
 
     return Sucesso;
 }
-Error Remove_dado(int Valor,Lista * lista){
+Error Remove_dado(DataType Valor,Lista * lista){
     int i;
     Item_lista * Dados_lista = lista->primeiro;
     Item_lista * Dado_anterior;
