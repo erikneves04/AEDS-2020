@@ -17,7 +17,7 @@ static DataType UserIteract(void){
 
     strcat(Identifier,PrintfType);
 
-    printf("\nDigite o dado(%s): ",Identifier);
+    printf("\nDigite o dado(%s): ",PrintfType_descripition);
     scanf(Identifier,&Interact_aux);
 
     printf("\n");

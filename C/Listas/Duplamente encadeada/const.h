@@ -18,6 +18,7 @@ typedef unsigned int Error;
 #define Erro_lista_vazia    (01)
 #define Dado_nao_encontrado (02)
 #define Variavel_de_inicio  (-1)
+#define Encerrar_loop       (00)
 
 typedef double DataType; // Nao utlize strings <Estou resolvendo esse bug>
 #define PrintfType "d"
