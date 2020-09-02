@@ -1,6 +1,6 @@
 /**
 * @file   funcoes.h
-* @brief  Arquivo com as funçoes de manipulação de lista encadeada.
+* @brief  Arquivo com as funçoes de manipulação de fila.
 * @author <Erik Neves>
 * @date   2020-08-31
 */

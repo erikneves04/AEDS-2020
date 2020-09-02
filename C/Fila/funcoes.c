@@ -1,6 +1,6 @@
 /*
  * @file   funcoes.c
- * @brief  Implementaçao das funçoes de manipulaçao de lista encadeada.
+ * @brief  Implementaçao das funçoes de manipulaçao de fila.
  * @author <Erik Neves>
  * @date   2020-08-31
 */
