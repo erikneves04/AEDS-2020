@@ -1,6 +1,6 @@
 /*
  * @file   funcoes.c
- * @brief  Implementaçao das funçoes de manipulaçao de lista encadeada circular.
+ * @brief  Implementaçao das funçoes de manipulaçao de lista duplamente encadeada circular.
  * @author <Erik Neves>
  * @date   2020-08-31
 */
@@ -16,6 +16,7 @@ void Inicializar_lista(Lista * lista){
 }
 Error Insere_dado(DataType Valor,Lista * lista){
     /* INSERE NO INICIO DA LISTA */
+
     int i;
     Item_lista * Novo_dado = (Item_lista*)malloc(sizeof(Item_lista));
     Item_lista * Dados_lista = lista->primeiro;
@@ -32,9 +33,12 @@ Error Insere_dado(DataType Valor,Lista * lista){
 
     if(Ultimo_encontrado == true){
         Novo_dado->proximo = lista->primeiro;
+        Novo_dado->anterior = Ultimo_dado;
         Ultimo_dado->proximo = Novo_dado;
+        lista->primeiro->anterior = Novo_dado;
     }else{
         Novo_dado->proximo = Novo_dado;
+        Novo_dado->anterior = Novo_dado;
     }
 
     Novo_dado->Dado = Valor;
@@ -45,9 +49,9 @@ Error Insere_dado(DataType Valor,Lista * lista){
 }
 Error Remove_dado(DataType Valor,Lista * lista){
     int i;
-    Item_lista * Dado_anterior = NULL;
-    Item_lista * Dado_proximo  = NULL;
     Item_lista * Dados_lista = lista->primeiro;
+    Item_lista * Dado_anterior;
+    Item_lista * Dado_proximo;
 
     Boolean Valor_encontrado = false;
 
@@ -56,18 +60,24 @@ Error Remove_dado(DataType Valor,Lista * lista){
             Valor_encontrado = true;
             break;
         }
-        Dado_anterior = Dados_lista;
         Dados_lista = Dados_lista->proximo;
-        Dado_proximo = Dados_lista->proximo;
     }
 
-    if(Valor_encontrado == true){
-        lista->Numero_de_itens--;
-        if(Dado_anterior == NULL){
-            lista->primeiro = lista->primeiro->proximo;
+    if(Valor_encontrado == true){    
+        if(lista->Numero_de_itens == 1){
+            lista->primeiro = NULL;
         }else{
-            Dado_anterior->proximo = Dados_lista->proximo;
+            Dado_anterior = Dados_lista->anterior;
+            Dado_proximo = Dados_lista->proximo;
+
+            Dado_anterior->proximo = Dado_proximo;
+            Dado_proximo->anterior = Dado_anterior;
+
+            if(Dados_lista == lista->primeiro){
+                lista->primeiro = Dado_proximo;
+            }
         }
+        lista->Numero_de_itens--;
         free(Dados_lista);
     }else if(Valor_encontrado == false){
         return Dado_nao_encontrado;
@@ -87,9 +97,9 @@ Error Imprimir_lista(Lista * lista){
 
     if(Lista_vazia(lista) != true){
         printf("Imprimindo dados da lista: \n");
-        printf("Indi.       Info.\n");
-        for(i=0;i<lista->Numero_de_itens;i++){
-            printf(" %.2d          %.2d\n",i,Dados_lista->Dado);
+        printf("Indi.       Info.       Ant.\n");
+        for(i=0;i<(lista->Numero_de_itens);i++){
+            printf(" %.2d          %.2d          %.2d\n",i,Dados_lista->Dado,Dados_lista->anterior->Dado);
             Dados_lista = Dados_lista->proximo; 
         }
         printf("\n");

@@ -17,7 +17,7 @@ static DataType UserIteract(void){
 
     strcat(Identifier,PrintfType);
 
-    printf("\nDigite o dado(%s): ",Identifier);
+    printf("\nDigite o dado(%s): ",PrintfType_descripition);
     scanf(Identifier,&Interact_aux);
 
     printf("\n");
@@ -32,12 +32,12 @@ int main(void){
     Inicializar_lista(lista);
     while(Escolha_do_usuario!=Encerrar_loop){
 
-        printf("+---------------------------------------+\n");
-        printf("| Implementacao lista encadeada simples |\n");
-        printf("+---------------------------------------+\n");
+        printf("+--------------------+\n");
+        printf("| Implementacao Fila |\n");
+        printf("+--------------------+\n");
         printf("[0] Encerra o software.\n");
-        printf("[1] Inserir valor.\n");
-        printf("[2] Remover valor.\n");
+        printf("[1] Inserir no final.\n");
+        printf("[2] Remover do inicio.\n");
         printf("[3] Imprimir dados.\n");
         printf("[4] Estado da lista.\n");
         printf("[5] Limpar lista.\n");
@@ -55,7 +55,7 @@ int main(void){
                 Insere_dado(UserIteract(),lista);
             break;
             case 2:
-                Remove_dado(UserIteract(),lista);
+                Remove_dado(lista);
             break;
             case 3:
                 Imprimir_lista(lista);

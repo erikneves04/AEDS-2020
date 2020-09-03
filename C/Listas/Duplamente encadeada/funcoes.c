@@ -1,6 +1,6 @@
 /*
  * @file   funcoes.c
- * @brief  Implementaçao das funçoes de manipulaçao de lista encadeada.
+ * @brief  Implementaçao das funçoes de manipulaçao de lista duplamente encadeada.
  * @author <Erik Neves>
  * @date   2020-08-31
 */
@@ -14,7 +14,7 @@ void Inicializar_lista(Lista * lista){
     lista->Numero_de_itens = 0;
     lista->primeiro = NULL;
 }
-Error Insere_dado(int Valor,Lista * lista){
+Error Insere_dado(DataType Valor,Lista * lista){
     /* INSERE NO INICIO DA LISTA */
     Item_lista * Novo_dado = (Item_lista*)malloc(sizeof(Item_lista));
 
@@ -29,7 +29,7 @@ Error Insere_dado(int Valor,Lista * lista){
 
     return Sucesso;
 }
-Error Remove_dado(int Valor,Lista * lista){
+Error Remove_dado(DataType Valor,Lista * lista){
     int i;
     Item_lista * Dado_anterior = NULL;
     Item_lista * Dado_proximo  = NULL;
@@ -77,9 +77,13 @@ Error Imprimir_lista(Lista * lista){
 
     if(Lista_vazia(lista) != true){
         printf("Imprimindo dados da lista: \n");
-        printf("Indi.       Info.\n");
+        printf("Indi.       Info.       Ant.\n");
         for(i=0;i<(lista->Numero_de_itens);i++){
-            printf(" %.2d          %.2d\n",i,Dados_lista->Dado);
+            if(Dados_lista->anterior != NULL){
+                printf(" %.2d          %.2d          %.2d\n",i,Dados_lista->Dado,Dados_lista->anterior->Dado);
+            }else{
+                printf(" %.2d          %.2d          NULL\n",i,Dados_lista->Dado);
+            }
             Dados_lista = Dados_lista->proximo; 
         }
         printf("\n");

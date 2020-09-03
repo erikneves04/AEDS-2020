@@ -1,6 +1,6 @@
 /*
  * @file   funcoes.c
- * @brief  Implementaçao das funçoes de manipulaçao de lista encadeada.
+ * @brief  Implementaçao das funçoes de manipulaçao de Pilha.
  * @author <Erik Neves>
  * @date   2020-08-31
 */
@@ -25,36 +25,20 @@ Error Insere_dado(DataType Valor,Lista * lista){
 
     return Sucesso;
 }
-Error Remove_dado(DataType Valor,Lista * lista){
-    int i;
-    Item_lista * Dado_anterior = NULL;
-    Item_lista * Dado_proximo  = NULL;
-    Item_lista * Dados_lista = lista->primeiro;
+DataType Remove_dado(Lista * lista){
+    DataType Aux;
+    Item_lista * segundo = lista->primeiro->proximo;
 
-    Boolean Valor_encontrado = false;
-
-    for(i=0;i<lista->Numero_de_itens;i++){
-        if(Dados_lista->Dado == Valor){
-            Valor_encontrado = true;
-            break;
-        }
-        Dado_anterior = Dados_lista;
-        Dados_lista = Dados_lista->proximo;
-        Dado_proximo = Dados_lista->proximo;
+    if(lista->Numero_de_itens == 0){
+        return Erro_lista_vazia;
     }
 
-    if(Valor_encontrado == true){
-        lista->Numero_de_itens--;
-        if(Dado_anterior == NULL){
-            lista->primeiro = lista->primeiro->proximo;
-        }else{
-            Dado_anterior->proximo = Dados_lista->proximo;
-        }
-        free(Dados_lista);
-    }else if(Valor_encontrado == false){
-        return Dado_nao_encontrado;
-    }
-    return Sucesso;
+    Aux = lista->primeiro->Dado;
+    free(lista->primeiro);
+    lista->primeiro = segundo;
+
+    lista->Numero_de_itens--;
+    return Aux;
 }
 Boolean Lista_vazia(Lista * lista){
     if(lista->Numero_de_itens == 0 && lista->primeiro == NULL){
