@@ -32,9 +32,9 @@ public class FilaMain {
             System.out.println("[00] Encerrar.");
             System.out.println("[01] Inserir um novo dado.");
             System.out.println("[02] Remover um dado.");
-            System.out.println("[03] Checar estado da lista.");
+            System.out.println("[03] Checar estado da fila.");
             System.out.println("[04] Imprimir os dados.");
-            System.out.println("[05] Limpar a lista.");
+            System.out.println("[05] Limpar a fila.");
             System.out.print("Escolha: ");
             Escolha_do_usuario = input.nextInt();
             System.out.println("");
