@@ -95,7 +95,7 @@ public class Lista {
             System.out.println("+---------------------------+\n");
 
             System.out.println("Ind.    Dado");
-            for(int i=0,j=1;i<(this.Numero_de_itens * 2);i++,j++){
+            for(int i=0,j=1;i<this.Numero_de_itens;i++,j++){
                 System.out.println(" "+j+"       "+Dados_lista.GetInfo());
                 Dados_lista = Dados_lista.GetProximo();
             }
