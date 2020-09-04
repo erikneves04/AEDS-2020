@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "constantes.h"
 #include "structs.h"
 
@@ -31,6 +32,53 @@ Error Get_InformacoesPaciente(FilaPacientes * fila,Paciente * Novo_paciente){
     //printf("Digite o horario da entrada do paciente(hh/mm): ");
     //scanf("%d/%d", Novo_paciente->HorarioChegada->Hora,Novo_paciente->HorarioChegada->Minutos);
 
+    printf("\n");
     return Sucesso;
+
+}
+
+FilaPacientes * GetFilaTriagem(FilaPacientes * FilaVermelha,FilaPacientes * FilaLaranja,FilaPacientes * FilaAmarela,FilaPacientes * FilaVerde,FilaPacientes * FilaBranca){
+
+    char StringFila[15];
+    Boolean FilaEncontrada = false;
+
+    printf("\n+------------------+\n");
+    printf("| Selecione a fila |\n");
+    printf("+------------------+\n");
+
+    while(FilaEncontrada == false){
+        FilaEncontrada = true;
+
+        printf("+-------------+\n");
+        printf("|   OPCOES:   |\n");
+        printf("|- Vermelha   |\n");
+        printf("|- Laranja    |\n");
+        printf("|- Amarela    |\n");
+        printf("|- Verde      |\n");
+        printf("|- Branco     |\n");
+        printf("+-------------+\n");
+        printf("Escolha: ");
+        setbuf(stdin,NULL);
+        scanf("%[^\n]s", StringFila);
+        setbuf(stdin,NULL);
+
+        strlwr(StringFila);
+
+        if(strcmp(StringFila,"vermelha") == 0){
+            return FilaVermelha;
+        }else if(strcmp(StringFila,"laranja") == 0){
+            return FilaLaranja;
+        }else if(strcmp(StringFila,"amarela") == 0){
+            return FilaAmarela;
+        }else if(strcmp(StringFila,"verde") == 0){
+            return FilaVerde;
+        }else if(strcmp(StringFila,"branco") == 0){
+            return FilaBranca;
+        }else{
+            FilaEncontrada = false;
+            printf("Esolha invalida... Tente novamente!\n");
+        }
+        printf("\n");
+    }
 
 }

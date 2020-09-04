@@ -18,6 +18,7 @@
 int main(int argc, char const *argv[]){
 
     int Escolha_do_usuario = Variavel_de_inicio;
+    FilaPacientes * FilaIdentifier;
 
     // DECLARAÇÃO E ALOCAÇÃO DAS FILAS DE MEDICOS E PACIENTES - INICIO
     FilaMedicos * FilaMedicos;
@@ -32,7 +33,7 @@ int main(int argc, char const *argv[]){
 
     // INICIALIZAÇÃO DAS FILAS DE PACIENTES & MEDICOS- INICIO
     //InicializarFilaMedicos(FilaMedicos)
-
+    
     InicializarFilaPacientes(FilaVermelha,Vermelha);
     InicializarFilaPacientes(FilaLaranja,Laranja);
     InicializarFilaPacientes(FilaAmarela,Amarela);
@@ -67,10 +68,12 @@ int main(int argc, char const *argv[]){
                 printf("+-----------------------------------------------+\n\n");
             break;
             case 1:
-                Insere_dadoFilaPacientes(FilaVermelha,Get_TriagemIDDisponivel(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca));
+                FilaIdentifier = GetFilaTriagem(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
+                Insere_dadoFilaPacientes(FilaIdentifier,Get_TriagemIDDisponivel(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca));
             break;
             case 2:
-                Imprimir_FilaPacientes(FilaVermelha);
+                FilaIdentifier = GetFilaTriagem(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
+                Imprimir_FilaPacientes(FilaIdentifier);
             break;
             default:
                 printf("\n+--------------------------------------+\n");
