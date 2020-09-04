@@ -89,5 +89,46 @@ Error Imprimir_listaMedicos(ListaMedico * lista){
 
     return Sucesso;
 }
-Error Limpar_listaMedicos(){}
+Error Limpar_listaMedicos(ListaMedico * lista){
+    Medico * medicos = lista->Primeiro;
+    Medoco * proximo_medicoAUX;
+    int i;
+
+    for(i=0;i<lista->Numero_de_medicos;i++){
+        proximo_medicoAUX = medicos->Proximo;
+        free(medicos);
+        medicos = proximo_medicoAUX;
+    }
+    lista->Numero_de_medicos = 0;
+    lista->Primeiro = NULL;
+    free(lista);
+    return Sucesso;
+}
 // IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DA LISTA DE MEDICOS - FINAL
+
+
+// IMPLEMETAÇÃO FUNÇÕES DE MANIPULAÇÃO DA LISTA DE ATENDIMENTOS - INICIO
+void InicializarlistaAtendimentos(ListaAtendimentos * lista){
+    lista->Numero_de_atendimentos = 0;
+    lista->Primeiro = NULL;
+}
+Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista);
+void Remove_dadolistaAtendimentos(ListaAtendimentos * lista);
+Boolean Lista_vaziaAtendimentos(ListaAtendimentos * lista);
+Error Imprimir_listaAtendimentos(ListaAtendimentos * lista);
+Error Limpar_listaAtendimentos(ListaAtendimentos * lista){
+    Atendimento * atendimentos = lista->Primeiro;
+    Atendimento * proximoAtendimentoAUX;
+    int i;
+
+    for(i=0;i<lista->Numero_de_atendimentos;i++){
+        proximoAtendimentoAUX = atendimentos->Proximo;
+        free(atendimentos);
+        atendimentos = proximoAtendimentoAUX;
+    }
+    lista->Numero_de_atendimentos = 0;
+    lista->Primeiro = NULL;
+    free(lista);
+    return Sucesso;
+}
+// IMPLEMETAÇÃO FUNÇÕES DE MANIPULAÇÃO DA LISTA DE ATENDIMENTOS - FIM

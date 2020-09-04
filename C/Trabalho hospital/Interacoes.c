@@ -131,6 +131,5 @@ Error Get_MedicoAlvo(ListaMedico * lista, char StringUser[]){
         }
         printf("\n");
     }
-
     return Sucesso;
 }

@@ -44,9 +44,9 @@ int main(int argc, char const *argv[]){
     InicializarFilaPacientes(FilaBranca,Branca);
     // INICIALIZAÇÃO DAS FILAS DE PACIENTES & MEDICOS- FIM
 
-    printf("\t+-------------------------------------+\n");
-    printf("\t| BEM VINDO AO HOSPITAL ISSAC NEWSTON |\n");
-    printf("\t+-------------------------------------+\n\n");
+    printf("\t+------------------------------------+\n");
+    printf("\t| BEM VINDO AO HOSPITAL ISSAC NEWTON |\n");
+    printf("\t+------------------------------------+\n\n");
 
     while(Escolha_do_usuario != Encerrar_loop){
 
@@ -92,6 +92,10 @@ int main(int argc, char const *argv[]){
             break;
             case 5:
                 Imprimir_listaMedicos(ListaMedicos);
+            break;
+            case 6:
+            break;
+            case 7:
             break;
             default:
                 printf("\n+--------------------------------------+\n");
