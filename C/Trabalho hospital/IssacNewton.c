@@ -26,6 +26,8 @@ int main(int argc, char const *argv[]){
     // DECLARAÇÃO E ALOCAÇÃO DAS FILAS DE MEDICOS E PACIENTES - INICIO
     ListaMedico * ListaMedicos = (ListaMedico*)malloc(sizeof(ListaMedico));
 
+    ListaAtendimentos * listaAtendimentos = (ListaAtendimentos*)malloc(sizeof(ListaAtendimentos));
+
     FilaPacientes * FilaVermelha = (FilaPacientes*)malloc(sizeof(FilaPacientes));
     FilaPacientes * FilaLaranja = (FilaPacientes*)malloc(sizeof(FilaPacientes));
     FilaPacientes * FilaAmarela = (FilaPacientes*)malloc(sizeof(FilaPacientes));
@@ -36,6 +38,8 @@ int main(int argc, char const *argv[]){
 
     // INICIALIZAÇÃO DAS FILAS DE PACIENTES & MEDICOS- INICIO
     InicializarlistaMedicos(ListaMedicos);
+
+    InicializarlistaAtendimentos(listaAtendimentos);
     
     InicializarFilaPacientes(FilaVermelha,Vermelha);
     InicializarFilaPacientes(FilaLaranja,Laranja);
@@ -104,5 +108,16 @@ int main(int argc, char const *argv[]){
             break;
         }
     }
+    // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - INICIO
+    Limpar_listaMedicos(ListaMedicos);
+
+    Limpar_listaAtendimentos(listaAtendimentos);
+
+    Limpar_FilaPacientes(FilaVermelha);
+    Limpar_FilaPacientes(FilaLaranja);
+    Limpar_FilaPacientes(FilaAmarela);
+    Limpar_FilaPacientes(FilaVerde);
+    Limpar_FilaPacientes(FilaBranca);
+    // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - FIM
     return Sucesso;
 }

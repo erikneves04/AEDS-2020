@@ -91,7 +91,7 @@ Error Imprimir_listaMedicos(ListaMedico * lista){
 }
 Error Limpar_listaMedicos(ListaMedico * lista){
     Medico * medicos = lista->Primeiro;
-    Medoco * proximo_medicoAUX;
+    Medico * proximo_medicoAUX;
     int i;
 
     for(i=0;i<lista->Numero_de_medicos;i++){

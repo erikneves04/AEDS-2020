@@ -15,6 +15,7 @@ Error Insere_dadoFilaPacientes(FilaPacientes * fila,int ID);
 Paciente * Remove_dadoFilaPacientes(FilaPacientes * fila);
 Boolean Fila_vaziaPacientes(FilaPacientes * fila);
 Error Imprimir_FilaPacientes(FilaPacientes * fila);
+Error Limpar_FilaPacientes(FilaPacientes * fila);
 Error Limpar_memoriaPaciente(Paciente * Paciente_alvo);
 // ASSINATURAS DAS FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE PACIENTES - FINAL
 

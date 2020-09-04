@@ -117,7 +117,6 @@ Error Limpar_FilaPacientes(FilaPacientes * fila){
     fila->Primeiro = NULL;
     fila->Ultimo = NULL;
     free(fila);
-
     return Sucesso;
 }
 Error Limpar_memoriaPaciente(Paciente * Paciente_alvo){

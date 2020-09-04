@@ -49,9 +49,8 @@ typedef struct atendimento_S {
     char Medico[Tamanho_MAX_nome];
     unsigned int InicioAtendimento;
     unsigned int DuracaoAtendimento;
-    Atendimento * Proximo;
-    Atendimento * Anterior;
-
+    struct atendimento_S * Proximo;
+    struct atendimento_S * Anterior;
 }Atendimento;
 typedef struct lista_atendimentos {
     unsigned int Numero_de_atendimentos;
