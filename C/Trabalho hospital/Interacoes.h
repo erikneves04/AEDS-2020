@@ -11,8 +11,11 @@
 #ifndef __Interact_h__
 #define __Interact_h__
 
-Error Get_InformacoesPaciente(FilaPacientes * fila,Paciente * Novo_paciente);
-int Get_TriagemIDDisponivel(FilaPacientes * Fila_01,FilaPacientes * Fila_02,FilaPacientes * Fila_03,FilaPacientes * Fila_04,FilaPacientes * Fila_05);
-FilaPacientes * GetFilaTriagem(FilaPacientes * FilaVermelha,FilaPacientes * FilaLaranja,FilaPacientes * FilaAmarela,FilaPacientes * FilaVerde,FilaPacientes * FilaBranca);
+Error Get_InformacoesPaciente(Paciente * Novo_paciente);
+int Get_TriagemIDDisponivel();
+FilaPacientes * GetUserFila(FilaPacientes * FilaVermelha,FilaPacientes * FilaLaranja,FilaPacientes * FilaAmarela,FilaPacientes * FilaVerde,FilaPacientes * FilaBranca);
+Error Get_InformacoesMedico(Medico * Novo_medico);
+int Get_HorarioAtual(ListaMedico * fila);
+Error Get_MedicoAlvo(ListaMedico * lista, char * Nome);
 
 #endif /* Interact_h */

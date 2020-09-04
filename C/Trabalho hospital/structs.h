@@ -10,17 +10,11 @@
 #ifndef __structs_h__
 #define __structs_h__
 
-// PADRONIZAÇÃO DE HORARIO
-typedef struct Horario_s {
-    int Hora;
-    int Minutos;
-}Horario;
-
 // ESTRUTURA FILA DE PACIENTES
 typedef struct paciente_S {
     unsigned int TriagemID;
     char NomePaciente[Tamanho_MAX_nome];
-    struct Horario_s * HorarioChegada;
+    int HorarioChegada;
     unsigned int Pulseira;
     struct paciente_S * Proximo;
     struct paciente_S * Anterior;
@@ -35,13 +29,30 @@ typedef struct fila_pacientes {
 // ESTRUTURA FILA DE MEDICOS
 typedef struct medico_s {
     char NomeMedico[Tamanho_MAX_nome];
-    struct Horario_s HorarioEntrada;
-    struct Horario_s HorarioSaida;
+    int EstaTrabalhando;
+    int HorarioEntrada;
+    int HorarioSaida;
+    int Tempo;
     struct medico_s * Proximo;
+    struct medico_s * anterior;
 }Medico;
 typedef struct fila_medicos {
-    Medico * Primeiro;
     unsigned int Numero_de_medicos;
-}FilaMedicos;
+    Medico * Primeiro;
+}ListaMedico;
+
+// ESTRUTURA DE ATENDIMENTOS
+typedef struct atendimento_S {
+    unsigned int TriagemID;
+    char Paciente[Tamanho_MAX_nome];
+    unsigned int Pulseira;
+    char Medico[Tamanho_MAX_nome];
+    unsigned int InicioAtendimento;
+    unsigned int DuracaoAtendimento;
+}Atendimento;
+typedef struct lista_atendimentos {
+    unsigned int Numero_de_atendimentos;
+    Atendimento * Primeiro;
+}ListaAtendimentos;
 
 #endif /* structs_h */

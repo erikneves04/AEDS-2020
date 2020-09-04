@@ -23,7 +23,7 @@ typedef unsigned int Boolean;
 // DEFINIÇÃO DE ERROS
 typedef unsigned int Error;
 #define Erro_fila_vazia      (01)
-#define Erro_pilha_vazia     (01)
+#define Erro_lista_vazia     (01)
 #define Dado_nao_encontrado  (02)
 #define Paciente_inexistente (03)
 

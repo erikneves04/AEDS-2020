@@ -23,7 +23,7 @@ void InicializarFilaPacientes(FilaPacientes * fila,unsigned int ID){
 Error Insere_dadoFilaPacientes(FilaPacientes * fila, int ID){
     Paciente * Novo_paciente = (Paciente*)malloc(sizeof(Paciente));
 
-    Get_InformacoesPaciente(fila,Novo_paciente);
+    Get_InformacoesPaciente(Novo_paciente);
     Novo_paciente->Pulseira = fila->PulseiraID;
     Novo_paciente->TriagemID = ID;
 
@@ -88,9 +88,9 @@ Error Imprimir_FilaPacientes(FilaPacientes * fila){
 
         printf("Nome                     PulseiraID     TriagemID     Entrada\n");
         for(i=0;i<fila->Numero_de_pacientes;i++){
-            printf("%-25s %-10s      %.4d         %.2d:%.2d\n",Pacientes->NomePaciente,StringPulseira,Pacientes->TriagemID,0,0);
+            printf("%-25s %-10s      %.4d         %.4d\n",Pacientes->NomePaciente,StringPulseira,Pacientes->TriagemID,Pacientes->HorarioChegada);
             Pacientes = Pacientes->Anterior;
-        }
+        }   
         printf("\n");
     }else{
         printf("\n+------------------------------------+\n");
@@ -102,7 +102,20 @@ Error Imprimir_FilaPacientes(FilaPacientes * fila){
 
     return Sucesso;
 }
-Error Limpar_FilaPacientes(){
+Error Limpar_FilaPacientes(FilaPacientes * fila){
+    int i;
+    Paciente * pacientes = fila->Primeiro;
+    Paciente * Proximo_paciente = NULL;
+
+    for(i=0;i<fila->Numero_de_pacientes;i++){
+        Proximo_paciente = pacientes->Proximo;
+        free(pacientes);
+        pacientes = Proximo_paciente;
+    }
+
+    fila->Numero_de_pacientes = 0;
+    fila->Primeiro = NULL;
+    fila->Ultimo = NULL;
 }
 Error Limpar_memoriaPaciente(Paciente * Paciente_alvo){
     if(Paciente_alvo == NULL){
@@ -112,16 +125,3 @@ Error Limpar_memoriaPaciente(Paciente * Paciente_alvo){
     return Sucesso;
 }
 // IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE PACIENTES - FINAL
-
-
-
-
-
-// IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE MEDICOS - INICIO
-void InicializarFilaMedicos(){}
-Error Insere_dadoFilaMedicos(){}
-void Remove_dadoFilaMedicos(){}
-Boolean Lista_vaziaFilaMedicos(){}
-Error Imprimir_listaFilaMedicos(){}
-Error Limpar_listaFilaMedicos(){}
-// IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE MEDICOS - FINAL

@@ -7,6 +7,8 @@
 
 /* CRIAÇÃO DE DIRETORIOS system("mkdir c:...")*/
 
+// O MEDICO DETERMINDA QUANTO TEMPO DEMORA DURA CADA CONSULTA
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,6 +16,7 @@
 #include "Interacoes.h"
 #include "structs.h"
 #include "ManipulacaoFilas.h"
+#include "ManipulacaoListas.h"
 
 int main(int argc, char const *argv[]){
 
@@ -21,7 +24,7 @@ int main(int argc, char const *argv[]){
     FilaPacientes * FilaIdentifier;
 
     // DECLARAÇÃO E ALOCAÇÃO DAS FILAS DE MEDICOS E PACIENTES - INICIO
-    FilaMedicos * FilaMedicos;
+    ListaMedico * ListaMedicos = (ListaMedico*)malloc(sizeof(ListaMedico));
 
     FilaPacientes * FilaVermelha = (FilaPacientes*)malloc(sizeof(FilaPacientes));
     FilaPacientes * FilaLaranja = (FilaPacientes*)malloc(sizeof(FilaPacientes));
@@ -32,7 +35,7 @@ int main(int argc, char const *argv[]){
 
 
     // INICIALIZAÇÃO DAS FILAS DE PACIENTES & MEDICOS- INICIO
-    //InicializarFilaMedicos(FilaMedicos)
+    InicializarlistaMedicos(ListaMedicos);
     
     InicializarFilaPacientes(FilaVermelha,Vermelha);
     InicializarFilaPacientes(FilaLaranja,Laranja);
@@ -51,7 +54,13 @@ int main(int argc, char const *argv[]){
         printf("| Funcionalidades do software |\n");
         printf("+-----------------------------+\n");
         printf("[00] Encerrar.\n");
-        printf("[01] Triagem paciente.\n");
+        printf("[01] Adicionar paciente.\n");
+        printf("[02] Imprimir Fila Pacientes.\n");
+        printf("[03] Adicionar medico.\n");
+        printf("[04] Remove medico.\n");
+        printf("[05] Imprimir medicos.\n");
+        printf("[0x] .\n");
+        printf("[0x] .\n");
         printf("[0x] .\n");
         printf("[0x] .\n");
         printf("Escolha: ");
@@ -68,12 +77,21 @@ int main(int argc, char const *argv[]){
                 printf("+-----------------------------------------------+\n\n");
             break;
             case 1:
-                FilaIdentifier = GetFilaTriagem(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
-                Insere_dadoFilaPacientes(FilaIdentifier,Get_TriagemIDDisponivel(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca));
+                FilaIdentifier = GetUserFila(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
+                Insere_dadoFilaPacientes(FilaIdentifier,Get_TriagemIDDisponivel());
             break;
             case 2:
-                FilaIdentifier = GetFilaTriagem(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
+                FilaIdentifier = GetUserFila(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
                 Imprimir_FilaPacientes(FilaIdentifier);
+            break;
+            case 3:
+                Insere_dadolistaMedicos(ListaMedicos);
+            break;
+            case 4:
+                Remove_dadolistaMedicos(ListaMedicos);
+            break;
+            case 5:
+                Imprimir_listaMedicos(ListaMedicos);
             break;
             default:
                 printf("\n+--------------------------------------+\n");

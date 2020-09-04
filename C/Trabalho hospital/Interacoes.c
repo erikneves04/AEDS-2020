@@ -1,6 +1,6 @@
 /*
  * @file   Interacoes.c
- * @brief  Arquivo com implementação das funções para interagir com o usuario.
+ * @brief  Arquivo com implementação das funções para interagir com o usuario & variavies constantemente acessadas.
  * @author <Erik Neves>
  * @date   2020-09-03
 */
@@ -12,32 +12,37 @@
 #include "constantes.h"
 #include "structs.h"
 
-int Get_TriagemIDDisponivel(FilaPacientes * Fila_01,FilaPacientes * Fila_02,FilaPacientes * Fila_03,FilaPacientes * Fila_04,FilaPacientes * Fila_05){
-    int ID;
-    int Total_IDS;
+int Get_TriagemIDDisponivel(){
+    static int ID = 0;
+    return ID++;
+}
+int Get_HorarioAtual(ListaMedico * fila){
+    int Tempo = 0;
+    int i;
+    Medico * Medicos = fila->Primeiro;
 
-    Total_IDS = Fila_01->Numero_de_pacientes + Fila_02->Numero_de_pacientes + Fila_03->Numero_de_pacientes + Fila_04->Numero_de_pacientes + Fila_05->Numero_de_pacientes;
-    ID = Total_IDS + 1;
-
-    return ID;
+    for(i=0;i<fila->Numero_de_medicos;i++){
+        if(Tempo < Medicos->Tempo && Medicos->EstaTrabalhando == Em_servico){
+            Tempo = Medicos->Tempo;
+        }
+        Medicos = Medicos->Proximo;
+    }
+    
+    return Tempo;
 }
 
-Error Get_InformacoesPaciente(FilaPacientes * fila,Paciente * Novo_paciente){
+Error Get_InformacoesPaciente(Paciente * Novo_paciente){
 
     printf("Digite o nome do paciente(Max.:25): ");
     setbuf(stdin,NULL);
     scanf("%[^\n]s",Novo_paciente->NomePaciente);
     setbuf(stdin,NULL);
 
-    //printf("Digite o horario da entrada do paciente(hh/mm): ");
-    //scanf("%d/%d", Novo_paciente->HorarioChegada->Hora,Novo_paciente->HorarioChegada->Minutos);
-
     printf("\n");
     return Sucesso;
 
 }
-
-FilaPacientes * GetFilaTriagem(FilaPacientes * FilaVermelha,FilaPacientes * FilaLaranja,FilaPacientes * FilaAmarela,FilaPacientes * FilaVerde,FilaPacientes * FilaBranca){
+FilaPacientes * GetUserFila(FilaPacientes * FilaVermelha,FilaPacientes * FilaLaranja,FilaPacientes * FilaAmarela,FilaPacientes * FilaVerde,FilaPacientes * FilaBranca){
 
     char StringFila[15];
     Boolean FilaEncontrada = false;
@@ -81,4 +86,51 @@ FilaPacientes * GetFilaTriagem(FilaPacientes * FilaVermelha,FilaPacientes * Fila
         printf("\n");
     }
 
+}
+Error Get_InformacoesMedico(Medico * Novo_medico){
+
+    printf("Digite o nome do medico: ");
+    setbuf(stdin,NULL);
+    scanf("%[^\n]s", Novo_medico->NomeMedico);
+    setbuf(stdin,NULL);
+    printf("Digite o horario de saida do medico(Entrada: %.3d): ",Novo_medico->HorarioEntrada);
+    scanf("%d", &Novo_medico->HorarioSaida);
+
+    return Sucesso;
+}
+Error Get_MedicoAlvo(ListaMedico * lista, char StringUser[]){
+
+    Boolean MedicoEncontrado = false;
+    Medico * medicos = lista->Primeiro;
+    int i;
+    char NomeAux[] = "HOSPITAL ISSAC NEWTON AEDS 2020";
+
+    printf("\n+---------------------------------------------------+\n");
+    printf("| Digite o nome do medico para encerrar seu plantao |\n");
+    printf("+---------------------------------------------------+\n");
+    for(i=0;i<lista->Numero_de_medicos;i++){
+        printf("|- %-25s |\n",medicos->NomeMedico);
+        medicos = medicos->Proximo;
+    }
+    printf("+----------------------------+\n\n");
+    medicos = lista->Primeiro;
+
+    while(MedicoEncontrado == false){
+        printf("Nome do medico: ");
+        setbuf(stdin,NULL);
+        scanf("%[^\n]s", NomeAux);
+        setbuf(stdin,NULL);
+        strlwr(NomeAux);
+        for(i=0;i<lista->Numero_de_medicos;i++){
+            if(strcmp(NomeAux,strlwr(medicos->NomeMedico)) == 0){
+                MedicoEncontrado = true;
+                strcpy(StringUser,NomeAux);
+                break;
+            }
+            medicos = medicos->Proximo;
+        }
+        printf("\n");
+    }
+
+    return Sucesso;
 }
