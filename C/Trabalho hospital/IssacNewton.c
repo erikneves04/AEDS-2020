@@ -16,17 +16,18 @@
 #include "ManipulacaoFilas.h"
 
 int main(int argc, char const *argv[]){
+
     int Escolha_do_usuario = Variavel_de_inicio;
 
-    //DECLARAÇÃO DAS FILAS DE MEDICOS E PACIENTES - INICIO
+    // DECLARAÇÃO E ALOCAÇÃO DAS FILAS DE MEDICOS E PACIENTES - INICIO
     FilaMedicos * FilaMedicos;
 
-    FilaPacientes * FilaVermelha;
-    FilaPacientes * FilaLaranja;
-    FilaPacientes * FilaAmarela;
-    FilaPacientes * FilaVerde;
-    FilaPacientes * FilaBranca;
-    //DECLARAÇÃO DAS FILAS DE MEDICOS E PACIENTES - FIM
+    FilaPacientes * FilaVermelha = (FilaPacientes*)malloc(sizeof(FilaPacientes));
+    FilaPacientes * FilaLaranja = (FilaPacientes*)malloc(sizeof(FilaPacientes));
+    FilaPacientes * FilaAmarela = (FilaPacientes*)malloc(sizeof(FilaPacientes));
+    FilaPacientes * FilaVerde = (FilaPacientes*)malloc(sizeof(FilaPacientes));
+    FilaPacientes * FilaBranca = (FilaPacientes*)malloc(sizeof(FilaPacientes));
+    // DECLARAÇÃO E ALOCAÇÃO DAS FILAS DE MEDICOS E PACIENTES - FIM
 
 
     // INICIALIZAÇÃO DAS FILAS DE PACIENTES & MEDICOS- INICIO
@@ -49,7 +50,7 @@ int main(int argc, char const *argv[]){
         printf("| Funcionalidades do software |\n");
         printf("+-----------------------------+\n");
         printf("[00] Encerrar.\n");
-        printf("[0x] .\n");
+        printf("[01] Triagem paciente.\n");
         printf("[0x] .\n");
         printf("[0x] .\n");
         printf("Escolha: ");
@@ -64,7 +65,12 @@ int main(int argc, char const *argv[]){
                 printf("| Um backup dos dados desta execucao foi criado |\n");
                 printf("|  e pode ser acessado no diretorio '/Backups'  |\n");
                 printf("+-----------------------------------------------+\n\n");
-                
+            break;
+            case 1:
+                Insere_dadoFilaPacientes(FilaVermelha,Get_TriagemIDDisponivel(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca));
+            break;
+            case 2:
+                Imprimir_FilaPacientes(FilaVermelha);
             break;
             default:
                 printf("\n+--------------------------------------+\n");

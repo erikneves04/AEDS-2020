@@ -11,18 +11,19 @@
 #define __structs_h__
 
 // PADRONIZAÇÃO DE HORARIO
-struct Horario_s {
-    unsigned int Hora;
-    unsigned int Minutos;
-};
+typedef struct Horario_s {
+    int Hora;
+    int Minutos;
+}Horario;
 
 // ESTRUTURA FILA DE PACIENTES
 typedef struct paciente_S {
     unsigned int TriagemID;
     char NomePaciente[Tamanho_MAX_nome];
-    struct Horario_s HorarioChegada;
+    struct Horario_s * HorarioChegada;
     unsigned int Pulseira;
-    Paciente * Proximo;
+    struct paciente_S * Proximo;
+    struct paciente_S * Anterior;
 }Paciente;
 typedef struct fila_pacientes {
     unsigned int PulseiraID;
@@ -36,7 +37,7 @@ typedef struct medico_s {
     char NomeMedico[Tamanho_MAX_nome];
     struct Horario_s HorarioEntrada;
     struct Horario_s HorarioSaida;
-    Medico * Proximo;
+    struct medico_s * Proximo;
 }Medico;
 typedef struct fila_medicos {
     Medico * Primeiro;
