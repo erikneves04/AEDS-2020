@@ -38,7 +38,7 @@ Error CriaTXTBackup(ListaAtendimentos * listaAtendimentos){
     arquivo = fopen(NomeArquivo,"w+");
     if(!arquivo)printf("error");
     fprintf(arquivo,"+------------------------------------------------------------------------------------------------------------+\n");
-    fprintf(arquivo,"|                   DADOS DA EXECUCAO DO SOFTARE DO HOSPITAL ISSAC NEWTON %.2d:%.2d - %.2d/%.2d/%.4d                 |\n",DadosTempo->Hora,DadosTempo->Minutos,DadosTempo->Dia,DadosTempo->Mes,DadosTempo->Ano);
+    fprintf(arquivo,"|                   DADOS DA EXECUCAO DO SOFTWARE DO HOSPITAL ISSAC NEWTON %.2d:%.2d - %.2d/%.2d/%.4d                |\n",DadosTempo->Hora,DadosTempo->Minutos,DadosTempo->Dia,DadosTempo->Mes,DadosTempo->Ano);
     fprintf(arquivo,"+------------------------------------------------------------------------------------------------------------+\n");
     sprintf(StringAux,"|%-25s | %.9s | %-10s | %.7s | %.7s | %.7s | %-25s|\n","Nome paciente:","TriagemID"," Pulseira","Inicio ","Duracao","Chegada","Nome medico:");
     fprintf(arquivo,StringAux);
