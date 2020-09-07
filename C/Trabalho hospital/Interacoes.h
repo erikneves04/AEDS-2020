@@ -17,5 +17,7 @@ FilaPacientes * GetUserFila(FilaPacientes * FilaVermelha,FilaPacientes * FilaLar
 Error Get_InformacoesMedico(Medico * Novo_medico);
 int Get_HorarioAtual(ListaMedico * fila);
 Error Get_MedicoAlvo(ListaMedico * lista, char * Nome);
+Error Get_InformacoesAtendimento(Atendimento * Novo_atendimento,ListaMedico * ListaMedicos);
+Error PrintErrorMedicoInvalido();
 
 #endif /* Interact_h */

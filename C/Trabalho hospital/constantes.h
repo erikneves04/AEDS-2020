@@ -26,6 +26,8 @@ typedef unsigned int Error;
 #define Erro_lista_vazia     (01)
 #define Dado_nao_encontrado  (02)
 #define Paciente_inexistente (03)
+#define Acao_cancelada       (04)
+#define Medico_inexistente   (05)
 
 // DEFINIÇÃO DAS PULSEIRAS
 #define Vermelha             (05)

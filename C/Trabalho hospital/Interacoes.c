@@ -11,6 +11,7 @@
 #include <ctype.h>
 #include "constantes.h"
 #include "structs.h"
+#include "ManipulacaoListas.h"
 
 int Get_TriagemIDDisponivel(){
     static int ID = 0;
@@ -108,6 +109,7 @@ Error Get_MedicoAlvo(ListaMedico * lista, char StringUser[]){
     printf("\n+---------------------------------------------------+\n");
     printf("| Digite o nome do medico para encerrar seu plantao |\n");
     printf("+---------------------------------------------------+\n");
+    printf("|- %-25s |\n","Exit  - para cancelar");
     for(i=0;i<lista->Numero_de_medicos;i++){
         printf("|- %-25s |\n",medicos->NomeMedico);
         medicos = medicos->Proximo;
@@ -121,6 +123,11 @@ Error Get_MedicoAlvo(ListaMedico * lista, char StringUser[]){
         scanf("%[^\n]s", NomeAux);
         setbuf(stdin,NULL);
         strlwr(NomeAux);
+
+        if(strcmp(NomeAux,"exit") == 0){
+            MedicoEncontrado = true;
+        }
+
         for(i=0;i<lista->Numero_de_medicos;i++){
             if(strcmp(NomeAux,strlwr(medicos->NomeMedico)) == 0){
                 MedicoEncontrado = true;
@@ -131,5 +138,64 @@ Error Get_MedicoAlvo(ListaMedico * lista, char StringUser[]){
         }
         printf("\n");
     }
+    return Sucesso;
+}
+Error Get_InformacoesAtendimento(Atendimento * Novo_atendimento,ListaMedico * ListaMedicos){
+
+    Novo_atendimento->DuracaoAtendimento;
+    Novo_atendimento->Medico;
+    char StringPulseira[10];
+    Boolean SeeMedicos = false;
+
+    switch (Novo_atendimento->Pulseira){
+        case 00:
+            strcpy(StringPulseira,"Default");
+        break;
+        case 01:
+            strcpy(StringPulseira,"Branca");
+        break;
+        case 02:
+            strcpy(StringPulseira,"Verde");
+        break;
+        case 03:
+            strcpy(StringPulseira,"Amarela");
+        break;
+        case 04:
+            strcpy(StringPulseira,"Laranja");
+        break;
+        case 05:
+            strcpy(StringPulseira,"Vermelha");
+        break;
+    }
+
+    printf("\n\t+--------------------------------+\n");
+    printf("\t| Insira os dados do atendimento |\n");
+    printf("\t+--------------------------------+\n");
+    
+    printf("Nome paciente: %-25s Pulseira: %-10s\n",Novo_atendimento->Paciente,StringPulseira);
+    printf("Inicio do atendimento: %.4d              TriagemID: %.4d\n",Novo_atendimento->InicioAtendimento,Novo_atendimento->TriagemID);
+    printf("Digite a duracao do atendimento: ");
+    scanf("%d", &Novo_atendimento->DuracaoAtendimento);
+    
+    printf("Gostaria de ver uma lista com o nome dos medicos em plantao?\n");
+    printf("[00] Sim.\n");
+    printf("[01] Nao.\n");
+    printf("Escolha: ");
+    scanf("%d", &SeeMedicos);
+
+    if(SeeMedicos == true) Imprimir_listaMedicos(ListaMedicos);
+
+    printf("Digite o nome do medico: ");
+    setbuf(stdin,NULL);
+    scanf("%[^\n]s", Novo_atendimento->Medico);
+    setbuf(stdin,NULL);
+    
+    return Sucesso;
+}
+Error PrintErrorMedicoInvalido(){
+
+    printf("\nO medico inserido eh invalido.\n");
+    printf("Atendimento cancelado. O paciente foi novamente inserido na fila.\n\n");
+
     return Sucesso;
 }

@@ -26,6 +26,15 @@ typedef struct fila_pacientes {
     unsigned int Numero_de_pacientes;
 }FilaPacientes;
 
+// ESTRUTURA QUE DA ACESSO A TODAS AS FILAS DE PACIENTES
+typedef struct Allpaciente_S {
+    FilaPacientes * FilaVermelha;
+    FilaPacientes * FilaLaranja;
+    FilaPacientes * FilaAmarela;
+    FilaPacientes * FilaVerde;
+    FilaPacientes * FilaBranca;
+}TodasAsFilas;
+
 // ESTRUTURA FILA DE MEDICOS
 typedef struct medico_s {
     char NomeMedico[Tamanho_MAX_nome];
@@ -47,6 +56,7 @@ typedef struct atendimento_S {
     char Paciente[Tamanho_MAX_nome];
     unsigned int Pulseira;
     char Medico[Tamanho_MAX_nome];
+    unsigned int ChegadaAoHospital;
     unsigned int InicioAtendimento;
     unsigned int DuracaoAtendimento;
     struct atendimento_S * Proximo;

@@ -8,9 +8,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "constantes.h"
-#include "Interacoes.h"
 #include "structs.h"
+#include "ManipulacaoFilas.h"
+#include "Interacoes.h"
 
 // IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DA LISTA DE MEDICOS - INICIO
 void InicializarlistaMedicos(ListaMedico * lista){
@@ -36,30 +38,37 @@ Error Insere_dadolistaMedicos(ListaMedico * lista){
 
     return Sucesso;
 }
-void Remove_dadolistaMedicos(ListaMedico * lista){
+Error Remove_dadolistaMedicos(ListaMedico * lista){
     int i;
+    char * Cancelar = "exit";
     char MedicoAlvo[] = "HOSPITAL ISSAC NEWTON AEDS 2020";
     Medico * medicos = lista->Primeiro;
     Get_MedicoAlvo(lista,MedicoAlvo);
 
-    for(i=0;i<lista->Numero_de_medicos;i++){
-        if(strcmp(MedicoAlvo,strlwr(medicos->NomeMedico)) == 0){
-            medicos->EstaTrabalhando = Fora_de_servico;
-            break;
-        }
-        medicos = medicos->Proximo;
-    }
-    lista->Numero_de_medicos--;
-    if(medicos->anterior != NULL){
-        medicos->anterior->Proximo = medicos->Proximo;
-        if(medicos->Proximo != NULL){
-            medicos->Proximo->anterior = medicos->anterior;
-        }
+    if(strcmp(MedicoAlvo,Cancelar) == 0){
+        return Acao_cancelada;
     }else{
-        if(medicos->Proximo != NULL) medicos->Proximo->anterior = NULL;
-        lista->Primeiro = medicos->Proximo;
+        for(i=0;i<lista->Numero_de_medicos;i++){
+            if(strcmp(MedicoAlvo,strlwr(medicos->NomeMedico)) == 0){
+                medicos->EstaTrabalhando = Fora_de_servico;
+                break;
+            }
+            medicos = medicos->Proximo;
+        }
+        lista->Numero_de_medicos--;
+        if(medicos->anterior != NULL){
+            medicos->anterior->Proximo = medicos->Proximo;
+            if(medicos->Proximo != NULL){
+                medicos->Proximo->anterior = medicos->anterior;
+            }
+        }else{
+            if(medicos->Proximo != NULL) medicos->Proximo->anterior = NULL;
+            lista->Primeiro = medicos->Proximo;
+        }
+        free(medicos);
     }
-    free(medicos);
+    
+    return Sucesso;
 }
 Boolean Lista_vaziaMedicos(ListaMedico * lista){
     return (lista->Numero_de_medicos == 0 && lista->Primeiro == NULL) ? true : false;
@@ -104,6 +113,20 @@ Error Limpar_listaMedicos(ListaMedico * lista){
     free(lista);
     return Sucesso;
 }
+Error Update_TempoMedico(ListaMedico * lista,char * Nome_medico,int TempoUltimoAtendimento){
+    int i;
+    Medico * medicos = lista->Primeiro;
+    Boolean MedicoEncontrado = false;
+    for(i=0;i<lista->Numero_de_medicos;i++){
+        if(strcmp(strlwr(Nome_medico),strlwr(medicos->NomeMedico)) == 0){
+            medicos->Tempo += TempoUltimoAtendimento;
+            MedicoEncontrado = true;
+            break;
+        }
+        medicos = medicos->Proximo;
+    }
+    return (MedicoEncontrado == true) ? true : false;
+}
 // IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DA LISTA DE MEDICOS - FINAL
 
 
@@ -112,10 +135,128 @@ void InicializarlistaAtendimentos(ListaAtendimentos * lista){
     lista->Numero_de_atendimentos = 0;
     lista->Primeiro = NULL;
 }
-Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista);
+Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaPacientes * fila,ListaMedico * ListaMedicos){
+    Atendimento * Atendimentos = lista_atendimentos->Primeiro;
+    Atendimento * Novo_atendimento = (Atendimento*)malloc(sizeof(Atendimento));
+    Paciente * paciente = fila->Primeiro;
+    Boolean MedicoEncontrado;
+    Boolean LocalToAddEncontrado = false;
+    int i;
+
+    if(paciente == NULL) return Dado_nao_encontrado;
+    
+    strcpy(Novo_atendimento->Paciente,paciente->NomePaciente);
+    Novo_atendimento->TriagemID = paciente->TriagemID;
+    Novo_atendimento->ChegadaAoHospital = paciente->HorarioChegada;
+    Novo_atendimento->Pulseira = fila->PulseiraID;
+    Novo_atendimento->InicioAtendimento = Get_HorarioAtual(ListaMedicos);
+    Get_InformacoesAtendimento(Novo_atendimento,ListaMedicos);
+    MedicoEncontrado = Update_TempoMedico(ListaMedicos,Novo_atendimento->Medico,Novo_atendimento->DuracaoAtendimento);
+
+    if(MedicoEncontrado == false){
+        PrintErrorMedicoInvalido();
+        return Medico_inexistente;
+    }
+
+    // Inserir ordenado com base no tempo do inicio do atendimento
+    if(lista_atendimentos->Numero_de_atendimentos == 0){
+        Novo_atendimento->Proximo == NULL;
+        Novo_atendimento->Anterior == NULL;
+        lista_atendimentos->Primeiro = Novo_atendimento;
+        LocalToAddEncontrado = true;
+    }else{
+        for(i=0;i<lista_atendimentos->Numero_de_atendimentos;i++){
+            printf("TAG 03 %d,%d\n",(Atendimentos->InicioAtendimento),(Novo_atendimento->InicioAtendimento));
+            if((Atendimentos->InicioAtendimento) > (Novo_atendimento->InicioAtendimento)){
+                LocalToAddEncontrado = true;
+                if(Atendimentos->Anterior == NULL){
+                    Novo_atendimento->Proximo = Atendimentos;
+                    Novo_atendimento->Anterior = NULL;
+                    Atendimentos->Anterior = Novo_atendimento;
+                    lista_atendimentos->Primeiro = Novo_atendimento;
+                }else if(Atendimentos->Proximo == NULL){;
+                    Atendimentos->Proximo = Novo_atendimento;
+                    Novo_atendimento->Proximo = NULL;
+                    Novo_atendimento->Anterior = Atendimentos;
+                }else{
+                    Atendimentos->Anterior->Proximo = Novo_atendimento;
+                    Novo_atendimento->Anterior = Atendimentos->Anterior;
+                    Atendimentos->Anterior = Novo_atendimento;
+                    Novo_atendimento->Proximo = Atendimentos;
+                }
+            }
+            Atendimentos = Atendimentos->Proximo;
+        }
+    }
+
+    if(LocalToAddEncontrado == false){
+        Atendimentos = lista_atendimentos->Primeiro;
+        printf("Aqui da pau\n");
+        Atendimentos->Proximo = Novo_atendimento;
+        printf("01\n");
+        Novo_atendimento->Proximo = NULL;
+        printf("02\n");
+        Novo_atendimento->Anterior = Atendimentos;
+        printf("03\n");
+    }   
+    printf("hello\n");
+    lista_atendimentos->Numero_de_atendimentos++;
+    Limpar_memoriaPaciente(Remove_dadoFilaPacientes(fila));
+    return Sucesso;
+}
 void Remove_dadolistaAtendimentos(ListaAtendimentos * lista);
-Boolean Lista_vaziaAtendimentos(ListaAtendimentos * lista);
-Error Imprimir_listaAtendimentos(ListaAtendimentos * lista);
+Boolean Lista_vaziaAtendimentos(ListaAtendimentos * lista){
+    return (lista->Numero_de_atendimentos == 0 && lista->Primeiro == NULL) ? true : false;
+}
+Error Imprimir_listaAtendimentos(ListaAtendimentos * lista){
+    int i;
+    char StringPulseira[10];
+    Atendimento * Atendimentos_aux = lista->Primeiro;
+
+    if(Lista_vaziaAtendimentos(lista) == false){
+        printf("\n  +----------------------------------------------+\n");
+        printf("  | Imprimindo os dados da lista de Atendimentos |\n");
+        printf("  +----------------------------------------------+\n\n");
+
+        for(i=0;i<lista->Numero_de_atendimentos;i++){
+            switch (Atendimentos_aux->Pulseira){
+                case 01:
+                    strcpy(StringPulseira,"Branca");
+                break;
+                case 02:
+                    strcpy(StringPulseira,"Verde");
+                break;
+                case 03:
+                    strcpy(StringPulseira,"Amarela");
+                break;
+                case 04:
+                    strcpy(StringPulseira,"Laranja");
+                break;
+                case 05:
+                    strcpy(StringPulseira,"Vermelha");
+                break;
+                default:
+                    strcpy(StringPulseira,"Default");
+                break;
+            }
+            printf("Identificador de triagem: %.4d  Pulseira %-10s\n",Atendimentos_aux->TriagemID,StringPulseira);
+            printf("Paciente : %-25s\n",Atendimentos_aux->Paciente);
+            printf("Medico: %-25s\n", Atendimentos_aux->Medico);
+            printf("Inicio: %.4d  Termino: %.4d  Entrada: %.4d\n",Atendimentos_aux->InicioAtendimento,(Atendimentos_aux->DuracaoAtendimento + Atendimentos_aux->InicioAtendimento),Atendimentos_aux->ChegadaAoHospital);
+            printf("\n");
+            Atendimentos_aux = Atendimentos_aux->Proximo;
+        }   
+        printf("\n");
+    }else{
+        printf("\n+---------------------------------------+\n");
+        printf("| Esta lista de atendimentos esta vazia |\n");
+        printf("+---------------------------------------+\n\n");
+
+        return Erro_lista_vazia;
+    }
+
+    return Sucesso;
+}
 Error Limpar_listaAtendimentos(ListaAtendimentos * lista){
     Atendimento * atendimentos = lista->Primeiro;
     Atendimento * proximoAtendimentoAUX;
@@ -132,3 +273,13 @@ Error Limpar_listaAtendimentos(ListaAtendimentos * lista){
     return Sucesso;
 }
 // IMPLEMETAÇÃO FUNÇÕES DE MANIPULAÇÃO DA LISTA DE ATENDIMENTOS - FIM
+
+/*
+    unsigned int TriagemID;
+    char Paciente[Tamanho_MAX_nome];
+    unsigned int Pulseira;
+    char Medico[Tamanho_MAX_nome];
+    unsigned int ChegadaAoHospital;
+    unsigned int InicioAtendimento;
+    unsigned int DuracaoAtendimento;
+*/

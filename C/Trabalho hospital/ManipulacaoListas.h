@@ -18,11 +18,12 @@ void Remove_dadolistaMedicos(ListaMedico * lista);
 Boolean Lista_vaziaMedicos(ListaMedico * lista);
 Error Imprimir_listaMedicos(ListaMedico * lista);
 Error Limpar_listaMedicos(ListaMedico * lista);
+Error Update_TempoMedico(ListaMedico * lista,char * Nome_medico,int TempoUltimoAtendimento);
 // ASSINATIRAS FUNÇÕES DE MANIPULAÇÃO DA LISTA DE MEDICOS - FIM
 
 // ASSINATIRAS FUNÇÕES DE MANIPULAÇÃO DA LISTA DE ATENDIMENTOS - INICIO
 void InicializarlistaAtendimentos(ListaAtendimentos * lista);
-Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista);
+Error Insere_dadolistaAtendimentos(ListaAtendimentos * listaAtendimentos, FilaPacientes * fila,ListaMedico * ListaMedicos);
 void Remove_dadolistaAtendimentos(ListaAtendimentos * lista);
 Boolean Lista_vaziaAtendimentos(ListaAtendimentos * lista);
 Error Imprimir_listaAtendimentos(ListaAtendimentos * lista);

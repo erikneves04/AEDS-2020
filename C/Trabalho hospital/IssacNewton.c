@@ -20,13 +20,16 @@
 
 int main(int argc, char const *argv[]){
 
+    // DECLARAÇÃO DE VARIAVEIS AUXILIARES A MAIN - INICIO
     int Escolha_do_usuario = Variavel_de_inicio;
     FilaPacientes * FilaIdentifier;
+    // DECLARAÇÃO DE VARIAVEIS AUXILIARES A MAIN - FIM
 
+    
     // DECLARAÇÃO E ALOCAÇÃO DAS FILAS DE MEDICOS E PACIENTES - INICIO
     ListaMedico * ListaMedicos = (ListaMedico*)malloc(sizeof(ListaMedico));
-
     ListaAtendimentos * listaAtendimentos = (ListaAtendimentos*)malloc(sizeof(ListaAtendimentos));
+    TodasAsFilas * FilasDePacientes = (TodasAsFilas*)malloc(sizeof(TodasAsFilas));
 
     FilaPacientes * FilaVermelha = (FilaPacientes*)malloc(sizeof(FilaPacientes));
     FilaPacientes * FilaLaranja = (FilaPacientes*)malloc(sizeof(FilaPacientes));
@@ -38,8 +41,8 @@ int main(int argc, char const *argv[]){
 
     // INICIALIZAÇÃO DAS FILAS DE PACIENTES & MEDICOS- INICIO
     InicializarlistaMedicos(ListaMedicos);
-
     InicializarlistaAtendimentos(listaAtendimentos);
+    InicializarStructTodasAsFilas(FilasDePacientes,FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
     
     InicializarFilaPacientes(FilaVermelha,Vermelha);
     InicializarFilaPacientes(FilaLaranja,Laranja);
@@ -63,8 +66,8 @@ int main(int argc, char const *argv[]){
         printf("[03] Adicionar medico.\n");
         printf("[04] Remove medico.\n");
         printf("[05] Imprimir medicos.\n");
-        printf("[0x] .\n");
-        printf("[0x] .\n");
+        printf("[06] Realizar atendimento.\n");
+        printf("[07] Imprimir atendimento.\n");
         printf("[0x] .\n");
         printf("[0x] .\n");
         printf("Escolha: ");
@@ -82,7 +85,7 @@ int main(int argc, char const *argv[]){
             break;
             case 1:
                 FilaIdentifier = GetUserFila(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
-                Insere_dadoFilaPacientes(FilaIdentifier,Get_TriagemIDDisponivel());
+                Insere_dadoFilaPacientes(FilaIdentifier,Get_TriagemIDDisponivel(),ListaMedicos);
             break;
             case 2:
                 FilaIdentifier = GetUserFila(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
@@ -98,8 +101,13 @@ int main(int argc, char const *argv[]){
                 Imprimir_listaMedicos(ListaMedicos);
             break;
             case 6:
+                FilaIdentifier = FilaVermelha;
+                Insere_dadolistaAtendimentos(listaAtendimentos,FilaIdentifier,ListaMedicos);
             break;
             case 7:
+                Imprimir_listaAtendimentos(listaAtendimentos);
+            break;
+            case 8:
             break;
             default:
                 printf("\n+--------------------------------------+\n");
@@ -110,7 +118,6 @@ int main(int argc, char const *argv[]){
     }
     // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - INICIO
     Limpar_listaMedicos(ListaMedicos);
-
     Limpar_listaAtendimentos(listaAtendimentos);
 
     Limpar_FilaPacientes(FilaVermelha);

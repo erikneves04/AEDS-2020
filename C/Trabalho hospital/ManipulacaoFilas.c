@@ -8,10 +8,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "constantes.h"
-#include "Interacoes.h"
 #include "structs.h"
+#include "ManipulacaoListas.h"
+#include "Interacoes.h"
 
+// IMPLEMENTAÇÃO FUNÇÃO DE IDENTIFICAÇÃO DE TODAS AS FILAS - INICIO
+Error InicializarStructTodasAsFilas(TodasAsFilas * filas,FilaPacientes * FilaVermelha,FilaPacientes * FilaLaranja,FilaPacientes * FilaAmarela,FilaPacientes * FilaVerde,FilaPacientes * FilaBranca){
+    filas->FilaVermelha = FilaVermelha;
+    filas->FilaLaranja = FilaLaranja;
+    filas->FilaAmarela = FilaAmarela;
+    filas->FilaVerde = FilaVerde;
+    filas->FilaBranca = FilaBranca;
+
+    return Sucesso;
+}
+// IMPLEMENTAÇÃO FUNÇÃO DE IDENTIFICAÇÃO DE TODAS AS FILAS - FIM
 
 // IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE PACIENTES - INICIO
 void InicializarFilaPacientes(FilaPacientes * fila,unsigned int ID){
@@ -20,12 +33,13 @@ void InicializarFilaPacientes(FilaPacientes * fila,unsigned int ID){
     fila->Ultimo = NULL;
     fila->PulseiraID = ID;
 }
-Error Insere_dadoFilaPacientes(FilaPacientes * fila, int ID){
+Error Insere_dadoFilaPacientes(FilaPacientes * fila, int ID,ListaMedico * listaMedicos){
     Paciente * Novo_paciente = (Paciente*)malloc(sizeof(Paciente));
 
     Get_InformacoesPaciente(Novo_paciente);
     Novo_paciente->Pulseira = fila->PulseiraID;
     Novo_paciente->TriagemID = ID;
+    Novo_paciente->HorarioChegada = Get_HorarioAtual(listaMedicos);
 
     Novo_paciente->Proximo = fila->Ultimo;
     Novo_paciente->Anterior = NULL;
@@ -42,13 +56,18 @@ Error Insere_dadoFilaPacientes(FilaPacientes * fila, int ID){
 }
 Paciente * Remove_dadoFilaPacientes(FilaPacientes * fila){
     Paciente * Primeiro_paciente = fila->Primeiro;
+    
+    fila->Primeiro = Primeiro_paciente->Anterior;
+    fila->Numero_de_pacientes--;
+    if(fila->Primeiro != NULL){
+        fila->Primeiro->Proximo = NULL;
+    }
+    if(fila->Numero_de_pacientes == 0){
+        fila->Ultimo = NULL;
+    }
 
     Primeiro_paciente->Anterior = NULL;
     Primeiro_paciente->Proximo = NULL;
-    
-    fila->Primeiro = Primeiro_paciente->Anterior;
-    fila->Primeiro->Proximo = NULL;
-    fila->Numero_de_pacientes--;
 
     return Primeiro_paciente;
 }
@@ -126,4 +145,4 @@ Error Limpar_memoriaPaciente(Paciente * Paciente_alvo){
     free(Paciente_alvo);
     return Sucesso;
 }
-// IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE PACIENTES - FINAL
+// IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE PACIENTES - FIM
