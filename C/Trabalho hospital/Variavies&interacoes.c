@@ -8,9 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include "constantes.h"
 #include "structs.h"
+#include "ManipulacaoFilas.h"
 #include "ManipulacaoListas.h"
 
 int Get_TriagemIDDisponivel(){
@@ -43,7 +43,7 @@ Error Get_InformacoesPaciente(Paciente * Novo_paciente){
     return Sucesso;
 
 }
-FilaPacientes * GetUserFila(FilaPacientes * FilaVermelha,FilaPacientes * FilaLaranja,FilaPacientes * FilaAmarela,FilaPacientes * FilaVerde,FilaPacientes * FilaBranca){
+FilaPacientes * GetUserFila(TodasAsFilas * filas){
 
     char StringFila[15];
     Boolean FilaEncontrada = false;
@@ -71,18 +71,18 @@ FilaPacientes * GetUserFila(FilaPacientes * FilaVermelha,FilaPacientes * FilaLar
         strlwr(StringFila);
 
         if(strcmp(StringFila,"vermelha") == 0){
-            return FilaVermelha;
+            return filas->FilaVermelha;
         }else if(strcmp(StringFila,"laranja") == 0){
-            return FilaLaranja;
+            return filas->FilaLaranja;
         }else if(strcmp(StringFila,"amarela") == 0){
-            return FilaAmarela;
+            return filas->FilaAmarela;
         }else if(strcmp(StringFila,"verde") == 0){
-            return FilaVerde;
+            return filas->FilaVerde;
         }else if(strcmp(StringFila,"branco") == 0){
-            return FilaBranca;
+            return filas->FilaBranca;
         }else{
             FilaEncontrada = false;
-            printf("Esolha invalida... Tente novamente!\n");
+            printf("\nEsolha invalida... Tente novamente!\n");
         }
         printf("\n");
     }
@@ -90,12 +90,13 @@ FilaPacientes * GetUserFila(FilaPacientes * FilaVermelha,FilaPacientes * FilaLar
 }
 Error Get_InformacoesMedico(Medico * Novo_medico){
 
-    printf("Digite o nome do medico: ");
+    printf("\nDigite o nome do medico: ");
     setbuf(stdin,NULL);
     scanf("%[^\n]s", Novo_medico->NomeMedico);
     setbuf(stdin,NULL);
     printf("Digite o horario de saida do medico(Entrada: %.3d): ",Novo_medico->HorarioEntrada);
     scanf("%d", &Novo_medico->HorarioSaida);
+    printf("\n");
 
     return Sucesso;
 }
@@ -189,6 +190,7 @@ Error Get_InformacoesAtendimento(Atendimento * Novo_atendimento,ListaMedico * Li
     setbuf(stdin,NULL);
     scanf("%[^\n]s", Novo_atendimento->Medico);
     setbuf(stdin,NULL);
+    printf("\n");
     
     return Sucesso;
 }
@@ -198,4 +200,12 @@ Error PrintErrorMedicoInvalido(){
     printf("Atendimento cancelado. O paciente foi novamente inserido na fila.\n\n");
 
     return Sucesso;
+}
+FilaPacientes * Get_FilaPrioritaria(TodasAsFilas * Filas){
+    if(Filas->FilaVermelha->Numero_de_pacientes != 0) return Filas->FilaVermelha;
+    if(Filas->FilaLaranja->Numero_de_pacientes != 0) return Filas->FilaLaranja;
+    if(Filas->FilaAmarela->Numero_de_pacientes != 0) return Filas->FilaAmarela;
+    if(Filas->FilaVerde->Numero_de_pacientes != 0) return Filas->FilaVerde;
+    if(Filas->FilaBranca->Numero_de_pacientes != 0) return Filas->FilaBranca;
+    return NULL;
 }

@@ -13,11 +13,12 @@
 
 Error Get_InformacoesPaciente(Paciente * Novo_paciente);
 int Get_TriagemIDDisponivel();
-FilaPacientes * GetUserFila(FilaPacientes * FilaVermelha,FilaPacientes * FilaLaranja,FilaPacientes * FilaAmarela,FilaPacientes * FilaVerde,FilaPacientes * FilaBranca);
+FilaPacientes * GetUserFila(TodasAsFilas * filas);
 Error Get_InformacoesMedico(Medico * Novo_medico);
 int Get_HorarioAtual(ListaMedico * fila);
 Error Get_MedicoAlvo(ListaMedico * lista, char * Nome);
 Error Get_InformacoesAtendimento(Atendimento * Novo_atendimento,ListaMedico * ListaMedicos);
 Error PrintErrorMedicoInvalido();
+FilaPacientes * Get_FilaPrioritaria(TodasAsFilas * Filas);
 
 #endif /* Interact_h */

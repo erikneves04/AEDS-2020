@@ -10,12 +10,22 @@
 #ifndef __structs_h__
 #define __structs_h__
 
+// ESTRUTURA DE TEMPO PARA BACKUP
+typedef struct tempo_s {
+    unsigned int Dia;
+    unsigned int Mes;
+    unsigned int Ano;
+    unsigned int Hora;
+    unsigned int Minutos;
+}DataTime;
+
 // ESTRUTURA FILA DE PACIENTES
 typedef struct paciente_S {
     unsigned int TriagemID;
     char NomePaciente[Tamanho_MAX_nome];
     int HorarioChegada;
     unsigned int Pulseira;
+    unsigned int NumUpgrades;
     struct paciente_S * Proximo;
     struct paciente_S * Anterior;
 }Paciente;

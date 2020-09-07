@@ -11,6 +11,7 @@
 
 // ASSINATURAS DAS FUNÇÕES DE IDENTIFICAÇÕES DE TODAS AS FILAS - INICIO
 Error InicializarStructTodasAsFilas(TodasAsFilas * filas,FilaPacientes * FilaVermelha,FilaPacientes * FilaLaranja,FilaPacientes * FilaAmarela,FilaPacientes * FilaVerde,FilaPacientes * FilaBranca);
+Error Limpar_memoriaStructTodasAsFilas(TodasAsFilas * filas);
 // ASSINATURAS DAS FUNÇÕES DE IDENTIFICAÇÕES DE TODAS AS FILAS - FIM
 
 // ASSINATURAS DAS FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE PACIENTES - INICIO
@@ -21,6 +22,7 @@ Boolean Fila_vaziaPacientes(FilaPacientes * fila);
 Error Imprimir_FilaPacientes(FilaPacientes * fila);
 Error Limpar_FilaPacientes(FilaPacientes * fila);
 Error Limpar_memoriaPaciente(Paciente * Paciente_alvo);
+Error Update_FilaPaciente(TodasAsFilas * Filas,ListaMedico * ListaMedicos);
 // ASSINATURAS DAS FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE PACIENTES - FIM
 
 #endif /* __ManiFilas_h__ */

@@ -24,7 +24,6 @@ Error Update_TempoMedico(ListaMedico * lista,char * Nome_medico,int TempoUltimoA
 // ASSINATIRAS FUNÇÕES DE MANIPULAÇÃO DA LISTA DE ATENDIMENTOS - INICIO
 void InicializarlistaAtendimentos(ListaAtendimentos * lista);
 Error Insere_dadolistaAtendimentos(ListaAtendimentos * listaAtendimentos, FilaPacientes * fila,ListaMedico * ListaMedicos);
-void Remove_dadolistaAtendimentos(ListaAtendimentos * lista);
 Boolean Lista_vaziaAtendimentos(ListaAtendimentos * lista);
 Error Imprimir_listaAtendimentos(ListaAtendimentos * lista);
 Error Limpar_listaAtendimentos(ListaAtendimentos * lista);

@@ -8,11 +8,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include "constantes.h"
 #include "structs.h"
 #include "ManipulacaoListas.h"
-#include "Interacoes.h"
+#include "Variaveis&interacoes.h"
 
 // IMPLEMENTAÇÃO FUNÇÃO DE IDENTIFICAÇÃO DE TODAS AS FILAS - INICIO
 Error InicializarStructTodasAsFilas(TodasAsFilas * filas,FilaPacientes * FilaVermelha,FilaPacientes * FilaLaranja,FilaPacientes * FilaAmarela,FilaPacientes * FilaVerde,FilaPacientes * FilaBranca){
@@ -22,6 +21,10 @@ Error InicializarStructTodasAsFilas(TodasAsFilas * filas,FilaPacientes * FilaVer
     filas->FilaVerde = FilaVerde;
     filas->FilaBranca = FilaBranca;
 
+    return Sucesso;
+}
+Error Limpar_memoriaStructTodasAsFilas(TodasAsFilas * filas){
+    if(filas != NULL) free(filas);
     return Sucesso;
 }
 // IMPLEMENTAÇÃO FUNÇÃO DE IDENTIFICAÇÃO DE TODAS AS FILAS - FIM
@@ -40,7 +43,22 @@ Error Insere_dadoFilaPacientes(FilaPacientes * fila, int ID,ListaMedico * listaM
     Novo_paciente->Pulseira = fila->PulseiraID;
     Novo_paciente->TriagemID = ID;
     Novo_paciente->HorarioChegada = Get_HorarioAtual(listaMedicos);
+    Novo_paciente->NumUpgrades = 1;
 
+    Novo_paciente->Proximo = fila->Ultimo;
+    Novo_paciente->Anterior = NULL;
+    if(fila->Ultimo == NULL){
+        fila->Primeiro = Novo_paciente;
+        fila->Ultimo = Novo_paciente;
+    }else{
+        fila->Ultimo->Anterior = Novo_paciente;
+        fila->Ultimo = Novo_paciente;
+    }
+    fila->Numero_de_pacientes++;
+
+    return Sucesso;
+}
+static Error Insere_dadoFilaPacientesStatic(FilaPacientes * fila,Paciente * Novo_paciente){
     Novo_paciente->Proximo = fila->Ultimo;
     Novo_paciente->Anterior = NULL;
     if(fila->Ultimo == NULL){
@@ -143,6 +161,45 @@ Error Limpar_memoriaPaciente(Paciente * Paciente_alvo){
         return Paciente_inexistente;
     }
     free(Paciente_alvo);
+    return Sucesso;
+}
+Error Update_FilaPaciente(TodasAsFilas * Filas,ListaMedico * ListaMedicos){
+    int i;
+    Paciente * Pacientes;
+    Paciente * PacienteParaUpgrade;
+
+    Pacientes = Filas->FilaVerde->Primeiro;
+    for(i=0;i<Filas->FilaVerde->Numero_de_pacientes;i++){
+        printf("Tentou\n");
+        if((Get_HorarioAtual(ListaMedicos) - Pacientes->HorarioChegada) >= (60 * Pacientes->NumUpgrades)){
+            printf("%d\n",Pacientes->NumUpgrades);
+            PacienteParaUpgrade = Remove_dadoFilaPacientes(Filas->FilaVerde);
+            PacienteParaUpgrade->NumUpgrades++;
+            PacienteParaUpgrade->Pulseira = Verde;
+            Insere_dadoFilaPacientesStatic(Filas->FilaAmarela,PacienteParaUpgrade);
+        }
+    }
+
+    Pacientes = Filas->FilaAmarela->Primeiro;
+    for(i=0;i<Filas->FilaAmarela->Numero_de_pacientes;i++){
+        if((Get_HorarioAtual(ListaMedicos) - Pacientes->HorarioChegada) > (60 * Pacientes->NumUpgrades)){
+            PacienteParaUpgrade = Remove_dadoFilaPacientes(Filas->FilaAmarela);  
+            PacienteParaUpgrade->NumUpgrades++;      
+            PacienteParaUpgrade->Pulseira = Amarela;
+            Insere_dadoFilaPacientesStatic(Filas->FilaLaranja,PacienteParaUpgrade);
+        }
+    }
+
+    Pacientes = Filas->FilaLaranja->Primeiro;
+    for(i=0;i<Filas->FilaLaranja->Numero_de_pacientes;i++){
+        if((Get_HorarioAtual(ListaMedicos) - Pacientes->HorarioChegada) > (60 * Pacientes->NumUpgrades)){
+            PacienteParaUpgrade = Remove_dadoFilaPacientes(Filas->FilaLaranja);
+            PacienteParaUpgrade->NumUpgrades++;
+            PacienteParaUpgrade->Pulseira = Laranja;
+            Insere_dadoFilaPacientesStatic(Filas->FilaVermelha,PacienteParaUpgrade);
+        }
+    }
+
     return Sucesso;
 }
 // IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE PACIENTES - FIM

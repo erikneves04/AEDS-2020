@@ -5,18 +5,15 @@
  * @date   2020-09-03
 */
 
-/* CRIAÇÃO DE DIRETORIOS system("mkdir c:...")*/
-
-// O MEDICO DETERMINDA QUANTO TEMPO DEMORA DURA CADA CONSULTA
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "constantes.h"
-#include "Interacoes.h"
+#include "Variaveis&interacoes.h"
 #include "structs.h"
 #include "ManipulacaoFilas.h"
 #include "ManipulacaoListas.h"
+#include "MakeBackup.h"
 
 int main(int argc, char const *argv[]){
 
@@ -62,19 +59,14 @@ int main(int argc, char const *argv[]){
         printf("+-----------------------------+\n");
         printf("[00] Encerrar.\n");
         printf("[01] Adicionar paciente.\n");
-        printf("[02] Imprimir Fila Pacientes.\n");
-        printf("[03] Adicionar medico.\n");
-        printf("[04] Remove medico.\n");
-        printf("[05] Imprimir medicos.\n");
-        printf("[06] Realizar atendimento.\n");
-        printf("[07] Imprimir atendimento.\n");
-        printf("[0x] .\n");
-        printf("[0x] .\n");
+        printf("[02] Adicionar medico.\n");
+        printf("[03] Realizar atendimento.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
 
         switch (Escolha_do_usuario){
             case 0:
+                Imprimir_listaAtendimentos(listaAtendimentos);
                 printf("\n            +-----------------------+\n");
                 printf("            | Encerrando o software |\n");
                 printf("            +-----------------------+\n");
@@ -82,32 +74,19 @@ int main(int argc, char const *argv[]){
                 printf("| Um backup dos dados desta execucao foi criado |\n");
                 printf("|  e pode ser acessado no diretorio '/Backups'  |\n");
                 printf("+-----------------------------------------------+\n\n");
+                CriaTXTBackup(listaAtendimentos);
             break;
             case 1:
-                FilaIdentifier = GetUserFila(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
+                FilaIdentifier = GetUserFila(FilasDePacientes);
                 Insere_dadoFilaPacientes(FilaIdentifier,Get_TriagemIDDisponivel(),ListaMedicos);
             break;
             case 2:
-                FilaIdentifier = GetUserFila(FilaVermelha,FilaLaranja,FilaAmarela,FilaVerde,FilaBranca);
-                Imprimir_FilaPacientes(FilaIdentifier);
-            break;
-            case 3:
                 Insere_dadolistaMedicos(ListaMedicos);
             break;
-            case 4:
-                Remove_dadolistaMedicos(ListaMedicos);
-            break;
-            case 5:
-                Imprimir_listaMedicos(ListaMedicos);
-            break;
-            case 6:
-                FilaIdentifier = FilaVermelha;
+            case 3:
+                FilaIdentifier = Get_FilaPrioritaria(FilasDePacientes);
                 Insere_dadolistaAtendimentos(listaAtendimentos,FilaIdentifier,ListaMedicos);
-            break;
-            case 7:
-                Imprimir_listaAtendimentos(listaAtendimentos);
-            break;
-            case 8:
+                Update_FilaPaciente(FilasDePacientes,ListaMedicos);
             break;
             default:
                 printf("\n+--------------------------------------+\n");
@@ -119,6 +98,7 @@ int main(int argc, char const *argv[]){
     // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - INICIO
     Limpar_listaMedicos(ListaMedicos);
     Limpar_listaAtendimentos(listaAtendimentos);
+    Limpar_memoriaStructTodasAsFilas(FilasDePacientes);
 
     Limpar_FilaPacientes(FilaVermelha);
     Limpar_FilaPacientes(FilaLaranja);
