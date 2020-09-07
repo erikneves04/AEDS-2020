@@ -170,9 +170,7 @@ Error Update_FilaPaciente(TodasAsFilas * Filas,ListaMedico * ListaMedicos){
 
     Pacientes = Filas->FilaVerde->Primeiro;
     for(i=0;i<Filas->FilaVerde->Numero_de_pacientes;i++){
-        printf("Tentou\n");
         if((Get_HorarioAtual(ListaMedicos) - Pacientes->HorarioChegada) >= (60 * Pacientes->NumUpgrades)){
-            printf("%d\n",Pacientes->NumUpgrades);
             PacienteParaUpgrade = Remove_dadoFilaPacientes(Filas->FilaVerde);
             PacienteParaUpgrade->NumUpgrades++;
             PacienteParaUpgrade->Pulseira = Verde;
@@ -199,7 +197,6 @@ Error Update_FilaPaciente(TodasAsFilas * Filas,ListaMedico * ListaMedicos){
             Insere_dadoFilaPacientesStatic(Filas->FilaVermelha,PacienteParaUpgrade);
         }
     }
-
     return Sucesso;
 }
 // IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE PACIENTES - FIM

@@ -75,6 +75,7 @@ typedef struct atendimento_S {
 typedef struct lista_atendimentos {
     unsigned int Numero_de_atendimentos;
     Atendimento * Primeiro;
+    Atendimento * Ultimo;
 }ListaAtendimentos;
 
 #endif /* structs_h */

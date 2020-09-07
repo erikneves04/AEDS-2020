@@ -87,6 +87,7 @@ int main(int argc, char const *argv[]){
                 FilaIdentifier = Get_FilaPrioritaria(FilasDePacientes);
                 Insere_dadolistaAtendimentos(listaAtendimentos,FilaIdentifier,ListaMedicos);
                 Update_FilaPaciente(FilasDePacientes,ListaMedicos);
+                Update_PlantaoMedico(ListaMedicos);
             break;
             default:
                 printf("\n+--------------------------------------+\n");

@@ -19,6 +19,7 @@ Boolean Lista_vaziaMedicos(ListaMedico * lista);
 Error Imprimir_listaMedicos(ListaMedico * lista);
 Error Limpar_listaMedicos(ListaMedico * lista);
 Error Update_TempoMedico(ListaMedico * lista,char * Nome_medico,int TempoUltimoAtendimento);
+Error Update_PlantaoMedico(ListaMedico * lista);
 // ASSINATIRAS FUNÇÕES DE MANIPULAÇÃO DA LISTA DE MEDICOS - FIM
 
 // ASSINATIRAS FUNÇÕES DE MANIPULAÇÃO DA LISTA DE ATENDIMENTOS - INICIO

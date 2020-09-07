@@ -69,6 +69,29 @@ Error Remove_dadolistaMedicos(ListaMedico * lista){
     
     return Sucesso;
 }
+static Error Remove_dadolistaMedicosstatic(ListaMedico * lista,char * MedicoAlvo){
+    int i;
+    Medico * medicos = lista->Primeiro;
+    
+    for(i=0;i<lista->Numero_de_medicos;i++){
+        if(strcmp(MedicoAlvo,medicos->NomeMedico) == 0){
+            medicos->EstaTrabalhando = Fora_de_servico;
+            break;
+        }
+        medicos = medicos->Proximo;
+    }
+    lista->Numero_de_medicos--;
+    if(medicos->anterior != NULL){
+        medicos->anterior->Proximo = medicos->Proximo;
+        if(medicos->Proximo != NULL) medicos->Proximo->anterior = medicos->anterior;
+    }else{
+        if(medicos->Proximo != NULL) medicos->Proximo->anterior = NULL;
+        lista->Primeiro = medicos->Proximo;
+    }
+    free(medicos);
+    
+    return Sucesso;
+}
 Boolean Lista_vaziaMedicos(ListaMedico * lista){
     return (lista->Numero_de_medicos == 0 && lista->Primeiro == NULL) ? true : false;
 }
@@ -126,6 +149,26 @@ Error Update_TempoMedico(ListaMedico * lista,char * Nome_medico,int TempoUltimoA
     }
     return (MedicoEncontrado == true) ? true : false;
 }
+Error Update_PlantaoMedico(ListaMedico * lista){
+    int i,j;
+    Medico * medicos = lista->Primeiro;
+    Boolean VarreduraCompleta = false;
+
+    for(i=0;i<lista->Numero_de_medicos;i++){
+        if(medicos->Proximo != NULL) medicos = medicos->Proximo;
+    }
+
+    for(i=0;i<lista->Numero_de_medicos;i++){
+        if(medicos->HorarioSaida <= Get_HorarioAtual(lista)){
+            Remove_dadolistaMedicosstatic(lista,medicos->NomeMedico);
+            VarreduraCompleta = false;
+        }else{
+            VarreduraCompleta = true;
+        }
+        if(medicos->anterior != NULL) medicos = medicos->anterior;
+    }
+    return Sucesso;
+}
 // IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DA LISTA DE MEDICOS - FINAL
 
 
@@ -157,14 +200,17 @@ Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaP
         PrintErrorMedicoInvalido();
         return Medico_inexistente;
     }
-
+    printf("01\n");
     // Inserir ordenado com base no tempo do inicio do atendimento
     if(lista_atendimentos->Numero_de_atendimentos == 0){
+        printf("01\n");
         Novo_atendimento->Proximo == NULL;
         Novo_atendimento->Anterior == NULL;
         lista_atendimentos->Primeiro = Novo_atendimento;
+        lista_atendimentos->Ultimo = Novo_atendimento;
         LocalToAddEncontrado = true;
     }else{
+        printf("01\n");
         for(i=0;i<lista_atendimentos->Numero_de_atendimentos;i++){
             if((Atendimentos->InicioAtendimento) > (Novo_atendimento->InicioAtendimento)){
                 LocalToAddEncontrado = true;
@@ -184,18 +230,17 @@ Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaP
                     Novo_atendimento->Proximo = Atendimentos;
                 }
             }
-            if(Atendimentos->Proximo != NULL){
-                Atendimentos = Atendimentos->Proximo;
-            }
+            Atendimentos = Atendimentos->Proximo; 
         }
     }
 
     if(LocalToAddEncontrado == false){
-        Atendimentos->Proximo = Novo_atendimento;
+        lista_atendimentos->Ultimo->Proximo = Novo_atendimento;
+        Novo_atendimento->Anterior = lista_atendimentos->Ultimo;
         Novo_atendimento->Proximo = NULL;
-        Novo_atendimento->Anterior = Atendimentos;
     }   
     
+    lista_atendimentos->Ultimo = Novo_atendimento;
     lista_atendimentos->Numero_de_atendimentos++;
     Limpar_memoriaPaciente(Remove_dadoFilaPacientes(fila));
     return Sucesso;

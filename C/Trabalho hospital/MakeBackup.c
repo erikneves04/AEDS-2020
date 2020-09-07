@@ -66,6 +66,7 @@ Error CriaTXTBackup(ListaAtendimentos * listaAtendimentos){
             }
         sprintf(StringAux,"|%-25s | %.9d |  %-10s| %.6d  | %.7d | %.7d | %-25s|\n",atendimentos->Paciente,atendimentos->TriagemID,StringPulseira,atendimentos->InicioAtendimento,(atendimentos->DuracaoAtendimento + atendimentos->InicioAtendimento),atendimentos->ChegadaAoHospital,atendimentos->Medico);
         fprintf(arquivo,StringAux);
+        atendimentos = atendimentos->Proximo;
     }
     fprintf(arquivo,"+------------------------------------------------------------------------------------------------------------+\n");
     fclose(arquivo);

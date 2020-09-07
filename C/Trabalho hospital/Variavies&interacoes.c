@@ -61,7 +61,7 @@ FilaPacientes * GetUserFila(TodasAsFilas * filas){
         printf("|- Laranja    |\n");
         printf("|- Amarela    |\n");
         printf("|- Verde      |\n");
-        printf("|- Branco     |\n");
+        printf("|- Branca     |\n");
         printf("+-------------+\n");
         printf("Escolha: ");
         setbuf(stdin,NULL);
@@ -78,7 +78,7 @@ FilaPacientes * GetUserFila(TodasAsFilas * filas){
             return filas->FilaAmarela;
         }else if(strcmp(StringFila,"verde") == 0){
             return filas->FilaVerde;
-        }else if(strcmp(StringFila,"branco") == 0){
+        }else if(strcmp(StringFila,"branca") == 0){
             return filas->FilaBranca;
         }else{
             FilaEncontrada = false;
@@ -96,7 +96,7 @@ Error Get_InformacoesMedico(Medico * Novo_medico){
     setbuf(stdin,NULL);
     printf("Digite o horario de saida do medico(Entrada: %.3d): ",Novo_medico->HorarioEntrada);
     scanf("%d", &Novo_medico->HorarioSaida);
-    printf("\n");
+    printf("OBS.: Por questoes de seguranca somente um medico pode deixar o plantao por vez.\n\n");
 
     return Sucesso;
 }
