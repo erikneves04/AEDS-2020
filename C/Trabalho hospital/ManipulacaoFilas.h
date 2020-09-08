@@ -1,6 +1,6 @@
 /**
-* @file   structs.h
-* @brief  TAD com assinaturas das funçoes de manipulação das filas.
+* @file   ManipulacaoFilas.h
+* @brief  Arquivo com assinaturas das funções de manipulação das filas.
 * @author <Erik Neves>
 * @date   2020-09-03
 */
@@ -14,8 +14,9 @@ Error InicializarStructTodasAsFilas(TodasAsFilas * filas,FilaPacientes * FilaVer
 Error Limpar_memoriaStructTodasAsFilas(TodasAsFilas * filas);
 // ASSINATURAS DAS FUNÇÕES DE IDENTIFICAÇÕES DE TODAS AS FILAS - FIM
 
+
 // ASSINATURAS DAS FUNÇÕES DE MANIPULAÇÃO DAS FILAS DE PACIENTES - INICIO
-void InicializarFilaPacientes(FilaPacientes * fila,unsigned int ID);
+Error InicializarFilaPacientes(FilaPacientes * fila,unsigned int ID);
 Error Insere_dadoFilaPacientes(FilaPacientes * fila,int ID,ListaMedico * listaMedicos);
 Paciente * Remove_dadoFilaPacientes(FilaPacientes * fila);
 Boolean Fila_vaziaPacientes(FilaPacientes * fila);

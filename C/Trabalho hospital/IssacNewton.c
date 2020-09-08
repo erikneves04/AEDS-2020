@@ -5,15 +5,19 @@
  * @date   2020-09-03
 */
 
+// INCLUSÃO DE BIBLIOTECAS - INICIO
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "constantes.h"
-#include "Variaveis&interacoes.h"
+
 #include "structs.h"
+#include "constantes.h"
 #include "ManipulacaoFilas.h"
 #include "ManipulacaoListas.h"
+#include "Variaveis&interacoes.h"
 #include "MakeBackup.h"
+// INCLUSÃO DE BIBLIOTECAS - FIM
+
 
 int main(int argc, char const *argv[]){
 
@@ -48,12 +52,14 @@ int main(int argc, char const *argv[]){
     InicializarFilaPacientes(FilaBranca,Branca);
     // INICIALIZAÇÃO DAS FILAS DE PACIENTES & MEDICOS- FIM
 
+
     printf("\t+------------------------------------+\n");
     printf("\t| BEM VINDO AO HOSPITAL ISSAC NEWTON |\n");
     printf("\t+------------------------------------+\n\n");
 
+    // EXECUÇÃO DO LOOP PARA TER ACESSO AOS MODULOS DO SOFTWARE - INICIO
     while(Escolha_do_usuario != Encerrar_loop){
-
+        // MENU DE FUNCIONALIDADE / ESCOLHA USUARIO - INICIO
         printf("+-----------------------------+\n");
         printf("| Funcionalidades do software |\n");
         printf("+-----------------------------+\n");
@@ -63,9 +69,17 @@ int main(int argc, char const *argv[]){
         printf("[03] Realizar atendimento.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
+        // MENU DE FUNCIONALIDADE / ESCOLHA USUARIO - FIM
 
+
+        // EXECUÇÃO DE ACORDO COM A ESCOLHA DO USUARIO - INICIO
         switch (Escolha_do_usuario){
             case 0:
+                /* EXECUÇÕES:
+                * Impressão dos dados de atendimentos
+                * Impressão mensagem de encerramento do software
+                * Chamada da função de criação do aquivo.txt com os dados dos atendimentos
+                */
                 Imprimir_listaAtendimentos(listaAtendimentos);
                 printf("\n            +-----------------------+\n");
                 printf("            | Encerrando o software |\n");
@@ -77,6 +91,10 @@ int main(int argc, char const *argv[]){
                 CriaTXTBackup(listaAtendimentos);
             break;
             case 1:
+                /* EXECUÇÕES:
+                * Recebe a fila de acordo com a inserção do usuario
+                * Chamada da funçãp para inserção do paciente
+                */
                 FilaIdentifier = GetUserFila(FilasDePacientes);
                 Insere_dadoFilaPacientes(FilaIdentifier,Get_TriagemIDDisponivel(),ListaMedicos);
             break;
@@ -84,18 +102,35 @@ int main(int argc, char const *argv[]){
                 Insere_dadolistaMedicos(ListaMedicos);
             break;
             case 3:
+                /* EXECUÇÕES:
+                * RECEBE A FILA PRIORITARIA
+                * Recebe a fila prioritaria
+                * Chamada da função para realizar atendimentos
+                * Chamada da função para atualização das pulseiras dos pacientes
+                * Chamada da função para verificar o fim de um plantão medico
+                */
                 FilaIdentifier = Get_FilaPrioritaria(FilasDePacientes);
                 Insere_dadolistaAtendimentos(listaAtendimentos,FilaIdentifier,ListaMedicos);
                 Update_FilaPaciente(FilasDePacientes,ListaMedicos);
                 Update_PlantaoMedico(ListaMedicos);
             break;
+            case 4:
+                Imprimir_listaMedicos(ListaMedicos);
+            break;
             default:
+                /* EXECUÇÕES:
+                * Impressão informando escolha invalida dentre as opções
+                */
                 printf("\n+--------------------------------------+\n");
                 printf("| Escolha invalida... Tente novamente! |\n");
                 printf("+--------------------------------------+\n\n");
             break;
         }
+        // EXECUÇÃO DE ACORDO COM A ESCOLHA DO USUARIO - FIM
     }
+    // EXECUÇÃO DO LOOP PARA TER ACESSO AOS MODULOS DO SOFTWARE - FIM
+
+
     // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - INICIO
     Limpar_listaMedicos(ListaMedicos);
     Limpar_listaAtendimentos(listaAtendimentos);

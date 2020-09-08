@@ -1,6 +1,6 @@
 /**
 * @file   constantes.h
-* @brief  Arquivo com a definição de constantes.
+* @brief  Arquivo com a definição de constantes do software.
 * @author <Erik Neves>
 * @date   2020-09-03
 */
@@ -37,7 +37,7 @@ typedef unsigned int Error;
 #define Branca               (01)
 #define Default              (00)
 
-// DEFINIÇÃO DO ESTADO DOS MEDICOS
+// DEFINIÇÃO DO ESTADO DO MEDICO
 #define Em_servico           (00)
 #define Fora_de_servico      (01)
 
