@@ -28,6 +28,7 @@ typedef unsigned int Error;
 #define Paciente_inexistente (03)
 #define Acao_cancelada       (04)
 #define Medico_inexistente   (05)
+#define Arquivo_corrompido   (06)
 
 // DEFINIÇÃO DAS PULSEIRAS
 #define Vermelha             (05)

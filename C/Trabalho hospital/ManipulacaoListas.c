@@ -347,10 +347,9 @@ Error Imprimir_listaAtendimentos(ListaAtendimentos * lista){
         }   
         printf("\n");
     }else{
-        printf("\n+---------------------------------------+\n");
-        printf("| Esta lista de atendimentos esta vazia |\n");
-        printf("+---------------------------------------+\n\n");
-
+        //printf("\n+---------------------------------------+\n");
+        //printf("| Esta lista de atendimentos esta vazia |\n");
+        //printf("+---------------------------------------+\n\n");
         return Erro_lista_vazia;
     }
 

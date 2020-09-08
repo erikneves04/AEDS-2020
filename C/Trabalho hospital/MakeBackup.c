@@ -1,18 +1,27 @@
 /*
  * @file   MakeBackup.c
- * @brief  Arquivo para a criação de backups das execuções do codigo
+ * @brief  Arquivo com a implementação da função para criação de 
+ *                 backups das execuções do codigo
  * @author <Erik Neves>
  * @date   2020-09-03
 */
 
+// INCLUSÃO DE BIBLIOTECAS - INICIO
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include "constantes.h"
 #include "structs.h"
+// INCLUSÃO DE BIBLIOTECAS - FIM
+
 
 Error CriaTXTBackup(ListaAtendimentos * listaAtendimentos){
+    /*
+    * Essa função é responsavel pela criação do backup em formato de 
+    *       texto dos atendimentos realizados no codigo.
+    *  @return Sucesso caso tudo ocorra certo
+    */
 
     struct tm * DataTimeH;
     time_t segundos;
@@ -33,16 +42,20 @@ Error CriaTXTBackup(ListaAtendimentos * listaAtendimentos){
     DadosTempo->Hora = DataTimeH->tm_hour;
     DadosTempo->Minutos = DataTimeH->tm_min;
 
+    if(listaAtendimentos->Numero_de_atendimentos == 0)return Erro_lista_vazia;
+
     (void)sprintf(NomeArquivo,"%.2d_%.2d - %.2d_%.2d_%.4d.txt",DadosTempo->Hora,DadosTempo->Minutos,DadosTempo->Dia,DadosTempo->Mes,DadosTempo->Ano);
 
     arquivo = fopen(NomeArquivo,"w+");
-    if(!arquivo)printf("error");
+    if(!arquivo)return Arquivo_corrompido;
+
     fprintf(arquivo,"+------------------------------------------------------------------------------------------------------------+\n");
     fprintf(arquivo,"|                   DADOS DA EXECUCAO DO SOFTWARE DO HOSPITAL ISSAC NEWTON %.2d:%.2d - %.2d/%.2d/%.4d                |\n",DadosTempo->Hora,DadosTempo->Minutos,DadosTempo->Dia,DadosTempo->Mes,DadosTempo->Ano);
     fprintf(arquivo,"+------------------------------------------------------------------------------------------------------------+\n");
     sprintf(StringAux,"|%-25s | %.9s | %-10s | %.7s | %.7s | %.7s | %-25s|\n","Nome paciente:","TriagemID"," Pulseira","Inicio ","Duracao","Chegada","Nome medico:");
     fprintf(arquivo,StringAux);
     fprintf(arquivo,"+------------------------------------------------------------------------------------------------------------+\n");
+    
     for(i=0;i<listaAtendimentos->Numero_de_atendimentos;i++){
         switch (atendimentos->Pulseira){
                 case 01:
@@ -70,6 +83,12 @@ Error CriaTXTBackup(ListaAtendimentos * listaAtendimentos){
     }
     fprintf(arquivo,"+------------------------------------------------------------------------------------------------------------+\n");
     fclose(arquivo);
+
+    printf("+-----------------------------------------------+\n");
+    printf("| Um backup dos dados desta execucao foi criado |\n");
+    printf("|  e pode ser acessado no diretorio '/Backups'  |\n");
+    printf("+-----------------------------------------------+\n\n");
+
     system("move *.txt Backups\\");
 
     return Sucesso;

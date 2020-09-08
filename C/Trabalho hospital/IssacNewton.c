@@ -84,10 +84,6 @@ int main(int argc, char const *argv[]){
                 printf("\n            +-----------------------+\n");
                 printf("            | Encerrando o software |\n");
                 printf("            +-----------------------+\n");
-                printf("+-----------------------------------------------+\n");
-                printf("| Um backup dos dados desta execucao foi criado |\n");
-                printf("|  e pode ser acessado no diretorio '/Backups'  |\n");
-                printf("+-----------------------------------------------+\n\n");
                 CriaTXTBackup(listaAtendimentos);
             break;
             case 1:
