@@ -134,6 +134,5 @@ int main(int argc, char const *argv[]){
     Limpar_FilaPacientes(FilaVerde);
     Limpar_FilaPacientes(FilaBranca);
     // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - FIM
-    //system("Pause");
     return Sucesso;
 }
