@@ -1,6 +1,6 @@
 /**
 * @file   constantes.h
-* @brief  Arquivo com a definição de constantes.
+* @brief  Arquivo com a definição de constantes e valores fixos do software.
 * @author <Erik Neves>
 * @date   2020-09-03
 */
@@ -28,6 +28,7 @@ typedef unsigned int Error;
 #define Paciente_inexistente (03)
 #define Acao_cancelada       (04)
 #define Medico_inexistente   (05)
+#define Arquivo_corrompido   (06)
 
 // DEFINIÇÃO DAS PULSEIRAS
 #define Vermelha             (05)
@@ -37,7 +38,7 @@ typedef unsigned int Error;
 #define Branca               (01)
 #define Default              (00)
 
-// DEFINIÇÃO DO ESTADO DOS MEDICOS
+// DEFINIÇÃO DO ESTADO DO MEDICO
 #define Em_servico           (00)
 #define Fora_de_servico      (01)
 

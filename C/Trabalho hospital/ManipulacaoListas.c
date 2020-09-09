@@ -1,27 +1,40 @@
 /*
  * @file   ManipulacaoFilas.c
- * @brief  Arquivo com funções de manipulação da lista ordenada.
+ * @brief  Arquivo com a implementação das funções de manipulação da listas.
  * @author <Erik Neves>
  * @date   2020-09-04
 */
 
+// INCLUSÃO DE BIBLIOTECAS - INICIO
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "constantes.h"
+
 #include "structs.h"
+#include "constantes.h"
 #include "ManipulacaoFilas.h"
 #include "Variaveis&interacoes.h"
+// INCLUSÃO DE BIBLIOTECAS - FIM
+
 
 // IMPLEMENTAÇÃO FUNÇÕES DE MANIPULAÇÃO DA LISTA DE MEDICOS - INICIO
-void InicializarlistaMedicos(ListaMedico * lista){
+Error InicializarlistaMedicos(ListaMedico * lista){
+    /*
+    * Função que inicializa uma lista de medicos.
+    * @return Sucesso caso ocorra tudo certo
+    */
     lista->Numero_de_medicos = 0;
+    lista->Maior_tempo_atual = 0;
     lista->Primeiro = NULL;
+    return Sucesso;
 }
 Error Insere_dadolistaMedicos(ListaMedico * lista){
+    /*
+    * Função que insere um medico na lista
+    * @return Sucesso caso ocorra tudo certo.
+    */
     Medico * Novo_medico = (Medico*)malloc(sizeof(Medico));
 
-    Novo_medico->EstaTrabalhando = Em_servico;
     Novo_medico->Tempo = 0;
     Novo_medico->HorarioEntrada = Get_HorarioAtual(lista);
     Get_InformacoesMedico(Novo_medico);
@@ -38,18 +51,22 @@ Error Insere_dadolistaMedicos(ListaMedico * lista){
     return Sucesso;
 }
 Error Remove_dadolistaMedicos(ListaMedico * lista){
+    /*
+    * Função que remove da lista um medico selecionado pelo usuário.
+    *                 (INTEÇÃO COM O USUÁRIO)
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int i;
-    char * Cancelar = "exit";
-    char MedicoAlvo[] = "HOSPITAL ISSAC NEWTON AEDS 2020";
+    Boolean MedicoEncontrado = false;
+    char * MedicoAlvo ;
     Medico * medicos = lista->Primeiro;
-    Get_MedicoAlvo(lista,MedicoAlvo);
+    MedicoEncontrado = Get_MedicoAlvo(lista,MedicoAlvo);
 
-    if(strcmp(MedicoAlvo,Cancelar) == 0){
+    if(MedicoEncontrado == false){
         return Acao_cancelada;
     }else{
         for(i=0;i<lista->Numero_de_medicos;i++){
             if(strcmp(MedicoAlvo,strlwr(medicos->NomeMedico)) == 0){
-                medicos->EstaTrabalhando = Fora_de_servico;
                 break;
             }
             medicos = medicos->Proximo;
@@ -66,16 +83,19 @@ Error Remove_dadolistaMedicos(ListaMedico * lista){
         }
         free(medicos);
     }
-    
     return Sucesso;
 }
 static Error Remove_dadolistaMedicosstatic(ListaMedico * lista,char * MedicoAlvo){
+    /*
+    * Função que remove da lista um medico indicado pelo @param.
+    *              (SEM INTEÇÃO COM O USUÁRIO)
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int i;
     Medico * medicos = lista->Primeiro;
     
     for(i=0;i<lista->Numero_de_medicos;i++){
         if(strcmp(MedicoAlvo,medicos->NomeMedico) == 0){
-            medicos->EstaTrabalhando = Fora_de_servico;
             break;
         }
         medicos = medicos->Proximo;
@@ -93,16 +113,25 @@ static Error Remove_dadolistaMedicosstatic(ListaMedico * lista,char * MedicoAlvo
     return Sucesso;
 }
 Boolean Lista_vaziaMedicos(ListaMedico * lista){
+    /*
+    * Função que indica se a lista de medicos está vazia ou não.
+    * @return Boolean(true or false) 
+    */
     return (lista->Numero_de_medicos == 0 && lista->Primeiro == NULL) ? true : false;
 }
 Error Imprimir_listaMedicos(ListaMedico * lista){
+    /*
+    * Função resposavel por imprimir a lista de medicos.
+    * (POR PADRÃO ESTA FUNÇÃO NÃO ESTA DISPONÍVEL PARA O USUÁRIO)
+    * @return Sucesso caso ocorra tudo certo
+    */
     int i;
     Medico * medicos = lista->Primeiro;
 
     if(Lista_vaziaMedicos(lista) == false){
-        printf("\n  +-----------------------------------------+\n");
-        printf("  | Imprimindo os dados da lista de medicos |\n");
-        printf("  +-----------------------------------------+\n\n");
+        printf("\n  +----------------------------------+\n");
+        printf("  | Imprimindo os medicos em plantao |\n");
+        printf("  +----------------------------------+\n\n");
 
         printf("Nome do medico           Tempo    Entrada    Saida\n");
         for(i=0;i<lista->Numero_de_medicos;i++){
@@ -111,9 +140,9 @@ Error Imprimir_listaMedicos(ListaMedico * lista){
         }   
         printf("\n");
     }else{
-        printf("\n+----------------------------------+\n");
-        printf("| Esta lista de medicos esta vazia |\n");
-        printf("+----------------------------------+\n\n");
+        printf("\n+---------------------------------------------+\n");
+        printf("| Nao ha nenhuma medico em plantao no momento |\n");
+        printf("+---------------------------------------------+\n\n");
 
         return Erro_lista_vazia;
     }
@@ -121,6 +150,10 @@ Error Imprimir_listaMedicos(ListaMedico * lista){
     return Sucesso;
 }
 Error Limpar_listaMedicos(ListaMedico * lista){
+    /*
+   * Função responsavel por fazer a limpeza total da lista de medicos.
+   * @return Sucesso caso ocorra tudo certo
+   */
     Medico * medicos = lista->Primeiro;
     Medico * proximo_medicoAUX;
     int i;
@@ -136,6 +169,11 @@ Error Limpar_listaMedicos(ListaMedico * lista){
     return Sucesso;
 }
 Error Update_TempoMedico(ListaMedico * lista,char * Nome_medico,int TempoUltimoAtendimento){
+    /*
+    * Função com o objetivo de atualizar o tempo atual do medico informado
+    *       pelo @param após um atendimento ter sido realizado
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int i;
     Medico * medicos = lista->Primeiro;
     Boolean MedicoEncontrado = false;
@@ -150,9 +188,14 @@ Error Update_TempoMedico(ListaMedico * lista,char * Nome_medico,int TempoUltimoA
     return (MedicoEncontrado == true) ? true : false;
 }
 Error Update_PlantaoMedico(ListaMedico * lista){
+    /*
+    * Função com o objetivo de encerrar o plantão dos medicos
+    *        que ja atingiram o horário de saída.
+    *       (RETIRA SOMENTE UM MEDICO POR VEZ)
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int i,j;
     Medico * medicos = lista->Primeiro;
-    Boolean VarreduraCompleta = false;
 
     for(i=0;i<lista->Numero_de_medicos;i++){
         if(medicos->Proximo != NULL) medicos = medicos->Proximo;
@@ -161,9 +204,7 @@ Error Update_PlantaoMedico(ListaMedico * lista){
     for(i=0;i<lista->Numero_de_medicos;i++){
         if(medicos->HorarioSaida <= Get_HorarioAtual(lista)){
             Remove_dadolistaMedicosstatic(lista,medicos->NomeMedico);
-            VarreduraCompleta = false;
-        }else{
-            VarreduraCompleta = true;
+            break;
         }
         if(medicos->anterior != NULL) medicos = medicos->anterior;
     }
@@ -173,11 +214,20 @@ Error Update_PlantaoMedico(ListaMedico * lista){
 
 
 // IMPLEMETAÇÃO FUNÇÕES DE MANIPULAÇÃO DA LISTA DE ATENDIMENTOS - INICIO
-void InicializarlistaAtendimentos(ListaAtendimentos * lista){
+Error InicializarlistaAtendimentos(ListaAtendimentos * lista){
+    /*
+    * Função que inicializa uma lista de atendimentos.
+    * @return Sucesso caso ocorra tudo certo
+    */
     lista->Numero_de_atendimentos = 0;
     lista->Primeiro = NULL;
+    return Sucesso;
 }
 Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaPacientes * fila,ListaMedico * ListaMedicos){
+    /*
+    * Função que insere um atendimento na lista
+    * @return Sucesso caso ocorra tudo certo.
+    */
     Atendimento * Atendimentos = lista_atendimentos->Primeiro;
     Atendimento * Novo_atendimento = (Atendimento*)malloc(sizeof(Atendimento));
     Paciente * paciente;
@@ -185,7 +235,16 @@ Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaP
     Boolean LocalToAddEncontrado = false;
     int i;
 
-    if(fila == NULL) return Erro_lista_vazia;
+    if(fila == NULL) {
+        PrintErrorFilasVazias();
+        free(Novo_atendimento);
+        return Erro_fila_vazia;
+    }
+    if(ListaMedicos->Primeiro == NULL){
+        PrintErrorListaMedicosVazia();
+        free(Novo_atendimento);
+        return Erro_lista_vazia;
+    }
     paciente = fila->Primeiro;
     
     strcpy(Novo_atendimento->Paciente,paciente->NomePaciente);
@@ -193,24 +252,21 @@ Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaP
     Novo_atendimento->ChegadaAoHospital = paciente->HorarioChegada;
     Novo_atendimento->Pulseira = fila->PulseiraID;
     Novo_atendimento->InicioAtendimento = Get_HorarioAtual(ListaMedicos);
-    Get_InformacoesAtendimento(Novo_atendimento,ListaMedicos);
-    MedicoEncontrado = Update_TempoMedico(ListaMedicos,Novo_atendimento->Medico,Novo_atendimento->DuracaoAtendimento);
-
-    if(MedicoEncontrado == false){
+    MedicoEncontrado = Get_InformacoesAtendimento(Novo_atendimento,ListaMedicos);
+    if(MedicoEncontrado == Medico_inexistente){
+        free(Novo_atendimento);
         PrintErrorMedicoInvalido();
         return Medico_inexistente;
     }
-    printf("01\n");
+    Update_TempoMedico(ListaMedicos,Novo_atendimento->Medico,Novo_atendimento->DuracaoAtendimento);
     // Inserir ordenado com base no tempo do inicio do atendimento
     if(lista_atendimentos->Numero_de_atendimentos == 0){
-        printf("01\n");
         Novo_atendimento->Proximo == NULL;
         Novo_atendimento->Anterior == NULL;
         lista_atendimentos->Primeiro = Novo_atendimento;
         lista_atendimentos->Ultimo = Novo_atendimento;
         LocalToAddEncontrado = true;
     }else{
-        printf("01\n");
         for(i=0;i<lista_atendimentos->Numero_de_atendimentos;i++){
             if((Atendimentos->InicioAtendimento) > (Novo_atendimento->InicioAtendimento)){
                 LocalToAddEncontrado = true;
@@ -242,13 +298,24 @@ Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaP
     
     lista_atendimentos->Ultimo = Novo_atendimento;
     lista_atendimentos->Numero_de_atendimentos++;
+
     Limpar_memoriaPaciente(Remove_dadoFilaPacientes(fila));
+    
     return Sucesso;
 }
 Boolean Lista_vaziaAtendimentos(ListaAtendimentos * lista){
+    /*
+    * Função que indica se a lista de atendimentos esta vazia ou não.
+    * @return Boolean(true or false) 
+    */
     return (lista->Numero_de_atendimentos == 0 && lista->Primeiro == NULL) ? true : false;
 }
 Error Imprimir_listaAtendimentos(ListaAtendimentos * lista){
+    /*
+    * Função resposavel por imprimir a lista de atendimentos.
+    * (POR PADRÃO ESTA FUNÇÃO SO SERÁ EXECUTADA AO ENCERRAR O SOFTWARE)
+    * @return Sucesso caso ocorra tudo certo
+    */
     int i;
     char StringPulseira[10];
     Atendimento * Atendimentos_aux = lista->Primeiro;
@@ -288,16 +355,19 @@ Error Imprimir_listaAtendimentos(ListaAtendimentos * lista){
         }   
         printf("\n");
     }else{
-        printf("\n+---------------------------------------+\n");
-        printf("| Esta lista de atendimentos esta vazia |\n");
-        printf("+---------------------------------------+\n\n");
-
+        //printf("\n+---------------------------------------+\n");
+        //printf("| Esta lista de atendimentos esta vazia |\n");
+        //printf("+---------------------------------------+\n\n");
         return Erro_lista_vazia;
     }
 
     return Sucesso;
 }
 Error Limpar_listaAtendimentos(ListaAtendimentos * lista){
+    /*
+    * Função responsavel por fazer a limpeza total da lista de atendimentos.
+    * @return Sucesso caso ocorra tudo certo
+    */
     Atendimento * atendimentos = lista->Primeiro;
     Atendimento * proximoAtendimentoAUX;
     int i;

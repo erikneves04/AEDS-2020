@@ -1,6 +1,6 @@
 /**
 * @file   structs.h
-* @brief  TAD com estruturas do programa & identificação de variaveis.
+* @brief  Arquibo com estruturas do software.
 * @author <Erik Neves>
 * @date   2020-09-03
 */
@@ -48,7 +48,6 @@ typedef struct Allpaciente_S {
 // ESTRUTURA FILA DE MEDICOS
 typedef struct medico_s {
     char NomeMedico[Tamanho_MAX_nome];
-    int EstaTrabalhando;
     int HorarioEntrada;
     int HorarioSaida;
     int Tempo;
@@ -57,6 +56,7 @@ typedef struct medico_s {
 }Medico;
 typedef struct fila_medicos {
     unsigned int Numero_de_medicos;
+    unsigned int Maior_tempo_atual;
     Medico * Primeiro;
 }ListaMedico;
 
