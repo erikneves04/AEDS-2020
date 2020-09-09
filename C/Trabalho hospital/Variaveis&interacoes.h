@@ -10,13 +10,13 @@
 #ifndef __Interact_h__
 #define __Interact_h__
 
-// IMPLEMENTAÇÃO FUNÇÕES QUE RETORNAM VARIAVEIS DE CONTROLE - INICIO
+// ASSINATURAS DAS FUNÇÕES QUE RETORNAM VARIAVEIS DE CONTROLE - INICIO
 int Get_TriagemIDDisponivel();
 int Get_HorarioAtual(ListaMedico * fila);
-// IMPLEMENTAÇÃO FUNÇÕES QUE RETORNAM VARIAVEIS DE CONTROLE - FIM
+// ASSINATURAS DAS FUNÇÕES QUE RETORNAM VARIAVEIS DE CONTROLE - FIM
 
 
-// IMPLEMENTAÇÃO FUNÇÕES QUE INTERAGEM COM O USUARIO - INICIO
+// ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - INICIO
 FilaPacientes * GetUserFila(TodasAsFilas * filas);
 Error Get_InformacoesMedico(Medico * Novo_medico);
 Error Get_InformacoesPaciente(Paciente * Novo_paciente);
@@ -26,6 +26,6 @@ Error PrintErrorMedicoInvalido();
 Error PrintErrorFilasVazias();
 Error PrintErrorListaMedicosVazia();
 FilaPacientes * Get_FilaPrioritaria(TodasAsFilas * Filas);
-// IMPLEMENTAÇÃO FUNÇÕES QUE INTERAGEM COM O USUARIO - FIM
+// ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - FIM
 
 #endif /* Interact_h */

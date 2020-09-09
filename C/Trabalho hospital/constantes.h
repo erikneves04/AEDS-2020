@@ -1,6 +1,6 @@
 /**
 * @file   constantes.h
-* @brief  Arquivo com a definição de constantes do software.
+* @brief  Arquivo com a definição de constantes e valores fixos do software.
 * @author <Erik Neves>
 * @date   2020-09-03
 */

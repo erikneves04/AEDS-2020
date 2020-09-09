@@ -27,22 +27,24 @@ int Get_TriagemIDDisponivel(){
     static int ID = 0;
     return ID++;
 }
-int Get_HorarioAtual(ListaMedico * fila){
+int Get_HorarioAtual(ListaMedico * lista){
     /* 
     * Função responsavel por calcular o horario atual.
-    * (CALCULADO COM BASE NO MAIOR TEMPO ENTRE OS MEDICOS) 
+    * (CALCULADO COM BASE NO MAIOR TEMPO REGISTRADO ENTRE OS MEDICOS) 
     * @return (int) ID 
     */
     int Tempo = 0;
     int i;
-    Medico * Medicos = fila->Primeiro;
+    Medico * Medicos = lista->Primeiro;
 
-    for(i=0;i<fila->Numero_de_medicos;i++){
+    for(i=0;i<lista->Numero_de_medicos;i++){
         if(Tempo < Medicos->Tempo){
             Tempo = Medicos->Tempo;
         }
         Medicos = Medicos->Proximo;
     }
+    if(lista->Maior_tempo_atual > Tempo) Tempo = lista->Maior_tempo_atual;
+    if(lista->Maior_tempo_atual < Tempo) lista->Maior_tempo_atual = Tempo;
     
     return Tempo;
 }

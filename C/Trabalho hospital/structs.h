@@ -56,6 +56,7 @@ typedef struct medico_s {
 }Medico;
 typedef struct fila_medicos {
     unsigned int Numero_de_medicos;
+    unsigned int Maior_tempo_atual;
     Medico * Primeiro;
 }ListaMedico;
 

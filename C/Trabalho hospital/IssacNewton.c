@@ -53,9 +53,12 @@ int main(int argc, char const *argv[]){
     // INICIALIZAÇÃO DAS FILAS DE PACIENTES & MEDICOS- FIM
 
 
+    // IMPRESSÃO DE MENSAGEM DE BEM VINDO - INCIO
     printf("\t+------------------------------------+\n");
     printf("\t| BEM VINDO AO HOSPITAL ISSAC NEWTON |\n");
     printf("\t+------------------------------------+\n\n");
+    // IMPRESSÃO DE MENSAGEM DE BEM VINDO - FIM
+
 
     // EXECUÇÃO DO LOOP PARA TER ACESSO AOS MODULOS DO SOFTWARE - INICIO
     while(Escolha_do_usuario != Encerrar_loop){
@@ -89,12 +92,15 @@ int main(int argc, char const *argv[]){
             case 1:
                 /* EXECUÇÕES:
                 * Recebe a fila de acordo com a inserção do usuario
-                * Chamada da funçãp para inserção do paciente
+                * Chamada da função para inserção do paciente
                 */
                 FilaIdentifier = GetUserFila(FilasDePacientes);
                 Insere_dadoFilaPacientes(FilaIdentifier,Get_TriagemIDDisponivel(),ListaMedicos);
             break;
             case 2:
+                /* EXECUÇÕES:
+                * Chamada da função para inserção do medico
+                */
                 Insere_dadolistaMedicos(ListaMedicos);
             break;
             case 3:
@@ -134,5 +140,9 @@ int main(int argc, char const *argv[]){
     Limpar_FilaPacientes(FilaVerde);
     Limpar_FilaPacientes(FilaBranca);
     // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - FIM
+    
+
+    // FINALIZAÇÃO COM EXITO DO SOFTWARE - INICIO
     return Sucesso;
+    // FINALIZAÇÃO COM EXITO DO SOFTWARE - FIM
 }

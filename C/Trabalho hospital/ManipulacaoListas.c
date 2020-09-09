@@ -24,6 +24,7 @@ Error InicializarlistaMedicos(ListaMedico * lista){
     * @return Sucesso caso ocorra tudo certo
     */
     lista->Numero_de_medicos = 0;
+    lista->Maior_tempo_atual = 0;
     lista->Primeiro = NULL;
     return Sucesso;
 }
@@ -236,10 +237,12 @@ Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaP
 
     if(fila == NULL) {
         PrintErrorFilasVazias();
+        free(Novo_atendimento);
         return Erro_fila_vazia;
     }
     if(ListaMedicos->Primeiro == NULL){
         PrintErrorListaMedicosVazia();
+        free(Novo_atendimento);
         return Erro_lista_vazia;
     }
     paciente = fila->Primeiro;
