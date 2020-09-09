@@ -1,6 +1,6 @@
 /*
  * @file   IssacNewton.c
- * @brief  Arquivo da união dos modulos de controle do hospital Issac Newton
+ * @brief  Arquivo da união dos modulos de controle do hospital Issac Newton.
  * @author <Erik Neves>
  * @date   2020-09-03
 */
@@ -99,7 +99,6 @@ int main(int argc, char const *argv[]){
             break;
             case 3:
                 /* EXECUÇÕES:
-                * RECEBE A FILA PRIORITARIA
                 * Recebe a fila prioritaria
                 * Chamada da função para realizar atendimentos
                 * Chamada da função para atualização das pulseiras dos pacientes
@@ -109,9 +108,6 @@ int main(int argc, char const *argv[]){
                 Insere_dadolistaAtendimentos(listaAtendimentos,FilaIdentifier,ListaMedicos);
                 Update_FilaPaciente(FilasDePacientes,ListaMedicos);
                 Update_PlantaoMedico(ListaMedicos);
-            break;
-            case 4:
-                Imprimir_listaMedicos(ListaMedicos);
             break;
             default:
                 /* EXECUÇÕES:
@@ -138,5 +134,6 @@ int main(int argc, char const *argv[]){
     Limpar_FilaPacientes(FilaVerde);
     Limpar_FilaPacientes(FilaBranca);
     // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - FIM
+    //system("Pause");
     return Sucesso;
 }

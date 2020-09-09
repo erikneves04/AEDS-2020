@@ -59,7 +59,7 @@ Error Get_InformacoesPaciente(Paciente * Novo_paciente){
     setbuf(stdin,NULL);
     scanf("%[^\n]s",Novo_paciente->NomePaciente);
     setbuf(stdin,NULL);
-
+    strlwr(Novo_paciente->NomePaciente);
     printf("\n");
     return Sucesso;
 }
@@ -78,14 +78,14 @@ FilaPacientes * GetUserFila(TodasAsFilas * filas){
     while(FilaEncontrada == false){
         FilaEncontrada = true;
 
-        printf("+-------------+\n");
-        printf("|   OPCOES:   |\n");
-        printf("|- Vermelha   |\n");
-        printf("|- Laranja    |\n");
-        printf("|- Amarela    |\n");
-        printf("|- Verde      |\n");
-        printf("|- Branca     |\n");
-        printf("+-------------+\n");
+        printf("   +------------+\n");
+        printf("   |   OPCOES:  |\n");
+        printf("   |- Vermelha  |\n");
+        printf("   |- Laranja   |\n");
+        printf("   |- Amarela   |\n");
+        printf("   |- Verde     |\n");
+        printf("   |- Branca    |\n");
+        printf("   +------------+\n");
         printf("Escolha: ");
         setbuf(stdin,NULL);
         scanf("%[^\n]s", StringFila);
@@ -121,6 +121,7 @@ Error Get_InformacoesMedico(Medico * Novo_medico){
     setbuf(stdin,NULL);
     scanf("%[^\n]s", Novo_medico->NomeMedico);
     setbuf(stdin,NULL);
+    strlwr(Novo_medico->NomeMedico);
     printf("Digite o horario de saida do medico(Entrada: %.3d): ",Novo_medico->HorarioEntrada);
     scanf("%d", &Novo_medico->HorarioSaida);
     printf("OBS.: Por questoes de seguranca somente um medico pode deixar o plantao por vez.\n\n");
@@ -130,12 +131,13 @@ Error Get_InformacoesMedico(Medico * Novo_medico){
 Error Get_MedicoAlvo(ListaMedico * lista, char StringUser[]){
     /*
     * Função que interage com o usuario para receber o nome do medico alvo.
-    * @return Sucesso caso ocorra tudo certo.
+    * @return Boolean(true or false).
     */
     Boolean MedicoEncontrado = false;
+    Boolean Cancelar = false;
     Medico * medicos = lista->Primeiro;
     int i;
-    char NomeAux[] = "HOSPITAL ISSAC NEWTON AEDS 2020";
+    char NomeAux[Tamanho_MAX_nome];
 
     printf("\n+---------------------------------------------------+\n");
     printf("| Digite o nome do medico para encerrar seu plantao |\n");
@@ -148,7 +150,7 @@ Error Get_MedicoAlvo(ListaMedico * lista, char StringUser[]){
     printf("+----------------------------+\n\n");
     medicos = lista->Primeiro;
 
-    while(MedicoEncontrado == false){
+    while(MedicoEncontrado == false && Cancelar == false){
         printf("Nome do medico: ");
         setbuf(stdin,NULL);
         scanf("%[^\n]s", NomeAux);
@@ -156,7 +158,7 @@ Error Get_MedicoAlvo(ListaMedico * lista, char StringUser[]){
         strlwr(NomeAux);
 
         if(strcmp(NomeAux,"exit") == 0){
-            MedicoEncontrado = true;
+            Cancelar = true;
         }
 
         for(i=0;i<lista->Numero_de_medicos;i++){
@@ -167,20 +169,27 @@ Error Get_MedicoAlvo(ListaMedico * lista, char StringUser[]){
             }
             medicos = medicos->Proximo;
         }
-        printf("\n");
+        if(MedicoEncontrado == false && Cancelar != true){
+            printf("Informacao nao encontrada.Tende novamente!\n\n");
+        }else{
+            printf("\n");
+        }
     }
-    return Sucesso;
+    return (Cancelar == true) ? false : true;
 }
 Error Get_InformacoesAtendimento(Atendimento * Novo_atendimento,ListaMedico * ListaMedicos){
     /*
     * Função que interage com o usuario para receber 
     *       os dados de um atendimentos.
-    * @return Sucesso caso ocorra tudo certo.
+    * @return Sucesso or Medico_inexistente.
     */
     Novo_atendimento->DuracaoAtendimento;
     Novo_atendimento->Medico;
     char StringPulseira[10];
     Boolean SeeMedicos = false;
+    Boolean MedicoEncontrado = false;
+    Medico * medicos = ListaMedicos->Primeiro;
+    int i;
 
     switch (Novo_atendimento->Pulseira){
         case 00:
@@ -225,8 +234,14 @@ Error Get_InformacoesAtendimento(Atendimento * Novo_atendimento,ListaMedico * Li
     scanf("%[^\n]s", Novo_atendimento->Medico);
     setbuf(stdin,NULL);
     printf("\n");
-    
-    return Sucesso;
+    strlwr(Novo_atendimento->Medico);
+    for(i=0;i<ListaMedicos->Numero_de_medicos;i++){
+        if(strcmp(Novo_atendimento->Medico,medicos->NomeMedico) == 0){
+            MedicoEncontrado = true;
+        }
+        medicos = medicos->Proximo;
+    }
+    return (MedicoEncontrado == true) ? Sucesso : Medico_inexistente;
 }
 Error PrintErrorMedicoInvalido(){
     /*
@@ -249,6 +264,17 @@ Error PrintErrorFilasVazias(){
     printf("\n+--------------------------------------------------+\n");
     printf("| Nenhum paciente esta aguardando por atendimento. |\n");
     printf("+--------------------------------------------------+\n\n");
+
+    return Sucesso;
+}
+Error PrintErrorListaMedicosVazia(){
+    /*
+    * Função que imprime pro usuario quando é interrompido um atendimento.
+    * @return Sucesso caso ocorra tudo certo.
+    */
+    printf("\n+-------------------------------------+\n");
+    printf("| Nenhum medico em plantao no momento |\n");
+    printf("+-------------------------------------+\n\n");
 
     return Sucesso;
 }

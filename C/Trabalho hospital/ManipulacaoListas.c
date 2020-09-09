@@ -56,12 +56,12 @@ Error Remove_dadolistaMedicos(ListaMedico * lista){
     * @return Sucesso caso ocorra tudo certo.
     */
     int i;
-    char * Cancelar = "exit";
-    char MedicoAlvo[] = "HOSPITAL ISSAC NEWTON AEDS 2020";
+    Boolean MedicoEncontrado = false;
+    char * MedicoAlvo ;
     Medico * medicos = lista->Primeiro;
-    Get_MedicoAlvo(lista,MedicoAlvo);
+    MedicoEncontrado = Get_MedicoAlvo(lista,MedicoAlvo);
 
-    if(strcmp(MedicoAlvo,Cancelar) == 0){
+    if(MedicoEncontrado == false){
         return Acao_cancelada;
     }else{
         for(i=0;i<lista->Numero_de_medicos;i++){
@@ -82,7 +82,6 @@ Error Remove_dadolistaMedicos(ListaMedico * lista){
         }
         free(medicos);
     }
-    
     return Sucesso;
 }
 static Error Remove_dadolistaMedicosstatic(ListaMedico * lista,char * MedicoAlvo){
@@ -237,6 +236,10 @@ Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaP
 
     if(fila == NULL) {
         PrintErrorFilasVazias();
+        return Erro_fila_vazia;
+    }
+    if(ListaMedicos->Primeiro == NULL){
+        PrintErrorListaMedicosVazia();
         return Erro_lista_vazia;
     }
     paciente = fila->Primeiro;
@@ -246,13 +249,13 @@ Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaP
     Novo_atendimento->ChegadaAoHospital = paciente->HorarioChegada;
     Novo_atendimento->Pulseira = fila->PulseiraID;
     Novo_atendimento->InicioAtendimento = Get_HorarioAtual(ListaMedicos);
-    Get_InformacoesAtendimento(Novo_atendimento,ListaMedicos);
-    MedicoEncontrado = Update_TempoMedico(ListaMedicos,Novo_atendimento->Medico,Novo_atendimento->DuracaoAtendimento);
-
-    if(MedicoEncontrado == false){
+    MedicoEncontrado = Get_InformacoesAtendimento(Novo_atendimento,ListaMedicos);
+    if(MedicoEncontrado == Medico_inexistente){
+        free(Novo_atendimento);
         PrintErrorMedicoInvalido();
         return Medico_inexistente;
     }
+    Update_TempoMedico(ListaMedicos,Novo_atendimento->Medico,Novo_atendimento->DuracaoAtendimento);
     // Inserir ordenado com base no tempo do inicio do atendimento
     if(lista_atendimentos->Numero_de_atendimentos == 0){
         Novo_atendimento->Proximo == NULL;
@@ -292,7 +295,9 @@ Error Insere_dadolistaAtendimentos(ListaAtendimentos * lista_atendimentos, FilaP
     
     lista_atendimentos->Ultimo = Novo_atendimento;
     lista_atendimentos->Numero_de_atendimentos++;
+
     Limpar_memoriaPaciente(Remove_dadoFilaPacientes(fila));
+    
     return Sucesso;
 }
 Boolean Lista_vaziaAtendimentos(ListaAtendimentos * lista){

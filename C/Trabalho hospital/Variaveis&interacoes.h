@@ -24,6 +24,7 @@ Error Get_MedicoAlvo(ListaMedico * lista, char * Nome);
 Error Get_InformacoesAtendimento(Atendimento * Novo_atendimento,ListaMedico * ListaMedicos);
 Error PrintErrorMedicoInvalido();
 Error PrintErrorFilasVazias();
+Error PrintErrorListaMedicosVazia();
 FilaPacientes * Get_FilaPrioritaria(TodasAsFilas * Filas);
 // IMPLEMENTAÇÃO FUNÇÕES QUE INTERAGEM COM O USUARIO - FIM
 
