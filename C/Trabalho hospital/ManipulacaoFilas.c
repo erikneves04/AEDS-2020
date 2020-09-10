@@ -241,7 +241,7 @@ Error Update_FilaPaciente(TodasAsFilas * Filas,ListaMedico * ListaMedicos){
         if((Get_HorarioAtual(ListaMedicos) - Pacientes->HorarioChegada) >= (60 * Pacientes->NumUpgrades)){
             PacienteParaUpgrade = Remove_dadoFilaPacientes(Filas->FilaVerde);
             PacienteParaUpgrade->NumUpgrades++;
-            PacienteParaUpgrade->Pulseira = Verde;
+            PacienteParaUpgrade->Pulseira = Amarela;
             Insere_dadoFilaPacientesStatic(Filas->FilaAmarela,PacienteParaUpgrade);
         }
     }
@@ -251,7 +251,7 @@ Error Update_FilaPaciente(TodasAsFilas * Filas,ListaMedico * ListaMedicos){
         if((Get_HorarioAtual(ListaMedicos) - Pacientes->HorarioChegada) > (60 * Pacientes->NumUpgrades)){
             PacienteParaUpgrade = Remove_dadoFilaPacientes(Filas->FilaAmarela);  
             PacienteParaUpgrade->NumUpgrades++;      
-            PacienteParaUpgrade->Pulseira = Amarela;
+            PacienteParaUpgrade->Pulseira = Laranja;
             Insere_dadoFilaPacientesStatic(Filas->FilaLaranja,PacienteParaUpgrade);
         }
     }
@@ -261,7 +261,7 @@ Error Update_FilaPaciente(TodasAsFilas * Filas,ListaMedico * ListaMedicos){
         if((Get_HorarioAtual(ListaMedicos) - Pacientes->HorarioChegada) > (60 * Pacientes->NumUpgrades)){
             PacienteParaUpgrade = Remove_dadoFilaPacientes(Filas->FilaLaranja);
             PacienteParaUpgrade->NumUpgrades++;
-            PacienteParaUpgrade->Pulseira = Laranja;
+            PacienteParaUpgrade->Pulseira = Vermelha;
             Insere_dadoFilaPacientesStatic(Filas->FilaVermelha,PacienteParaUpgrade);
         }
     }
