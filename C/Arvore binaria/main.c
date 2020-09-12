@@ -31,6 +31,7 @@ static DataType UserIteract(void){
 int main(void){
 
     int Escolha_do_usuario=Variavel_de_inicio;
+    Arvore * arvore;
 
     while(Escolha_do_usuario!=Encerrar_loop){
 
@@ -51,6 +52,8 @@ int main(void){
                 printf("+---------------+\n\n");
             break;
             case 1:
+                Criar_Arvore(arvore,100,NULL,NULL);
+                Imprimir_Arvore(arvore);
             break;
             break;
             default:
