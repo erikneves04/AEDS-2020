@@ -1,3 +1,6 @@
+C/Arvore binaria/a.exe
+C/Grafo/a.exe
+
 C/Listas/Encadeada/a.exe 
 C/Listas/Encadeada/.vscode
 
@@ -39,3 +42,7 @@ Java/Fila/Item_fila.class
 Java/Pilha/PilhaMain.class
 Java/Pilha/Pilha.class
 Java/Pilha/Item_pilha.class
+
+Java/Arvore Binaria/Main_arvoreBinaria.class
+Java/Arvore Binaria/Arvore.class
+Java/Arvore Binaria/Item_arvore.class
