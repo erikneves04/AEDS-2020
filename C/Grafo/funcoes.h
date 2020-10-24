@@ -9,6 +9,11 @@
 #ifndef __funcoes_h__
 #define __funcoes_h__
 
+DataType UserIteract(void);
+Lista_arestras * IndexArestras(Grafo * grafo);
+Vertice * GetVerticeAlvo(Grafo * grafo);
+
+int CalculaGrauVertice(Vertice * vertice);
 Error InicializarGrafo(Grafo * grafo);
 Error InserirItem(Grafo * grafo);
 Error RedefinirListaArestras(Grafo * grafo);

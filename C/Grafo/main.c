@@ -17,6 +17,8 @@ int main(void){
     Grafo * grafo = (Grafo*)malloc(sizeof(Grafo));
     int Escolha_do_usuario=Variavel_de_inicio;
 
+    int GrauAux;
+
     InicializarGrafo(grafo);
 
     while(Escolha_do_usuario!=Encerrar_loop){
@@ -30,7 +32,7 @@ int main(void){
         printf("[3] Imprimir os dados dos vertices.\n");
         printf("[4] Imprimir as arestras de um vertice.\n");
         printf("[5] Remover vertice.\n");
-        printf("[6] .\n");
+        printf("[6] Grau de um vertice.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         printf("\n");
@@ -43,7 +45,7 @@ int main(void){
             case 1:
                 printf("Caso prefira sera possivel anexar as anexas posteriormente.\n");
                 printf("Para tal indique o numero de arestas como zero e depois\nutilize a opcao 2.\n");
-                InserirItem(grafo);
+                InserirItem(grafo,IndexArestras(grafo),UserIteract());
             break;
             case 2:
                 RedefinirListaArestras(grafo);
@@ -56,6 +58,10 @@ int main(void){
             break;
             case 5:
                 RemoverItem(grafo);
+            break;
+            case 6:
+                GrauAux = CalculaGrauVertice(GetVerticeAlvo(grafo));
+                printf("\nO vertice escolhido possui um grau de : %.2d\n\n",GrauAux);
             break;
             default:
                 printf(" Invalido. \n\n");
