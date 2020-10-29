@@ -27,10 +27,12 @@ typedef double DataType; // Nao utlize strings <Estou resolvendo esse bug>
 typedef struct arestra {
     struct vertice * vertice;
     struct arestra * proximo;
+    struct arestra * anterior;
 }Arestra;
 typedef struct listaArestra {
-    int NumeroDeArestras;
+    int NumeroDeArestras; 
     Arestra * primeira;
+    Arestra * ultima;
 }Lista_arestras;
 
 typedef struct vertice {
@@ -38,6 +40,7 @@ typedef struct vertice {
     Lista_arestras * arestras;
     DataType VerticeValor;
     struct vertice * proximo;
+    unsigned int auxiliar;
 }Vertice;
 typedef struct grafo {
     int NumeroDeVertices;

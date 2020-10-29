@@ -30,12 +30,13 @@ Lista_arestras * IndexArestras(Grafo * grafo){
     int NumArestras = 0;
     int i,j;
     int IDAux;
-
+    static int ident = 0;
     Inicializar_listaArestras(ListaComArestras);
 
     printf("Digite o numero de arestras: ");
+    //if(ident > 6) scanf("%d", &NumArestras); test version
     scanf("%d", &NumArestras);
-
+    
     for(i=0;i<NumArestras;i++){
         printf("(%.3d)Digite o id do vertice:",i);
         scanf("%d", &IDAux);
@@ -57,7 +58,7 @@ Lista_arestras * IndexArestras(Grafo * grafo){
             Insere_dado_listaArestras(VerticeDestino,ListaComArestras);
         }
     }
-
+    ident++;
     return ListaComArestras;
 }
 Vertice * GetVerticeAlvo(Grafo * grafo){

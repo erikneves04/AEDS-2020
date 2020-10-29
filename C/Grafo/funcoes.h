@@ -15,7 +15,7 @@ Vertice * GetVerticeAlvo(Grafo * grafo);
 
 int CalculaGrauVertice(Vertice * vertice);
 Error InicializarGrafo(Grafo * grafo);
-Error InserirItem(Grafo * grafo);
+Error InserirItem(Grafo * grafo,Lista_arestras * listaA,DataType valor);
 Error RedefinirListaArestras(Grafo * grafo);
 Error ImprimirDadosGrafo(Grafo * grafo);
 Error ImprimirArestrasVertice(Grafo * grafo);

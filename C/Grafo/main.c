@@ -10,6 +10,7 @@
 #include <string.h>
 #include "const.h"
 #include "funcoes.h"
+#include "buscas.h"
 
 
 int main(void){
@@ -18,6 +19,7 @@ int main(void){
     int Escolha_do_usuario=Variavel_de_inicio;
 
     int GrauAux;
+    Vertice * BuscaAux;
 
     InicializarGrafo(grafo);
 
@@ -33,6 +35,8 @@ int main(void){
         printf("[4] Imprimir as arestras de um vertice.\n");
         printf("[5] Remover vertice.\n");
         printf("[6] Grau de um vertice.\n");
+        printf("[7] Buscar um dado(largura).\n");
+        printf("[8] Buscar um dado(profundidade).\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         printf("\n");
@@ -43,9 +47,18 @@ int main(void){
                 printf(" Encerrando. \n\n");
             break;
             case 1:
-                printf("Caso prefira sera possivel anexar as anexas posteriormente.\n");
-                printf("Para tal indique o numero de arestas como zero e depois\nutilize a opcao 2.\n");
+                printf("Caso prefira sera possivel anexar as anexas posteriormente. Para tal\n");
+                printf(" indique o numero de arestas como zero e depois utilize a opcao 2.\n");
                 InserirItem(grafo,IndexArestras(grafo),UserIteract());
+                /*
+                InserirItem(grafo,IndexArestras(grafo),10);
+                InserirItem(grafo,IndexArestras(grafo),20);
+                InserirItem(grafo,IndexArestras(grafo),30);
+                InserirItem(grafo,IndexArestras(grafo),40);
+                InserirItem(grafo,IndexArestras(grafo),50);
+                InserirItem(grafo,IndexArestras(grafo),60);
+                InserirItem(grafo,IndexArestras(grafo),70);
+                */
             break;
             case 2:
                 RedefinirListaArestras(grafo);
@@ -62,6 +75,14 @@ int main(void){
             case 6:
                 GrauAux = CalculaGrauVertice(GetVerticeAlvo(grafo));
                 printf("\nO vertice escolhido possui um grau de : %.2d\n\n",GrauAux);
+            break;
+            case 7:
+                BuscaAux = BuscaVertice_Largura(grafo,UserIteract());
+                if(BuscaAux != NULL){
+                    printf("O dado foi encontrado no vertice de ID %d.\n\n", BuscaAux->ID);
+                }else{
+                    printf("O dado nao foi encontrado.\n\n");
+                }
             break;
             default:
                 printf(" Invalido. \n\n");
