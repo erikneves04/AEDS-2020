@@ -10,7 +10,7 @@
 #ifndef __BLargura_h__
 #define __BLargura_h__
 
-Vertice * BuscaVertice_Largura(Grafo * grafo,DataType DadoProcurado);
-Vertice * BuscaVertice_Profundidade(Grafo * grafo,DataType DadoProcurado);
+Vertice * BuscaVertice_Largura(Vertice * Inicial,DataType DadoProcurado);
+Vertice * BuscaVertice_Profundidade(Vertice * Inicial,DataType DadoProcurado);
 
 #endif /* __BLargura_h__ */

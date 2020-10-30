@@ -19,7 +19,9 @@ int main(void){
     int Escolha_do_usuario=Variavel_de_inicio;
 
     int GrauAux;
+    int i;
     Vertice * BuscaAux;
+    Vertice * verticesAUX;
 
     InicializarGrafo(grafo);
 
@@ -41,6 +43,11 @@ int main(void){
         scanf("%d", &Escolha_do_usuario);
         printf("\n");
 
+        verticesAUX = grafo->primeiro;
+        for(i=0;i<grafo->NumeroDeVertices;i++){
+            verticesAUX->auxiliar = 0;
+            if(verticesAUX->proximo != NULL)verticesAUX = verticesAUX->proximo;
+        }
 
         switch(Escolha_do_usuario){ 
             case 0:
@@ -78,7 +85,7 @@ int main(void){
                 printf("\nO vertice escolhido possui um grau de : %.2d\n\n",GrauAux);
             break;
             case 7:
-                BuscaAux = BuscaVertice_Largura(grafo,UserIteract());
+                BuscaAux = BuscaVertice_Largura(verticesAUX,UserIteract());
                 if(BuscaAux != NULL){
                     printf("O dado foi encontrado no vertice de ID %d.\n\n", BuscaAux->ID);
                 }else{
@@ -86,7 +93,7 @@ int main(void){
                 }
             break;
             case 8:
-                BuscaAux = BuscaVertice_Profundidade(grafo,UserIteract());
+                BuscaAux = BuscaVertice_Profundidade(verticesAUX,UserIteract());
                 if(BuscaAux != NULL){
                     printf("O dado foi encontrado no vertice de ID %d.\n\n", BuscaAux->ID);
                 }else{

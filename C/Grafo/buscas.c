@@ -172,17 +172,13 @@ static Error Limpar_Pilha(Lista_arestras * lista){
 // FUNÇÕES DE MANIPULAÇÃO DA PILHA - FIM
 
 // FUNÇÕES DE BUSCA EM GRAFOS - INICIO
-Vertice * BuscaVertice_Largura(Grafo * grafo,DataType DadoProcurado){
+Vertice * BuscaVertice_Largura(Vertice * Inicial,DataType DadoProcurado){
     int i;
     Boolean BuscaEncerrada = false;
     Boolean DadoEncontrado = false;
     Lista_arestras * FilaDeVertices = (Lista_arestras*)malloc(sizeof(Lista_arestras));
     Arestra * ArestraAux;
-    Vertice * VerticeAtual = grafo->primeiro;
-
-    for(i=0;i<grafo->NumeroDeVertices;i++){
-        if(VerticeAtual->proximo != NULL)VerticeAtual = VerticeAtual->proximo;
-    }
+    Vertice * VerticeAtual = Inicial;
     
     Inicializar_Fila(FilaDeVertices);
     while(BuscaEncerrada == false && DadoEncontrado == false){    
@@ -207,18 +203,13 @@ Vertice * BuscaVertice_Largura(Grafo * grafo,DataType DadoProcurado){
         VerticeAtual = Remove_dadoFila(FilaDeVertices);
     }
 }
-Vertice * BuscaVertice_Profundidade(Grafo * grafo,DataType DadoProcurado){
+Vertice * BuscaVertice_Profundidade(Vertice * Inicial,DataType DadoProcurado){
     int i;
     Boolean BuscaEncerrada = false;
     Boolean DadoEncontrado = false;
     Lista_arestras * PilhaDeVertices = (Lista_arestras*)malloc(sizeof(Lista_arestras));
     Arestra * ArestraAux;
-    Vertice * VerticeAtual = grafo->primeiro;
-
-    for(i=0;i<grafo->NumeroDeVertices;i++){
-        VerticeAtual->auxiliar = branco;
-        if(VerticeAtual->proximo != NULL)VerticeAtual = VerticeAtual->proximo;
-    }
+    Vertice * VerticeAtual = Inicial;
 
     Inicializar_Pilha(PilhaDeVertices);
     Insere_dadoPilha(VerticeAtual,PilhaDeVertices);
@@ -249,7 +240,6 @@ Vertice * BuscaVertice_Profundidade(Grafo * grafo,DataType DadoProcurado){
         if(VerticeAtual->auxiliar != preto){
             Insere_dadoPilha(VerticeAtual,PilhaDeVertices);
         }
-        printf("Novo vertice %d\n",VerticeAtual->ID);
     }
 
 }
