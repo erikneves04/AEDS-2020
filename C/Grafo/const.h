@@ -20,7 +20,7 @@ typedef unsigned int Error;
 #define Dado_nao_encontrado (02)
 #define Variavel_de_inicio  (-1)
 
-typedef double DataType; // Nao utlize strings <Estou resolvendo esse bug>
+typedef int DataType; // Nao utlize strings <Estou resolvendo esse bug>
 #define PrintfType "d"
 #define PrintfType_descripition "Inteiro"
 

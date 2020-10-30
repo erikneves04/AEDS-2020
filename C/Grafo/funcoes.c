@@ -34,8 +34,8 @@ Lista_arestras * IndexArestras(Grafo * grafo){
     Inicializar_listaArestras(ListaComArestras);
 
     printf("Digite o numero de arestras: ");
-    //if(ident > 6) scanf("%d", &NumArestras); test version
-    scanf("%d", &NumArestras);
+    //scanf("%d", &NumArestras);
+    if(ident > 6) scanf("%d", &NumArestras); //test version
     
     for(i=0;i<NumArestras;i++){
         printf("(%.3d)Digite o id do vertice:",i);
