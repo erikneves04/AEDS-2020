@@ -11,7 +11,7 @@
 #include "const.h"
 #include "funcoesLE.h"
 
-static DataType UserIteract(void){
+DataType UserIteract(void){
     DataType Interact_aux;
     char Identifier[] = "%";
 
@@ -23,19 +23,20 @@ static DataType UserIteract(void){
     printf("\n");
     return Interact_aux;
 }
-static Lista_arestras * IndexArestras(Grafo * grafo){
+Lista_arestras * IndexArestras(Grafo * grafo){
     Lista_arestras * ListaComArestras = (Lista_arestras*)malloc(sizeof(Lista_arestras));
     Vertice * VerticeDestino = NULL;
     Vertice * vertices = grafo->primeiro;
     int NumArestras = 0;
     int i,j;
     int IDAux;
-
+    static int ident = 0;
     Inicializar_listaArestras(ListaComArestras);
 
     printf("Digite o numero de arestras: ");
-    scanf("%d", &NumArestras);
-
+    //scanf("%d", &NumArestras);
+    if(ident > 6) scanf("%d", &NumArestras); //test version
+    
     for(i=0;i<NumArestras;i++){
         printf("(%.3d)Digite o id do vertice:",i);
         scanf("%d", &IDAux);
@@ -57,11 +58,36 @@ static Lista_arestras * IndexArestras(Grafo * grafo){
             Insere_dado_listaArestras(VerticeDestino,ListaComArestras);
         }
     }
-
+    ident++;
     return ListaComArestras;
 }
+Vertice * GetVerticeAlvo(Grafo * grafo){
+    Vertice * vertices = grafo->primeiro;
+    Boolean VerticeEncontrado = false;
+    int i;
+    int VerticeID;
 
+    printf("Digite o ID do vertice: ");
+    scanf("%d", &VerticeID);
 
+    for(i=0;i<grafo->NumeroDeVertices;i++){
+        if(vertices->ID == VerticeID){
+            VerticeEncontrado = true;
+            break;    
+        }
+        vertices = vertices->proximo;
+    }
+    if(VerticeEncontrado == false){
+        printf("Escolha invalida!\n");
+    }
+    printf("\n");
+    
+    return vertices;
+}
+
+int CalculaGrauVertice(Vertice * vertice){
+    return vertice->arestras->NumeroDeArestras;
+}
 Error InicializarGrafo(Grafo * grafo){
 
     grafo->NumeroDeVertices = 0;
@@ -69,18 +95,13 @@ Error InicializarGrafo(Grafo * grafo){
 
     return Sucesso;
 }
-Error InserirItem(Grafo * grafo){
+Error InserirItem(Grafo * grafo,Lista_arestras * listaA,DataType valor){
 
     Vertice * NovoVertice = (Vertice*)malloc(sizeof(Vertice));
 
-    NovoVertice->VerticeValor = UserIteract();
-    NovoVertice->arestras = IndexArestras(grafo);
+    NovoVertice->VerticeValor = valor;
+    NovoVertice->arestras = listaA;
     NovoVertice->ID = grafo->NumeroDeVertices + 1;
-
-    //printf("%d\n",NovoVertice->VerticeValor);
-    if(grafo->primeiro != NULL){
-        //printf("%d\n",grafo->primeiro->VerticeValor);
-    }
 
     NovoVertice->proximo = grafo->primeiro;
     grafo->primeiro = NovoVertice;
