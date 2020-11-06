@@ -1,39 +1,36 @@
 C/Arvore binaria/a.exe
 C/Grafo/a.exe
+C/Hash table/a.exe
+C/Fila/a.exe
+C/Pilha/a.exe
 
 C/Listas/Encadeada/a.exe 
 C/Listas/Encadeada/.vscode
-
 C/Listas/Duplamente encadeada/a.exe
 C/Listas/Duplamente encadeada/.vscode
-
 C/Listas/Duplamente encadeada circular/a.exe
 C/Listas/Duplamente encadeada circular/.vscode
-
 C/Listas/Encadeada circular/a.exe
 C/Listas/Encadeada circular/.vscode
-
-C/Fila/a.exe
-C/Pilha/a.exe
 
 C/Trabalho hospital/a.exe
 C/Trabalho hospital/IssacNewton.exe
 
-Java/Duplamente encadeada/Duplamente_encadeada.class
-Java/Duplamente encadeada/Item_lista.class
-Java/Duplamente encadeada/Lista.class
+Java/Lista/Duplamente encadeada/Duplamente_encadeada.class
+Java/Lista/Duplamente encadeada/Item_lista.class
+Java/Lista/Duplamente encadeada/Lista.class
 
-Java/Duplamente encadeada circular/Duplamente_encadeada_circular.class
-Java/Duplamente encadeada circular/Item_lista.class
-Java/Duplamente encadeada circular/Lista.class
+Java/Lista/Duplamente encadeada circular/Duplamente_encadeada_circular.class
+Java/Lista/Duplamente encadeada circular/Item_lista.class
+Java/Lista/Duplamente encadeada circular/Lista.class
 
-Java/Encadeada/Encadeada.class
-Java/Encadeada/Item_lista.class
-Java/Encadeada/Lista.class
+Java/Lista/Encadeada/Encadeada.class
+Java/Lista/Encadeada/Item_lista.class
+Java/Lista/Encadeada/Lista.class
 
-Java/Encadeada circular/Encadeada_circular.class
-Java/Encadeada circular/Item_lista.class
-Java/Encadeada circular/Lista.class
+Java/Lista/Encadeada circular/Encadeada_circular.class
+Java/Lista/Encadeada circular/Item_lista.class
+Java/Lista/Encadeada circular/Lista.class
 
 Java/Fila/FilaMain.class
 Java/Fila/Fila.class
