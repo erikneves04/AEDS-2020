@@ -33,11 +33,11 @@ typedef struct DadosEndereco_t{
 typedef struct DadosPessoa_t{
     char Nome[Tamanho_MAX_string];
     long int Telefone; 
-    DadosEndereco Endereco;
+    DadosEndereco * Endereco;
 }Pessoa;
+typedef Pessoa DataType;
 
 //Armazenamento e acesso na memoria
-typedef Pessoa DataType;
 typedef struct Item_lista_t{
     DataType * DadosItem;
     struct Item_lista_t * Anterior;

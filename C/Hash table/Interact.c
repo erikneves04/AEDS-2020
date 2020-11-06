@@ -20,15 +20,9 @@ DataType * GetInfosDataType(){
     printf("Digite o numero da pessoa(9 digitos): ");
     scanf("%d", &NovoDado->Telefone);
 
-    /*printf("oo\n");
     NovoDado->Endereco = (DadosEndereco*)malloc(sizeof(DadosEndereco));
-    printf("ii\n");
+
     setbuf(stdin,NULL);
-    strcpy(NovoDado->Endereco->Rua,"Jacaranda");
-    strcpy(NovoDado->Endereco->Bairro,"Jardim montanhes");
-    strcpy(NovoDado->Endereco->Cidade,"Ibirite");
-    NovoDado->Endereco->Numero = 240;*/
-    /*
     printf("Digite a rua da pessoa(Max.:%.3d):",Tamanho_MAX_string);
     scanf("%[^\n]s", NovoDado->Endereco->Rua);
     setbuf(stdin,NULL);
@@ -39,9 +33,9 @@ DataType * GetInfosDataType(){
     scanf("%[^\n]s", NovoDado->Endereco->Cidade);
     setbuf(stdin,NULL);
     printf("Digite o numero da casa da pessoa:");
-    scanf("%[^\n]s", &NovoDado->Endereco->Numero);
+    scanf("%d", &NovoDado->Endereco->Numero);
     setbuf(stdin,NULL);
-    */
+
     return NovoDado;
 }
 char * GetStringAlvo(){

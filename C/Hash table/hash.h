@@ -13,6 +13,7 @@
 
 Error InicializarHashTable(HashTable * table);
 Error InserirHashTable(HashTable * table, DataType * dadosItem);
+Error RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_string]);
 Error ImprimirDadosColuna(HashTable * table, int coluna);
 
 #endif /* __HashTable_h__ */

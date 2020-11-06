@@ -112,6 +112,7 @@ int main(void){
                             InserirHashTable(TabelaHash,GetInfosDataType());
                         break;
                         case 2:
+                            RemoverDadoHashTable(TabelaHash,GetStringAlvo());
                         break;
                         case 3:
                             ImprimirDadosColuna(TabelaHash,GetColunaAlvo(TabelaHash));

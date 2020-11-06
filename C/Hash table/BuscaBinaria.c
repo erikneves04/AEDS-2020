@@ -110,8 +110,8 @@ Error ImprimirDadosPessoa(DataType * dados){
     if(dados == NULL) return Dado_nao_encontrado;
 
     printf("\nNome: %-25s   Telefone: %d\n",dados->Nome,dados->Telefone);
-    //printf("Rua: %-25s    Numero: %.4d\n",dados->Endereco->Rua,dados->Endereco->Numero);
-    //printf("Bairro: %-25s Cidade: %-25s\n\n",dados->Endereco->Bairro,dados->Endereco->Cidade);
+    printf("Rua: %-25s    Numero: %.4d\n",dados->Endereco->Rua,dados->Endereco->Numero);
+    printf("Bairro: %-25s Cidade: %-25s\n\n",dados->Endereco->Bairro,dados->Endereco->Cidade);
 
     return Sucesso;
 }
