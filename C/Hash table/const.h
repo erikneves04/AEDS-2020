@@ -43,11 +43,6 @@ typedef struct Item_lista_t{
     struct Item_lista_t * Anterior;
     struct Item_lista_t * Proximo;
 }Item_lista;
-typedef struct ItensLista{
-    unsigned int NumeroDeDados;
-    Item_lista * Primeiro;
-    Item_lista * Ultimo;
-}Lista;
 
 typedef struct HashTable{
     unsigned int NumeroDeColunas;
