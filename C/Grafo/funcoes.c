@@ -89,7 +89,7 @@ Boolean ComparaDoisDados(DataType Dado01,DataType Dado02){
     Boolean DadosIguais  = false;
 
     if(Dado01 == Dado02) DadosIguais = true;
-    printf("D01: %d D02: %d\n",Dado01,Dado02);
+    //printf("D01: %d D02: %d\n",Dado01,Dado02);
 
     return (DadosIguais == true) ? true : false;
 }
