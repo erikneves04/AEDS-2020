@@ -13,8 +13,10 @@ DataType UserIteract(void);
 Lista_arestras * IndexArestras(Grafo * grafo);
 Vertice * GetVerticeAlvo(Grafo * grafo);
 
+Boolean ComparaDoisDados(DataType Dado01,DataType Dado02);
+
 int CalculaGrauVertice(Vertice * vertice);
-Error InicializarGrafo(Grafo * grafo);
+Error InicializarGrafo(Grafo * grafo,DataTypeCompare funcao);
 Error InserirItem(Grafo * grafo,Lista_arestras * listaA,DataType valor);
 Error RedefinirListaArestras(Grafo * grafo);
 Error ImprimirDadosGrafo(Grafo * grafo);

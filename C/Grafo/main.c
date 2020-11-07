@@ -23,7 +23,7 @@ int main(void){
     Vertice * BuscaAux;
     Vertice * verticesAUX;
 
-    InicializarGrafo(grafo);
+    InicializarGrafo(grafo,ComparaDoisDados);
 
     while(Escolha_do_usuario!=Encerrar_loop){
 
@@ -54,11 +54,10 @@ int main(void){
                 printf(" Encerrando. \n\n");
             break;
             case 1:
-                /*
                 printf("Caso prefira sera possivel anexar as anexas posteriormente. Para tal\n");
                 printf(" indique o numero de arestas como zero e depois utilize a opcao 2.\n");
                 InserirItem(grafo,IndexArestras(grafo),UserIteract());
-                */
+                /*
                 InserirItem(grafo,IndexArestras(grafo),10);
                 InserirItem(grafo,IndexArestras(grafo),20);
                 InserirItem(grafo,IndexArestras(grafo),30);
@@ -66,7 +65,7 @@ int main(void){
                 InserirItem(grafo,IndexArestras(grafo),50);
                 InserirItem(grafo,IndexArestras(grafo),60);
                 InserirItem(grafo,IndexArestras(grafo),70);
-                //*/
+                */
             break;
             case 2:
                 RedefinirListaArestras(grafo);
