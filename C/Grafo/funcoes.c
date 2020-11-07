@@ -29,22 +29,22 @@ Lista_arestras * IndexArestras(Grafo * grafo){
     Vertice * vertices = grafo->primeiro;
     int NumArestras = 0;
     int i,j;
-    int IDAux;
+    int Alvo;
     static int ident = 0;
     Inicializar_listaArestras(ListaComArestras);
 
     printf("Digite o numero de arestras: ");
-    //scanf("%d", &NumArestras);
-    if(ident > 6) scanf("%d", &NumArestras); //test version
+    scanf("%d", &NumArestras);
+    //if(ident > 6) scanf("%d", &NumArestras); //test version
     
     for(i=0;i<NumArestras;i++){
-        printf("(%.3d)Digite o id do vertice:",i);
-        scanf("%d", &IDAux);
+        printf("(%.3d)Digite o dado do vertice:",i);
+        scanf("%d", &Alvo);
 
         vertices = grafo->primeiro;
         for(j=0;j<grafo->NumeroDeVertices;j++){
             VerticeDestino = NULL;
-            if(vertices->ID == IDAux){
+            if(grafo->FuncaoDeComparacao(vertices->VerticeValor,Alvo)){
                 VerticeDestino = vertices;
                 break;
             }
@@ -85,13 +85,23 @@ Vertice * GetVerticeAlvo(Grafo * grafo){
     return vertices;
 }
 
+Boolean ComparaDoisDados(DataType Dado01,DataType Dado02){
+    Boolean DadosIguais  = false;
+
+    if(Dado01 == Dado02) DadosIguais = true;
+    printf("D01: %d D02: %d\n",Dado01,Dado02);
+
+    return (DadosIguais == true) ? true : false;
+}
+
 int CalculaGrauVertice(Vertice * vertice){
     return vertice->arestras->NumeroDeArestras;
 }
-Error InicializarGrafo(Grafo * grafo){
+Error InicializarGrafo(Grafo * grafo,DataTypeCompare funcao){
 
     grafo->NumeroDeVertices = 0;
     grafo->primeiro = NULL;
+    grafo->FuncaoDeComparacao = funcao;
 
     return Sucesso;
 }
@@ -113,14 +123,14 @@ Error RedefinirListaArestras(Grafo * grafo){
     Vertice * vertices = grafo->primeiro;
     Boolean VerticeEncontrado = false;
     int i;
-    int VerticeID;
+    DataType VerticeAlvo;
 
-    printf("Digite o ID do vertice que voce deseja\n");
+    printf("Digite o dado do vertice que voce deseja\n");
     printf("redefinir as arestras: ");
-    scanf("%d", &VerticeID);
+    scanf("%d", &VerticeAlvo);
 
     for(i=0;i<grafo->NumeroDeVertices;i++){
-        if(vertices->ID == VerticeID){
+        if(grafo->FuncaoDeComparacao(vertices->VerticeValor,VerticeAlvo) == true){
             VerticeEncontrado = true;
             Limpar_lista_Arestras(vertices->arestras);
             vertices->arestras = IndexArestras(grafo);
@@ -155,19 +165,20 @@ Error ImprimirDadosGrafo(Grafo * grafo){
 Error ImprimirArestrasVertice(Grafo * grafo){
     Vertice * DadosGrafo = grafo->primeiro;
     Boolean VerticeEncontrado = false;
-    int IDAlvo;
+    DataType Alvo;
     int i,j;
 
-    printf("Digite o ID do vertice desejado: ");
-    scanf("%d", & IDAlvo);
+    printf("Digite o dado desejado: ");
+    scanf("%d", &Alvo);
 
     for(i=0;i<grafo->NumeroDeVertices;i++){
-        if(DadosGrafo->ID == IDAlvo){
+        //if(DadosGrafo->ID == Alvo){
+        if(grafo->FuncaoDeComparacao(DadosGrafo->VerticeValor,Alvo) == true){
             VerticeEncontrado = true;
             Arestra * DadosArestras = DadosGrafo->arestras->primeira;
             printf("Imprimindo possiveis vertices de destino: \n");
             for(j=0;j<DadosGrafo->arestras->NumeroDeArestras;j++){
-                printf(" | %.3d\n",DadosArestras->vertice->ID);
+                printf(" | %.3d\n",DadosArestras->vertice->VerticeValor);
                 DadosArestras = DadosArestras->proximo;
             }
             printf("\n");
@@ -187,16 +198,16 @@ Error ImprimirArestrasVertice(Grafo * grafo){
 Error RemoverItem(Grafo * grafo){
     Vertice * DadosGrafo = grafo->primeiro;
     Vertice * VerticeAlvo = NULL;
-    int IDVerticeAlvo;
+    DataType Alvo;
     int i;
 
     printf("Remover um vertice ira implicar tambem na remocao de todas as\n");
     printf("arestras relacionadas a ele.\n");
-    printf("Digite o ID do vertice: ");
-    scanf("%d", &IDVerticeAlvo);
+    printf("Digite o dado do vertice: ");
+    scanf("%d", &Alvo);
 
     for(i=0;i<grafo->NumeroDeVertices;i++){
-        if(DadosGrafo->ID == IDVerticeAlvo){
+        if(grafo->FuncaoDeComparacao(DadosGrafo->VerticeValor,Alvo) == true){
             VerticeAlvo = DadosGrafo;
             break;
         }

@@ -21,6 +21,7 @@ typedef unsigned int Error;
 #define Variavel_de_inicio  (-1)
 
 typedef int DataType; // Nao utlize strings <Estou resolvendo esse bug>
+typedef Boolean (*DataTypeCompare)(DataType,DataType);
 #define PrintfType "d"
 #define PrintfType_descripition "Inteiro"
 
@@ -45,6 +46,7 @@ typedef struct vertice {
 typedef struct grafo {
     int NumeroDeVertices;
     Vertice * primeiro;
+    DataTypeCompare FuncaoDeComparacao;
 }Grafo;
 
 #endif /* __const_h__ */
