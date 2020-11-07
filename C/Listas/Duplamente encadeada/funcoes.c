@@ -2,7 +2,7 @@
  * @file   funcoes.c
  * @brief  Implementaçao das funçoes de manipulaçao de lista duplamente encadeada.
  * @author <Erik Neves>
- * @date   2020-08-31
+ * @date   2020-11-07
 */
 
 #include <stdio.h>
@@ -10,9 +10,13 @@
 #include <string.h>
 #include "const.h"
 
-void Inicializar_lista(Lista * lista){
+Error Inicializar_lista(Lista * lista,DataTypeCompare compare,PrintDataType print){
     lista->Numero_de_itens = 0;
     lista->primeiro = NULL;
+    lista->ComparaDataType = compare;
+    lista->PrintItemDataType = print;
+
+    return Sucesso;
 }
 Error Insere_dado(DataType Valor,Lista * lista){
     /* INSERE NO INICIO DA LISTA */
@@ -38,7 +42,7 @@ Error Remove_dado(DataType Valor,Lista * lista){
     Boolean Valor_encontrado = false;
 
     for(i=0;i<lista->Numero_de_itens;i++){
-        if(Dados_lista->Dado == Valor){
+        if(lista->ComparaDataType(Dados_lista->Dado,Valor) == true){
             Valor_encontrado = true;
             break;
         }
@@ -79,11 +83,17 @@ Error Imprimir_lista(Lista * lista){
         printf("Imprimindo dados da lista: \n");
         printf("Indi.       Info.       Ant.\n");
         for(i=0;i<(lista->Numero_de_itens);i++){
+            
+            printf(" %.2d          ",i);
+            lista->PrintItemDataType(Dados_lista->Dado);
+            printf("          ");
             if(Dados_lista->anterior != NULL){
-                printf(" %.2d          %.2d          %.2d\n",i,Dados_lista->Dado,Dados_lista->anterior->Dado);
+                lista->PrintItemDataType(Dados_lista->anterior->Dado);
             }else{
-                printf(" %.2d          %.2d          NULL\n",i,Dados_lista->Dado);
+                printf("NULL");
             }
+            printf("\n");
+
             Dados_lista = Dados_lista->proximo; 
         }
         printf("\n");
@@ -105,6 +115,6 @@ Error Limpar_lista(Lista * lista){
         free(Dados_lista);
         Dados_lista = Proximo_aux;
     }
-    Inicializar_lista(lista);
+    free(lista);
     return Sucesso;
 }
