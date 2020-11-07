@@ -37,9 +37,9 @@ int main(void){
     Inicializar_lista(lista,CompararDados,ImprimirDataType);
     while(Escolha_do_usuario!=Encerrar_loop){
 
-        printf("+---------------------------------------+\n");
-        printf("| Implementacao lista encadeada simples |\n");
-        printf("+---------------------------------------+\n");
+        printf("+------------------------------------------+\n");
+        printf("| Implementacao lista duplamente encadeada |\n");
+        printf("+------------------------------------------+\n");
         printf("[0] Encerra o software.\n");
         printf("[1] Inserir valor.\n");
         printf("[2] Remover valor.\n");
