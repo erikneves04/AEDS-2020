@@ -18,6 +18,10 @@ int GetColunaPerfil(char * string);
 
 // ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - INICIO
 DataType * GetInformacoesCriarPerfil(HashTable * table);
+int GetColunaAlvo(HashTable * table);
+DataType * GetPerfilAlvo(HashTable * table);
+Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo);
+Error PerfilNaoEncontrado();
 // ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - FIM
 
 #endif /* Interact_h */

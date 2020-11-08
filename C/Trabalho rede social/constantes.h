@@ -18,6 +18,7 @@ typedef unsigned int Boolean;
 #define Variavel_de_inicio           (-1)
 #define Encerrar_loop                (00)
 #define Sucesso                      (00)
+#define Iten_Alteraveis_Perfil       (03)
 #define Tamanho_MAX_NomeCompleto     (51)
 #define Tamanho_MAX_usuario          (16)
 #define Tamanho_MAX_bio             (101)

@@ -58,48 +58,43 @@ Error InserirHashTable(HashTable * table, DataType * dadosItem){
     }
     return Sucesso;
 }
-Error RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario]){
+DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario]){
     int ColunaId = (GetColunaPerfil(nome) - 1);
-    Item_lista * Aux;
+    Item_lista * Aux = NULL;
     Item_lista * DadoAnterior = NULL;
 
-    if(table->DadosTabela[ColunaId] == NULL) return Perfil_inexistente;
+    if(table->DadosTabela[ColunaId] == NULL) return NULL; // Coluna inexistente
     Aux = table->DadosTabela[ColunaId];
    
     while(Aux != NULL){
         if(strcmp(nome,Aux->DadosItem->NomeCompleto) == 0){
-            if(DadoAnterior == NULL){
-                table->DadosTabela[ColunaId] = Aux->Proximo;
-                free(Aux->DadosItem);
-                free(Aux);
-            }else{
-                DadoAnterior->Proximo = Aux->Proximo;
-                free(Aux);
-            }
+            return Aux->DadosItem;
             break;
         }
         DadoAnterior = Aux;
         Aux = Aux->Proximo;
     }
 
-    return Sucesso;
+    return NULL;
 }
 Error ImprimirDadosColuna(HashTable * table, int coluna){
     DataType * dados = NULL;
     Item_lista * DadosColuna = NULL;
 
 
-    DadosColuna = GetColuna(table,coluna);
+    DadosColuna = GetColuna(table,coluna-1);
 
     if(DadosColuna == NULL) return Perfil_inexistente;
 
-    printf("Imprimindo os dados da coluna %.4d:\n",coluna+1);
+    printf("Imprimindo os dados da coluna %.4d:\n",coluna);
     while(DadosColuna != NULL){
         dados = DadosColuna->DadosItem;
-        //printf("\nNome: %-25s   Telefone: %d\n",dados->Nome,dados->Telefone);
-        //printf("Rua: %-25s    Numero: %.4d\n",dados->Endereco->Rua,dados->Endereco->Numero);
-        //printf("Bairro: %-25s Cidade: %-25s\n\n",dados->Endereco->Bairro,dados->Endereco->Cidade);
+        printf("ID: %.2d\n",dados->PerfilID);
+        printf("Nome: %s\n",dados->NomeCompleto);
+        printf("User: %s\n",dados->NomeUsuario);
+        printf("Biografia: %s\n",dados->Biografia);
         DadosColuna = DadosColuna->Proximo;
+        printf("\n");
     }
 
     return Sucesso;

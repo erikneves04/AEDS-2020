@@ -76,17 +76,19 @@ int main(int argc, char const *argv[]){
                 /* EXECUÇÕES:
                 * 
                 */
-               InserirHashTable(Usuarios,GetInformacoesCriarPerfil(Usuarios));
+                InserirHashTable(Usuarios,GetInformacoesCriarPerfil(Usuarios));
             break;
             case 2:
                 /* EXECUÇÕES:
                 * 
                 */
+                ImprimirDadosColuna(Usuarios,GetColunaAlvo(Usuarios));
             break;
             case 3:
                 /* EXECUÇÕES:
                 * 
                 */
+                AlterarInformacoesPerfil(Usuarios,GetPerfilAlvo(Usuarios));
             break;
             default:
                 /* EXECUÇÕES:
