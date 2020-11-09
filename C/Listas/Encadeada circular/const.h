@@ -2,33 +2,41 @@
 * @file   const.h
 * @brief  Arquivo com a definição de constantes.
 * @author <Erik Neves>
-* @date   2020-08-31
+* @date   2020-11-07
 */
 #pragma once
 
 #ifndef __const_h__
 #define __const_h__
 
+// DEFINIÇÃO DE TIPO BOLEANO
 typedef unsigned int Boolean;
 #define true                (00)
 #define false               (!true)
 
+// DEFINIÇÃO DE ERROS
 typedef unsigned int Error;
+#define Encerrar_loop       (00)
 #define Sucesso             (00)
 #define Erro_lista_vazia    (01)
 #define Dado_nao_encontrado (02)
 #define Variavel_de_inicio  (-1)
 
-typedef double DataType; // Nao utlize strings <Estou resolvendo esse bug>
-#define PrintfType "d"
-#define PrintfType_descripition "Inteiro"
-typedef struct item_list {
-    int Dado;
-    struct item_list * proximo;
+// DECLARAÇÃO DO TIPO DE DADOS
+typedef int DataType;
+typedef Boolean (*DataTypeCompare)(DataType,DataType);
+typedef Error (*PrintDataType)(DataType);
+
+// STRUCTS DA LISTA
+typedef struct Item_lista_t {
+    DataType Dado;
+    struct Item_lista_t * proximo;
 }Item_lista;
 typedef struct lista {
-    int Numero_de_itens;
+    unsigned int Numero_de_itens;
     Item_lista * primeiro;
+    DataTypeCompare ComparaDataType;
+    PrintDataType PrintItemDataType;
 }Lista;
 
 #endif /* __const_h__ */

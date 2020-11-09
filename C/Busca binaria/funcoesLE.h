@@ -2,7 +2,7 @@
 * @file   funcoesLE.h
 * @brief  Arquivo com as funçoes de manipulação de listas.
 * @author <Erik Neves>
-* @date   2020-10-21
+* @date   2020-11-07
 */
 #pragma once
 #include "const.h"

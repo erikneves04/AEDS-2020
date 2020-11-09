@@ -10,10 +10,13 @@
 #include <string.h>
 #include "const.h"
 
-void Inicializar_lista(Lista * lista){
+Error Inicializar_lista(Lista * lista,DataTypeCompare compare,PrintDataType print){
     lista->Numero_de_itens = 0;
     lista->primeiro = NULL;
-    lista->ultimo = NULL;
+    lista->ComparaDataType = compare;
+    lista->PrintItemDataType = print;
+
+    return Sucesso;
 }
 Error Insere_dado(DataType Valor,Lista * lista){
     /* INSERE NO FINAL DA LISTA */
@@ -37,11 +40,11 @@ Error Insere_dado(DataType Valor,Lista * lista){
     return Sucesso;
 }
 DataType Remove_dado(Lista * lista){
-    DataType Aux = lista->ultimo->Dado;
+    DataType Aux = lista->primeiro->Dado;
     Item_lista * segundo = lista->primeiro->anterior;
 
     if(lista->Numero_de_itens == 0){
-        return Erro_lista_vazia;
+        return (DataType)Erro_lista_vazia;
     }
     free(lista->primeiro);
     lista->Numero_de_itens--;
@@ -56,16 +59,16 @@ Boolean Lista_vazia(Lista * lista){
     }
 }
 Error Imprimir_lista(Lista * lista){
-    int i,j;
-    char LinhaImpressao[(21 + sizeof(DataType))];
+    int i;
     Item_lista * Dados_lista = lista->primeiro;
 
     if(Lista_vazia(lista) != true){
         printf("Imprimindo dados da lista: \n");
-        printf("Indi.       Info.\n");
-        for(i=0,j=1;i<(lista->Numero_de_itens);i++,j++){ 
-            (void)sprintf(LinhaImpressao," %%%s          %%%s\n",".2d",PrintfType);
-            (void)printf(LinhaImpressao,j,Dados_lista->Dado);
+        printf("Indi.   Info.\n");
+        for(i=0;i<(lista->Numero_de_itens);i++){
+            (void)printf(" %.2d     ",i);
+            lista->PrintItemDataType(Dados_lista->Dado);
+            printf("\n");
             Dados_lista = Dados_lista->anterior; 
         }
         printf("\n");
@@ -87,6 +90,6 @@ Error Limpar_lista(Lista * lista){
         free(Dados_lista);
         Dados_lista = Proximo_aux;
     }
-    Inicializar_lista(lista);
+    free(lista);
     return Sucesso;
 }

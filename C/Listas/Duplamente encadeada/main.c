@@ -2,7 +2,7 @@
  * @file   main.c
  * @brief  
  * @author <Erik Neves>
- * @date   2019-11-13
+ * @date   2020-11-07
 */
 
 #include <stdio.h>
@@ -12,16 +12,21 @@
 #include "funcoes.h"
 
 static DataType UserIteract(void){
-    DataType Interact_aux;
-    char Identifier[] = "%";
+    DataType NovoDataType;
 
-    strcat(Identifier,PrintfType);
+    printf("Digite o valor(inteiro): ");
+    scanf("%d", &NovoDataType);
 
-    printf("\nDigite o dado(%s): ",PrintfType_descripition);
-    scanf(Identifier,&Interact_aux);
-
-    printf("\n");
-    return Interact_aux;
+    return NovoDataType;
+}
+Boolean CompararDados(DataType Dado01,DataType Dado02){
+    Boolean DadosIguais = false;
+    if(Dado01 == Dado02) DadosIguais = true;
+    return (DadosIguais == true) ? true : false;
+}
+Error ImprimirDataType(DataType Dado){
+    printf("%d",Dado);
+    return Sucesso;
 }
 
 int main(void){
@@ -29,12 +34,12 @@ int main(void){
     Lista * lista = (Lista*)malloc(sizeof(Lista));
     int Escolha_do_usuario=Variavel_de_inicio;
 
-    Inicializar_lista(lista);
+    Inicializar_lista(lista,CompararDados,ImprimirDataType);
     while(Escolha_do_usuario!=Encerrar_loop){
 
-        printf("+---------------------------------------+\n");
-        printf("| Implementacao lista encadeada simples |\n");
-        printf("+---------------------------------------+\n");
+        printf("+------------------------------------------+\n");
+        printf("| Implementacao lista duplamente encadeada |\n");
+        printf("+------------------------------------------+\n");
         printf("[0] Encerra o software.\n");
         printf("[1] Inserir valor.\n");
         printf("[2] Remover valor.\n");

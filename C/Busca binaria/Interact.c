@@ -54,11 +54,19 @@ Error AvisoPessoaInexistente(){
 
     return Sucesso;
 }
-int GetColunaAlvo(HashTable * table){
-    int ColunaID;
+DataType * GetDataTypeAlvo(Lista * lista, char Nome[Tamanho_MAX_string]){
+    DataType * DataAlvo;
+    Boolean DataEncontrada = false;
+    Item_lista * Dados_lista = lista->Primeiro;
+    int i;
 
-    printf("Digite o numero da coluna desejada(Max. ID: %.4d): ",table->NumeroDeColunas);
-    scanf("%d", &ColunaID);
-
-    return ColunaID - 1;
+    for(i=0;i<lista->NumeroDeDados;i++){
+        if(strcmp(Nome,Dados_lista->DadosItem->Nome) == 0){
+            DataAlvo = Dados_lista->DadosItem;
+            DataEncontrada = true;
+            break;
+        }
+    }
+    
+    return (DataEncontrada == true ) ? DataAlvo : NULL;
 }

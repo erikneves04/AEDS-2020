@@ -12,24 +12,30 @@
 #include "funcoes.h"
 
 static DataType UserIteract(void){
-    DataType Interact_aux;
-    char Identifier[] = "%";
+    DataType NovoDataType;
 
-    strcat(Identifier,PrintfType);
+    printf("Digite o valor(inteiro): ");
+    scanf("%d", &NovoDataType);
 
-    printf("\nDigite o dado(%s): ",PrintfType_descripition);
-    scanf(Identifier,&Interact_aux);
-
-    printf("\n");
-    return Interact_aux;
+    return NovoDataType;
+}
+Boolean CompararDados(DataType Dado01,DataType Dado02){
+    Boolean DadosIguais = false;
+    if(Dado01 == Dado02) DadosIguais = true;
+    return (DadosIguais == true) ? true : false;
+}
+Error ImprimirDataType(DataType Dado){
+    printf("%d",Dado);
+    return Sucesso;
 }
 
 int main(void){
 
     Lista * lista = (Lista*)malloc(sizeof(Lista));
     int Escolha_do_usuario=Variavel_de_inicio;
+    DataType Aux;
 
-    Inicializar_lista(lista);
+    Inicializar_lista(lista,CompararDados,ImprimirDataType);
     while(Escolha_do_usuario!=Encerrar_loop){
 
         printf("+---------------------+\n");
@@ -55,7 +61,12 @@ int main(void){
                 Insere_dado(UserIteract(),lista);
             break;
             case 2:
-                Remove_dado(lista);
+                Aux = Remove_dado(lista);
+                if(Aux != (DataType)Erro_lista_vazia){
+                    printf("Dado removido: %d\n",Aux);
+                }else{
+                    printf("Lista vazia.\n");
+                }
             break;
             case 3:
                 Imprimir_lista(lista);

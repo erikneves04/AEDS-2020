@@ -2,7 +2,7 @@
  * @file   funcoesLE.c
  * @brief  Implementaçao das funçoes de manipulaçao de listas.
  * @author <Erik Neves>
- * @date   2020-10-21
+ * @date   2020-11-07
 */
 
 #include <stdio.h>
@@ -42,9 +42,11 @@ Error RemoverItemLista(Lista * lista,DataType * dadosItem){
     Item_lista * DadosLista = lista->Primeiro;
 
     for(i=0;i<lista->NumeroDeDados;i++){
-        if(DadosLista->DadosItem == dadosItem){
-            DadoEncontrado = true;
-            break;
+        if(DadosLista->DadosItem->Telefone == dadosItem->Telefone){
+            if(strcmp(DadosLista->DadosItem->Nome,dadosItem->Nome) == 0){
+                DadoEncontrado = true;
+                break;
+            }
         }
         DadosLista = DadosLista->Proximo;
     }
@@ -53,6 +55,7 @@ Error RemoverItemLista(Lista * lista,DataType * dadosItem){
         if(DadosLista->Anterior != NULL)DadosLista->Anterior->Proximo = DadosLista->Proximo;  
         if(DadosLista->Proximo != NULL)DadosLista->Proximo->Anterior = DadosLista->Anterior;
 
+        lista->NumeroDeDados--;
         DadosLista->Anterior = NULL;
         DadosLista->Proximo = NULL;
         free(DadosLista);

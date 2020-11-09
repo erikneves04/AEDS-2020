@@ -2,7 +2,7 @@
  * @file   funcoes.c
  * @brief  Implementaçao das funçoes de manipulaçao de lista encadeada.
  * @author <Erik Neves>
- * @date   2020-08-31
+ * @date   2020-11-07
 */
 
 #include <stdio.h>
@@ -10,9 +10,13 @@
 #include <string.h>
 #include "const.h"
 
-void Inicializar_lista(Lista * lista){
+Error Inicializar_lista(Lista * lista,DataTypeCompare compare,PrintDataType print){
     lista->Numero_de_itens = 0;
     lista->primeiro = NULL;
+    lista->ComparaDataType = compare;
+    lista->PrintItemDataType = print;
+
+    return Sucesso;
 }
 Error Insere_dado(DataType Valor,Lista * lista){
     /* INSERE NO INICIO DA LISTA */
@@ -34,7 +38,7 @@ Error Remove_dado(DataType Valor,Lista * lista){
     Boolean Valor_encontrado = false;
 
     for(i=0;i<lista->Numero_de_itens;i++){
-        if(Dados_lista->Dado == Valor){
+        if(lista->ComparaDataType(Dados_lista->Dado,Valor) == true){
             Valor_encontrado = true;
             break;
         }
@@ -65,15 +69,15 @@ Boolean Lista_vazia(Lista * lista){
 }
 Error Imprimir_lista(Lista * lista){
     int i;
-    char LinhaImpressao[(21 + sizeof(DataType))];
     Item_lista * Dados_lista = lista->primeiro;
 
     if(Lista_vazia(lista) != true){
         printf("Imprimindo dados da lista: \n");
-        printf("Indi.       Info.\n");
-        for(i=0;i<(lista->Numero_de_itens);i++){ 
-            (void)sprintf(LinhaImpressao," %%%s          %%%s\n",".2d",PrintfType);
-            (void)printf(LinhaImpressao,i,Dados_lista->Dado);
+        printf("Indi.   Info.\n");
+        for(i=0;i<(lista->Numero_de_itens);i++){
+            (void)printf(" %.2d     ",i);
+            lista->PrintItemDataType(Dados_lista->Dado);
+            printf("\n");
             Dados_lista = Dados_lista->proximo; 
         }
         printf("\n");
@@ -95,6 +99,6 @@ Error Limpar_lista(Lista * lista){
         free(Dados_lista);
         Dados_lista = Proximo_aux;
     }
-    Inicializar_lista(lista);
+    free(lista);
     return Sucesso;
 }

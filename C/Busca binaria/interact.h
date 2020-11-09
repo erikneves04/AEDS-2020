@@ -1,6 +1,6 @@
 /**
 * @file   interact.h
- * @brief  Assinaturas Implementaçao das funçoes de interação com o usuario.
+* @brief  Assinaturas Implementaçao das funçoes de interação com o usuario.
 * @author <Erik Neves>
 * @date   2020-11-07
 */
@@ -13,6 +13,6 @@
 DataType * GetInfosDataType();
 char * GetStringAlvo();
 Error AvisoPessoaInexistente();
-int GetColunaAlvo(HashTable * table);
+DataType * GetDataTypeAlvo(Lista * lista, char Nome[Tamanho_MAX_string]);
 
 #endif /* __Interact_h__ */
