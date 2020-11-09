@@ -15,6 +15,7 @@
 Error InicializarHashTable(HashTable * table);
 Error InserirHashTable(HashTable * table, DataType * dadosItem);
 DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario]);
+Error DeletarPerfil(HashTable * table);
 Error ImprimirDadosColuna(HashTable * table, int coluna);
 
 #endif /* __HashTable_h__ */

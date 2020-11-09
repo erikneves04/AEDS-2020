@@ -22,6 +22,7 @@ int GetColunaAlvo(HashTable * table);
 DataType * GetPerfilAlvo(HashTable * table);
 Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo);
 Error PerfilNaoEncontrado();
+Error PerfilDeletado(unsigned int id);
 // ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - FIM
 
 #endif /* Interact_h */

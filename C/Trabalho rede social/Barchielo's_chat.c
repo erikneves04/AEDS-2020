@@ -54,9 +54,14 @@ int main(int argc, char const *argv[]){
         printf("| Funcionalidades do software |\n");
         printf("+-----------------------------+\n");
         printf("[00] Encerrar.\n");
-        printf("[01] .\n");
-        printf("[02] .\n");
-        printf("[03] .\n");
+        printf("[01] Criar perfil.\n");
+        printf("[02] Imprimir dados de uma coluna\n");
+        printf("[03] Alterar dados perfil..\n");
+        printf("[04] Deletar perfil.\n");
+        printf("[05] .\n");
+        printf("[06] .\n");
+        printf("[07] .\n");
+        printf("[08] .\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         // MENU DE FUNCIONALIDADE / ESCOLHA USUARIO - FIM
@@ -89,6 +94,24 @@ int main(int argc, char const *argv[]){
                 * 
                 */
                 AlterarInformacoesPerfil(Usuarios,GetPerfilAlvo(Usuarios));
+            break;
+            case 4:
+                /* EXECUÇÕES:
+                * 
+                */
+                DeletarPerfil(Usuarios);
+            break;
+            case 5:
+                /* EXECUÇÕES:
+                * 
+                */
+                
+            break;
+            case 6:
+                /* EXECUÇÕES:
+                * 
+                */
+                
             break;
             default:
                 /* EXECUÇÕES:

@@ -62,20 +62,48 @@ DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario
     int ColunaId = (GetColunaPerfil(nome) - 1);
     Item_lista * Aux = NULL;
     Item_lista * DadoAnterior = NULL;
+    DataType * DataAux;
 
     if(table->DadosTabela[ColunaId] == NULL) return NULL; // Coluna inexistente
     Aux = table->DadosTabela[ColunaId];
    
     while(Aux != NULL){
-        if(strcmp(nome,Aux->DadosItem->NomeCompleto) == 0){
-            return Aux->DadosItem;
-            break;
+        if(strcmp(nome,Aux->DadosItem->NomeUsuario) == 0){
+            table->DadosTabela[ColunaId] = Aux->Proximo;
+            DataAux = Aux->DadosItem;
+            return DataAux;
         }
         DadoAnterior = Aux;
         Aux = Aux->Proximo;
     }
 
     return NULL;
+}
+Error DeletarPerfil(HashTable * table){
+    DataType * Alvo = GetPerfilAlvo(table);
+    DataType * RemoveReturn = NULL;
+    Item_lista * DadosColuna;
+    int ColunaID;
+
+    if(Alvo == NULL){
+        printf("#01\n");
+        PerfilNaoEncontrado();
+        return Perfil_inexistente;
+    }
+    ColunaID = (GetColunaPerfil(Alvo->NomeUsuario) - 1);
+    DadosColuna = table->DadosTabela[ColunaID];
+
+    RemoveReturn = RemoverDadoHashTable(table,Alvo->NomeUsuario);
+
+    if(RemoveReturn == NULL){
+        PerfilNaoEncontrado();
+        return Perfil_inexistente;
+    }else{
+        PerfilDeletado(RemoveReturn->PerfilID);
+        free(RemoveReturn);
+    }   
+
+    return Sucesso;
 }
 Error ImprimirDadosColuna(HashTable * table, int coluna){
     DataType * dados = NULL;

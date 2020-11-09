@@ -113,6 +113,12 @@ Error PerfilNaoEncontrado(){
     printf("+-----------------------+\n\n");
     return Sucesso;
 }
+Error PerfilDeletado(unsigned int id){
+    printf("\n+-------------------------------------+\n");
+    printf("| Perfil(ID: %.2d) deletado com sucesso |\n",id);
+    printf("+-------------------------------------+\n\n");
+    return Sucesso;
+}
 DataType * GetPerfilAlvo(HashTable * table){
     DataType * Alvo = NULL;
     Item_lista * DadosColuna = NULL;
@@ -125,9 +131,12 @@ DataType * GetPerfilAlvo(HashTable * table){
     setbuf(stdin,NULL);
 
     ColunaID = (GetColunaPerfil(NomeProcurado) - 1);
+    printf("Coluna id:%d\n", ColunaID);
     if(ColunaID < 0 || ColunaID >= table->NumeroDeColunas) return Alvo;
+    printf("AA\n");
     if(table->DadosTabela[ColunaID] == NULL) return Alvo;
-    
+    printf("AA\n");
+
     DadosColuna = table->DadosTabela[ColunaID];
     while(DadosColuna != NULL){
         if(strcmp(NomeProcurado,DadosColuna->DadosItem->NomeUsuario) == 0){
@@ -172,7 +181,7 @@ Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
 
         switch (Escolha_do_usuario){
             case 0:
-                printf("\n| Encerrando alteracoes |\n\n");
+                printf("| Encerrando alteracoes |\n");
             break;
             case 1:
                 CamposAlterados[0] = true;
@@ -251,10 +260,10 @@ Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
         printf("\n| Alteracoes deletadas. |\n\n");
     }
     free(Aux);
-
-    RemoverDadoHashTable(table,DadoAlvo->NomeUsuario);
-    InserirHashTable(table, DadoAlvo);
+    if(CamposAlterados[1] == true){
+        RemoverDadoHashTable(table,DadoAlvo->NomeUsuario);
+        InserirHashTable(table, DadoAlvo);
+    }
     return Sucesso;
 }
-
 // IMPLEMENTAÇÃO FUNÇÕES QUE INTERAGEM COM O USUARIO - FIM
