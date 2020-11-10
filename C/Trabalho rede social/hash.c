@@ -127,3 +127,23 @@ Error ImprimirDadosColuna(HashTable * table, int coluna){
 
     return Sucesso;
 }
+Error ImprimirTODOSPerfis_HashTable(HashTable * table){
+    DataType * dados = NULL;
+    Item_lista * DadosColuna = NULL;
+    int i;
+
+    printf("\n\t+---------------------------------+\n");
+    printf("\t| Imprimindo os perfis existentes |\n");
+    printf("\t+---------------------------------+\n\n");
+    printf(" ID: | User name:\n");
+    for(i=0;i<table->NumeroDeColunas;i++){
+        DadosColuna = table->DadosTabela[i];
+        while(DadosColuna != NULL){
+            dados = DadosColuna->DadosItem;
+            printf(" %.2d  | %-25s\n",dados->PerfilID,dados->NomeUsuario);
+            DadosColuna = DadosColuna->Proximo;
+        }
+    }
+    printf("\n");
+    return Sucesso;
+}

@@ -12,8 +12,6 @@
 #include "structs.h"
 
 Error Inicializar_lista(Lista * lista){
-    Lista * Aux = (Lista*)malloc(sizeof(Lista));
-    lista = Aux;
 
     lista->CountFollows = 0;
     lista->primeira = NULL;
@@ -76,12 +74,14 @@ Boolean Lista_vazia(Lista * lista){
 Error Imprimir_lista(Lista * lista){
     int i;
     Item_lista * Dados_lista = lista->primeira;
+    DataType * Aux;
 
     if(Lista_vazia(lista) != true){
-        printf("Imprimindo dados da lista: \n");
-        printf("Indi.       Info.       Ant.\n");
-        for(i=0;i<(lista->CountFollows);i++){
-            // TO DO impressão
+        printf("Perfis que voce segue: \n");
+        printf(" ID: | User:\n");
+        for(i=0;i<lista->CountFollows;i++){
+            Aux = Dados_lista->DadosItem;
+            printf(" %.2d  | @%-25s\n",Aux->PerfilID,Aux->NomeUsuario);
             Dados_lista = Dados_lista->Proximo; 
         }
         printf("\n");
@@ -105,4 +105,18 @@ Error Limpar_lista(Lista * lista){
     }
     free(lista);
     return Sucesso;
+}
+Boolean DadoContido_lista(Lista * lista, DataType * DadoAlvo){
+    Item_lista * Dados_lista = lista->primeira;
+    Boolean DadoExistente = false; 
+    int i;
+
+    for(i=0;i<lista->CountFollows;i++){
+        if(Dados_lista->DadosItem->PerfilID == DadoAlvo->PerfilID){
+            DadoExistente = true;
+            break;
+        }
+    }
+
+    return DadoExistente;
 }

@@ -23,6 +23,7 @@ DataType * GetPerfilAlvo(HashTable * table);
 Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo);
 Error PerfilNaoEncontrado();
 Error PerfilDeletado(unsigned int id);
+Error Alterar_listaFollows(HashTable * table, DataType * perfil);
 // ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - FIM
 
 #endif /* Interact_h */

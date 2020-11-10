@@ -27,7 +27,9 @@
  *
  *
  *
- *
+ * -- OQUE ESTA PRONTO E FUNCIONANDO --
+ * -> Criar e deletar perfil
+ * -> Alterar informações de um perfil
 */
 
 
@@ -55,9 +57,9 @@ int main(int argc, char const *argv[]){
         printf("+-----------------------------+\n");
         printf("[00] Encerrar.\n");
         printf("[01] Criar perfil.\n");
-        printf("[02] Imprimir dados de uma coluna\n");
-        printf("[03] Alterar dados perfil..\n");
-        printf("[04] Deletar perfil.\n");
+        printf("[02] Alterar dados perfil.\n");
+        printf("[03] Deletar perfil.\n");
+        printf("[04] Imprimir todos os perfis.\n");
         printf("[05] .\n");
         printf("[06] .\n");
         printf("[07] .\n");
@@ -87,31 +89,30 @@ int main(int argc, char const *argv[]){
                 /* EXECUÇÕES:
                 * 
                 */
-                ImprimirDadosColuna(Usuarios,GetColunaAlvo(Usuarios));
+                AlterarInformacoesPerfil(Usuarios,GetPerfilAlvo(Usuarios));
             break;
             case 3:
                 /* EXECUÇÕES:
                 * 
                 */
-                AlterarInformacoesPerfil(Usuarios,GetPerfilAlvo(Usuarios));
+                DeletarPerfil(Usuarios);
             break;
             case 4:
                 /* EXECUÇÕES:
                 * 
                 */
-                DeletarPerfil(Usuarios);
+                ImprimirTODOSPerfis_HashTable(Usuarios);
             break;
             case 5:
                 /* EXECUÇÕES:
                 * 
                 */
-                
+                Alterar_listaFollows(Usuarios,GetPerfilAlvo(Usuarios));
             break;
             case 6:
                 /* EXECUÇÕES:
                 * 
                 */
-                
             break;
             default:
                 /* EXECUÇÕES:

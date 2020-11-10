@@ -16,5 +16,6 @@ Error Remove_dado(DataType * Valor,Lista * lista);
 Boolean Lista_vazia(Lista * lista);
 Error Imprimir_lista(Lista * lista);
 Error Limpar_lista(Lista * lista);
+Boolean DadoContido_lista(Lista * lista, DataType * DadoAlvo);
 
 #endif /* __funcoes_h__ */
