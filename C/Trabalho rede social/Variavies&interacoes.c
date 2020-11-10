@@ -35,6 +35,10 @@ static int GetIdPerfil(){
     static int ID = 1;
     return ID++;
 }
+static int GetIdPost(){
+    static int PostID = 1;
+    return PostID++;
+}
 // IMPLEMENTAÇÃO FUNÇÕES QUE RETORNAM VARIAVEIS DE CONTROLE - FIM
 
 
@@ -91,6 +95,9 @@ DataType * GetInformacoesCriarPerfil(HashTable * table){
     NovoPerfil->PerfilSeguindo = (Followed_list*)malloc(sizeof(Followed_list));
     Inicializar_lista(NovoPerfil->PerfilSeguindo);
 
+    NovoPerfil->Postagens = (ListaPostagens*)malloc(sizeof(ListaPostagens));
+    Inicializar_listaPost(NovoPerfil->Postagens);
+
     printf("\n");
     printf("+---------------------------+\n");
     printf("| Perfil criado com sucesso |\n");
@@ -119,6 +126,12 @@ Error PerfilDeletado(unsigned int id){
     printf("+-------------------------------------+\n\n");
     return Sucesso;
 }
+Error PostNaoEncontrado(){
+    printf("\n+-------------------------+\n");
+    printf("| Postagem nao encontrada |\n");
+    printf("+-------------------------+\n\n");
+    return Sucesso;
+}
 DataType * GetPerfilAlvo(HashTable * table){
     DataType * Alvo = NULL;
     Item_lista * DadosColuna = NULL;
@@ -144,6 +157,23 @@ DataType * GetPerfilAlvo(HashTable * table){
     }
 
     return Alvo;
+}
+Post * GetPostAlvo(ListaPostagens * lista){
+    Item_Post * DadosLista = lista->Primeira;
+    int IDPost;
+    int i;
+
+    printf("Digite o ID da postagem: ");
+    scanf("%d", &IDPost);
+
+    for(i=0;i<lista->NumeroDePostagens;i++){
+        if(DadosLista->dadosItem->ID == IDPost){
+            return DadosLista->dadosItem;
+        }
+        DadosLista = DadosLista->Proxima;
+    }
+
+    return NULL;;
 }
 Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
     int Escolha_do_usuario = Variavel_de_inicio;
@@ -349,6 +379,11 @@ Error Alterar_listaFollows(HashTable * table, DataType * perfil){
     int i;
     int Escolha_do_usuario = Variavel_de_inicio;
 
+    if(perfil == NULL){
+        PerfilNaoEncontrado();
+        return Perfil_inexistente;
+    }
+
     printf("\n+--------------------------------------------+\n");
     printf("| Siga outros perfis para ver suas postagens |\n");
     printf("+--------------------------------------------+\n\n");
@@ -380,6 +415,193 @@ Error Alterar_listaFollows(HashTable * table, DataType * perfil){
             break;
         }
     }
+    return Sucesso;
+}
+Error RealizarPostagem(HashTable * table, DataType * perfil){
+    int i;
+    int Escolha_do_usuario = Variavel_de_inicio;
+    Post * NovaPostagem = (Post*)malloc(sizeof(Post));
+    HashTable * aux = (HashTable*)malloc(sizeof(HashTable));
+
+    printf("+--------------------------------+\n");
+    printf("|   No que voce esta pensando?   |\n");
+    printf("|  Compartilhe com a comunidade! |\n");
+    printf("+--------------------------------+\n\n");
+
+    NovaPostagem->ID = GetIdPost();
+    printf("Digite a mensagem da postagem: ");
+    setbuf(stdin,NULL);
+    scanf("%[^\n]s",NovaPostagem->Postagem);
+    setbuf(stdin,NULL);
+
+    Insere_dadoPost(NovaPostagem,perfil->Postagens);
+    NovaPostagem->Curtidas = aux;
+    InicializarHashTable(NovaPostagem->Curtidas);
+
+    printf("\n+--------------------------------+\n");
+    printf("| Postagem realizada com sucesso |\n");
+    printf("+--------------------------------+\n\n");
+
+    return Sucesso;
+}
+Error DeletarPostagem(HashTable * table, DataType * perfil){
+    Boolean VerListaFollows = false;
+    Post * EncerrarFollow;
+    Error RemoveReturn;
+
+    int Escolha_do_usuario = Variavel_de_inicio;
+
+    printf("Deseja ver uma lista com suas postagens:\n");
+    printf("[00] Sim.\n");
+    printf("[01] Nao.\n");
+    printf("Escolha: ");
+    scanf("%d",&VerListaFollows);
+    printf("\n");
+
+    if(VerListaFollows == true) Imprimir_listaPost(perfil->Postagens,NULL);
+
+    while(Escolha_do_usuario != Encerrar_loop){
+
+        EncerrarFollow = GetPostAlvo(perfil->Postagens);
+        if(EncerrarFollow == NULL){
+            PostNaoEncontrado();
+        }else{
+            RemoveReturn = Remove_dadoPost(EncerrarFollow,perfil->Postagens);
+            if(RemoveReturn == Perfil_inexistente){
+                PostNaoEncontrado();
+            }else if(RemoveReturn == Sucesso){
+                printf("\n+-------------------------------+\n");
+                printf("| Postagem removida com sucesso |\n");
+                printf("+-------------------------------+\n\n");
+            }
+        }
+
+        printf("Deseja realizar mais alteracoes: \n");
+        printf("[00] Nao.\n");
+        printf("[01] Sim.\n");
+        printf("Escolha: ");
+        scanf("%d",&Escolha_do_usuario);
+    }
+    printf("\n");
+
+    return Sucesso;
+}
+Error Alterar_listaPosts(HashTable * table, DataType * perfil){
+    int i;
+    int Escolha_do_usuario = Variavel_de_inicio;
+
+    if(perfil == NULL){
+        PerfilNaoEncontrado();
+        return Perfil_inexistente;
+    }
+
+    printf("\n+---------------------------------+\n");
+    printf("| Manipule suas postagens aqui!!! |\n");
+    printf("+---------------------------------+\n\n");
+    while(Escolha_do_usuario != Encerrar_loop){
+        printf("Oque deseja fazer:\n");
+        printf("[00] Encerrar alteracoes.\n");
+        printf("[01] Realizar nova postagem.\n");
+        printf("[02] Deletar uma postagem existente.\n");
+        printf("Escolha: ");
+        scanf("%d", &Escolha_do_usuario);
+        printf("\n");
+
+        switch (Escolha_do_usuario){
+            case 0:
+                printf("+-----------------------+\n");
+                printf("| Manipulacao encerrada |\n");
+                printf("+-----------------------+\n\n");
+            break;
+            case 1:
+                RealizarPostagem(table,perfil);
+            break;
+            case 2:
+                DeletarPostagem(table,perfil);
+            break;
+            default:
+                printf("+--------------------------------------+\n");
+                printf("| Escolha invalida... Tente novamente! |\n");
+                printf("+--------------------------------------+\n\n");
+            break;
+        }
+    }
+    return Sucesso;
+}
+Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilInicial){
+    int Escolha_do_usuario = Variavel_de_inicio;
+    char UserProcurado[Tamanho_MAX_usuario];
+    int i;
+    int IDPost;
+    Post * Postagem;
+    Item_lista * DadosFollows;
+    Boolean PerfilEncontrado = false;
+
+    if(perfil == NULL)perfil = PerfilInicial;
+    DadosFollows = perfil->PerfilSeguindo->primeira;
+
+    while (Escolha_do_usuario != Encerrar_loop){
+        printf("Oque deseja fazer @%s:\n",PerfilInicial->NomeUsuario);
+        printf("[00] Encerrar.\n");
+        printf("[01] Listar quem @%s segue.\n",perfil->NomeUsuario);
+        printf("[02] Visitar um perfil que @%s segue.\n",perfil->NomeUsuario);
+        printf("[03] Ver as postagens de @%s.\n",perfil->NomeUsuario);
+        printf("[04] Curtir uma postagem de @%s.\n",perfil->NomeUsuario);
+        printf("Escolha: ");
+        scanf("%d", &Escolha_do_usuario);
+        printf("\n");
+
+        switch (Escolha_do_usuario){
+            case 0:
+                printf("+-----------------------+\n");
+                printf("| Manipulacao encerrada |\n");
+                printf("+-----------------------+\n\n");
+            break;
+            case 1:
+                Imprimir_lista(perfil->PerfilSeguindo);
+            break;
+            case 2:
+                printf("Digite o nome de usuario do perfil para visitar:");
+                setbuf(stdin,NULL);
+                scanf("%[^\n]s", UserProcurado);
+                setbuf(stdin,NULL);
+
+                if(DadosFollows != NULL){    
+                    for(i=0;i<perfil->PerfilSeguindo->CountFollows;i++){
+                        if(strcmp(UserProcurado,DadosFollows->DadosItem->NomeUsuario) == 0){
+                            PerfilEncontrado = true;
+                            NavegarEmUmPerfil(table,DadosFollows->DadosItem,PerfilInicial);
+                            if(perfil->PerfilID != PerfilInicial->PerfilID) Escolha_do_usuario = Encerrar_loop;
+                        }
+                        DadosFollows = DadosFollows->Proximo;
+                    }
+                }
+                if(PerfilEncontrado == false)PerfilNaoEncontrado();
+                PerfilEncontrado = false;
+            break;
+            case 3:
+                Imprimir_listaPost(perfil->Postagens,PerfilInicial);
+            break;
+            case 4:
+                Postagem = GetPostAlvo(perfil->Postagens);
+                if(Postagem == NULL) {
+                    PostNaoEncontrado();
+                }else if(DadoExistenteHashTable(Postagem->Curtidas,PerfilInicial) == true){
+                    printf("\n+--------------------------+\n");
+                    printf("| Voce ja curtiu este post |\n");
+                    printf("+--------------------------+\n\n");
+                }else{
+                    InserirHashTable(Postagem->Curtidas,PerfilInicial);
+                }
+            break;
+            default:
+                printf("+--------------------------------------+\n");
+                printf("| Escolha invalida... Tente novamente! |\n");
+                printf("+--------------------------------------+\n\n");
+            break;
+        }
+    }
+
     return Sucesso;
 }
 // IMPLEMENTAÇÃO FUNÇÕES QUE INTERAGEM COM O USUARIO - FIM

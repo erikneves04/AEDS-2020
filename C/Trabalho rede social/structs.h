@@ -17,6 +17,7 @@ typedef struct Perfil_t{
     char NomeUsuario[Tamanho_MAX_usuario];
     char Biografia[Tamanho_MAX_bio];
     struct listaArestra * PerfilSeguindo;
+    struct ListaPostagens_t * Postagens;
 }Perfil;
 typedef Perfil DataType;
 
@@ -26,6 +27,22 @@ typedef struct listaArestra {
     struct Item_lista_t * primeira;
 }Followed_list;
 typedef Followed_list Lista;
+
+// Manipulação de postagens
+typedef struct post_t{
+    unsigned int ID;
+    char Postagem[Tamanho_MAX_post];
+    struct HashTable * Curtidas;
+}Post;
+typedef struct item_post{
+    struct post_t * dadosItem;
+    struct item_post * Anterior;
+    struct item_post * Proxima;
+}Item_Post;
+typedef struct ListaPostagens_t {
+    unsigned int NumeroDePostagens;
+    Item_Post * Primeira;
+}ListaPostagens;
 
 //Armazenamento via Hash Table
 typedef struct Item_lista_t{

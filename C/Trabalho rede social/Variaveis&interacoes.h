@@ -20,10 +20,15 @@ int GetColunaPerfil(char * string);
 DataType * GetInformacoesCriarPerfil(HashTable * table);
 int GetColunaAlvo(HashTable * table);
 DataType * GetPerfilAlvo(HashTable * table);
+Post * GetPostAlvo(ListaPostagens * lista);
 Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo);
 Error PerfilNaoEncontrado();
 Error PerfilDeletado(unsigned int id);
 Error Alterar_listaFollows(HashTable * table, DataType * perfil);
+Error RealizarPostagem(HashTable * table, DataType * perfil);
+Error DeletarPostagem(HashTable * table, DataType * perfil);
+Error Alterar_listaPosts(HashTable * table, DataType * perfil);
+Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilInicial);
 // ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - FIM
 
 #endif /* Interact_h */

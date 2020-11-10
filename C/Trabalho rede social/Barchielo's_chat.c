@@ -17,29 +17,13 @@
 #include "hash.h"
 // INCLUSÃO DE BIBLIOTECAS - FIM
 
-/* -- MINHAS ANOTAÇÕES DURANTE O TRABALHO --
- *
- * -> Os perfis são armazenados em uma tabela hash (baseda no nome de usuario).
- * -> Dentro da struct perfil a uma implementação de grafo para indicar 
- *                      quem o perfil segue.
- * -> 
- *
- *
- *
- *
- * -- OQUE ESTA PRONTO E FUNCIONANDO --
- * -> Criar e deletar perfil
- * -> Alterar informações de um perfil
-*/
-
-
 int main(int argc, char const *argv[]){
 
     // DECLARAÇÃO DE VARIAVEIS AUXILIARES A MAIN - INICIO
     int Escolha_do_usuario = Variavel_de_inicio;
     HashTable * Usuarios = (HashTable*)malloc(sizeof(HashTable));
     // DECLARAÇÃO DE VARIAVEIS AUXILIARES A MAIN - FIM
-
+    
     InicializarHashTable(Usuarios);
 
     // IMPRESSÃO DE MENSAGEM DE BEM VINDO - INCIO
@@ -60,8 +44,8 @@ int main(int argc, char const *argv[]){
         printf("[02] Alterar dados perfil.\n");
         printf("[03] Deletar perfil.\n");
         printf("[04] Imprimir todos os perfis.\n");
-        printf("[05] .\n");
-        printf("[06] .\n");
+        printf("[05] Seguir / parar de seguir.\n");
+        printf("[06] Alterar posts.\n");
         printf("[07] .\n");
         printf("[08] .\n");
         printf("Escolha: ");
@@ -110,6 +94,28 @@ int main(int argc, char const *argv[]){
                 Alterar_listaFollows(Usuarios,GetPerfilAlvo(Usuarios));
             break;
             case 6:
+                /* EXECUÇÕES:
+                * 
+                */
+                Alterar_listaPosts(Usuarios,GetPerfilAlvo(Usuarios));
+            break;
+            case 7:
+                /* EXECUÇÕES:
+                * 
+                */
+                NavegarEmUmPerfil(Usuarios,NULL,GetPerfilAlvo(Usuarios));
+            break;
+            case 8:
+                /* EXECUÇÕES:
+                * 
+                */
+            break;
+            case 9:
+                /* EXECUÇÕES:
+                * 
+                */
+            break;
+            case 10:
                 /* EXECUÇÕES:
                 * 
                 */

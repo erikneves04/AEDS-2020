@@ -2,7 +2,7 @@
  * @file   funcoes.c
  * @brief  Implementaçao das funçoes de manipulaçao de lista duplamente encadeada.
  * @author <Erik Neves>
- * @date   2020-11-07
+ * @date   2020-11-10
 */
 
 #include <stdio.h>
@@ -10,7 +10,10 @@
 #include <string.h>
 #include "constantes.h"
 #include "structs.h"
+#include "hash.h"
+#include "Variaveis&interacoes.h"
 
+// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (DATATYPE) - INICIO
 Error Inicializar_lista(Lista * lista){
 
     lista->CountFollows = 0;
@@ -59,7 +62,7 @@ Error Remove_dado(DataType * Valor,Lista * lista){
                 Dados_lista->Proximo->Anterior = Dados_lista->Anterior;
             }
         }else{
-            Dados_lista->Proximo->Anterior = NULL;
+            if(Dados_lista->Proximo != NULL)Dados_lista->Proximo->Anterior = NULL;
             lista->primeira = Dados_lista->Proximo;
         }
         free(Dados_lista);
@@ -120,3 +123,124 @@ Boolean DadoContido_lista(Lista * lista, DataType * DadoAlvo){
 
     return DadoExistente;
 }
+// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (DATATYPE) - FIM
+
+
+// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (POST) - INICIO
+Error Inicializar_listaPost(ListaPostagens * lista){
+
+    lista->NumeroDePostagens = 0;
+    lista->Primeira = NULL;
+
+    return Sucesso;
+}
+Error Insere_dadoPost(Post * Valor,ListaPostagens * lista){
+    /* INSERE NO INICIO DA LISTA */
+    Item_Post * NovoPost = (Item_Post*)malloc(sizeof(Item_Post));
+
+    NovoPost->dadosItem = Valor;
+    NovoPost->Proxima = lista->Primeira;
+    NovoPost->Anterior = NULL;
+    if(lista->Primeira != NULL){
+        lista->Primeira->Anterior = NovoPost;
+    }
+    lista->NumeroDePostagens++;
+    lista->Primeira = NovoPost;
+
+    return Sucesso;
+}
+Error Remove_dadoPost(Post * Valor,ListaPostagens * lista){
+    int i;
+    Item_Post * Dado_anterior = NULL;
+    Item_Post * Dado_proximo  = NULL;
+    Item_Post * Dados_lista = lista->Primeira;
+
+    Boolean Valor_encontrado = false;
+
+    for(i=0;i<lista->NumeroDePostagens;i++){
+        if(Dados_lista->dadosItem->ID == Valor->ID){
+            Valor_encontrado = true;
+            break;
+        }
+        Dado_anterior = Dados_lista;
+        Dados_lista = Dados_lista->Proxima;
+        Dado_proximo = Dados_lista->Proxima;
+    }
+
+    if(Valor_encontrado == true){
+        lista->NumeroDePostagens--;
+        if(Dados_lista->Anterior != NULL){
+            Dados_lista->Anterior->Proxima = Dados_lista->Proxima;
+            if(Dados_lista->Proxima != NULL){
+                Dados_lista->Proxima->Anterior = Dados_lista->Anterior;
+            }
+        }else{
+            if(Dados_lista->Proxima != NULL)Dados_lista->Proxima->Anterior = NULL;
+            lista->Primeira = Dados_lista->Proxima;
+        }
+        free(Dados_lista);
+    }else if(Valor_encontrado == false){
+        return Perfil_inexistente;
+    }
+    return Sucesso;
+}
+Boolean Lista_vaziaPost(ListaPostagens * lista){
+    return (lista->NumeroDePostagens == 0) ? true : false;
+}
+Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
+    int i;
+    Item_Post * Dados_lista = lista->Primeira;
+    Post * Aux;
+    Boolean Curtiu = false;
+    int ViwsID = (GetColunaPerfil(Visual->NomeUsuario) - 1);
+
+    if(Lista_vaziaPost(lista) != true){
+        printf("Postagens: \n");
+        printf(" ID: | Post:\n");
+        for(i=0;i<lista->NumeroDePostagens;i++){
+            Aux = Dados_lista->dadosItem;
+            Curtiu = DadoExistenteHashTable(Aux->Curtidas,Visual);
+            printf(" %.2d  | %-100s\n",Aux->ID,Aux->Postagem);
+            if(Curtiu == true){
+                printf("-> Voce curtiu essa postagem.\n");
+            }
+            printf("\n");
+            Dados_lista = Dados_lista->Proxima;
+        }
+        printf("\n");
+    }else{
+        return Erro_lista_vazia;
+    }
+    return Sucesso;
+}
+Error Limpar_listaPost(ListaPostagens * lista){
+    Item_Post * Dados_lista = lista->Primeira;
+    Item_Post * Proximo_aux = NULL;
+    int i; 
+
+    if(Lista_vaziaPost(lista) == true){
+        return Erro_lista_vazia;
+    }
+    for(i=0;i<lista->NumeroDePostagens;i++){
+        Proximo_aux = Dados_lista->Proxima;
+        free(Dados_lista);
+        Dados_lista = Proximo_aux;
+    }
+    free(lista);
+    return Sucesso;
+}
+Boolean DadoContido_listaPost(ListaPostagens * lista, unsigned int IDDadoAlvo){
+    Item_Post * Dados_lista = lista->Primeira;
+    Boolean DadoExistente = false; 
+    int i;
+
+    for(i=0;i<lista->NumeroDePostagens;i++){
+        if(Dados_lista->dadosItem->ID == IDDadoAlvo){
+            DadoExistente = true;
+            break;
+        }
+    }
+
+    return DadoExistente;
+}
+// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (POST) - FIM

@@ -14,7 +14,7 @@
 #include "structs.h"
 
 
-static Item_lista * GetColuna(HashTable * table,int ColunaID){
+Item_lista * GetColuna(HashTable * table,int ColunaID){
     Item_lista * DadosColuna = NULL;
 
     if(ColunaID < 0 || ColunaID > table->NumeroDeColunas) return NULL;
@@ -146,4 +146,21 @@ Error ImprimirTODOSPerfis_HashTable(HashTable * table){
     }
     printf("\n");
     return Sucesso;
+}
+Boolean DadoExistenteHashTable(HashTable * table, DataType * dadosItem){
+    Boolean DadoEncontrado = false;
+    int IDColuna = (GetColunaPerfil(dadosItem->NomeUsuario) - 1);
+    Item_lista * DadosColuna;
+
+    DadosColuna = GetColuna(table,IDColuna);
+
+    while(DadosColuna != NULL){
+        if(DadosColuna->DadosItem->PerfilID == dadosItem->PerfilID){
+            DadoEncontrado = true;
+            break;
+        }
+        DadosColuna = DadosColuna->Proximo;
+    } 
+
+    return DadoEncontrado;
 }
