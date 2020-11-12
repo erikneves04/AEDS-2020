@@ -12,6 +12,7 @@
 #include "constantes.h"
 #include "Variaveis&interacoes.h"
 #include "structs.h"
+#include "Manipulacao_ListaEncadeada.h"
 
 
 Item_lista * GetColuna(HashTable * table,int ColunaID){
@@ -86,7 +87,6 @@ Error DeletarPerfil(HashTable * table){
     int ColunaID;
 
     if(Alvo == NULL){
-        printf("#01\n");
         PerfilNaoEncontrado();
         return Perfil_inexistente;
     }
@@ -131,21 +131,59 @@ Error ImprimirTODOSPerfis_HashTable(HashTable * table){
     DataType * dados = NULL;
     Item_lista * DadosColuna = NULL;
     int i;
+    Boolean TituloAtivado = false;
 
-    printf("\n\t+---------------------------------+\n");
-    printf("\t| Imprimindo os perfis existentes |\n");
-    printf("\t+---------------------------------+\n\n");
-    printf(" ID: | User name:\n");
     for(i=0;i<table->NumeroDeColunas;i++){
         DadosColuna = table->DadosTabela[i];
         while(DadosColuna != NULL){
+            if(TituloAtivado == false){
+                TituloAtivado = true;
+                printf("\n\t+---------------------------------+\n");
+                printf("\t| Imprimindo os perfis existentes |\n");
+                printf("\t+---------------------------------+\n\n");
+                printf(" ID: | User name:\n");
+            }
             dados = DadosColuna->DadosItem;
             printf(" %.2d  | %-25s\n",dados->PerfilID,dados->NomeUsuario);
             DadosColuna = DadosColuna->Proximo;
         }
     }
+    if(TituloAtivado == false){
+        printf("\n+------------------------------------------+\n");
+        printf("| Desculpe, mas nao ha perfis cadastrados. |\n");
+        printf("+------------------------------------------+\n");
+    }
     printf("\n");
-    return Sucesso;
+    return (TituloAtivado == true) ? Sucesso : Perfil_inexistente;
+}
+Error ImprimirTODOSCurtidas_HashTable(HashTable * table){
+    DataType * dados = NULL;
+    Item_lista * DadosColuna = NULL;
+    int i;
+    Boolean TituloAtivado = false;
+
+    for(i=0;i<table->NumeroDeColunas;i++){
+        DadosColuna = table->DadosTabela[i];
+        while(DadosColuna != NULL){
+            if(TituloAtivado == false){
+                TituloAtivado = true;
+                printf("\n+------------------------+\n");
+                printf("| Curtidas deste post: |\n");
+                printf("+----------------------+\n\n");
+                printf("| %-25s |\n","User name:");
+            }
+            dados = DadosColuna->DadosItem;
+            printf("| %-25s |\n",dados->NomeUsuario);
+            DadosColuna = DadosColuna->Proximo;
+        }
+    }
+    if(TituloAtivado == false){
+        printf("\n+-------------------------------------------+\n");
+        printf("| Desculpe, mas nao ha curtidas neste post. |\n");
+        printf("+-------------------------------------------+\n");
+    }
+    printf("\n");
+    return (TituloAtivado == true) ? Sucesso : Perfil_inexistente;
 }
 Boolean DadoExistenteHashTable(HashTable * table, DataType * dadosItem){
     Boolean DadoEncontrado = false;
@@ -163,4 +201,40 @@ Boolean DadoExistenteHashTable(HashTable * table, DataType * dadosItem){
     } 
 
     return DadoEncontrado;
+}
+Error LimparUsersHashTable(HashTable * table){
+    int i;
+    Item_lista * DadosColuna;
+    Item_lista * DadosAux;
+
+    for(i=0;i<table->NumeroDeColunas;i++){
+        DadosColuna = table->DadosTabela[i];
+        while(DadosColuna != NULL){
+            DadosAux = DadosColuna->Proximo;
+            Limpar_lista(DadosColuna->DadosItem->PerfilSeguindo);
+            Limpar_listaPost(DadosColuna->DadosItem->Postagens);
+            if(DadosColuna != NULL )free(DadosColuna);
+            DadosColuna = DadosAux;
+        }
+    }
+    free(table);
+
+    return Sucesso;
+}
+Error LimparPostHashTable(HashTable * table){
+    int i;
+    Item_lista * DadosColuna;
+    Item_lista * DadosAux;
+
+    for(i=0;i<table->NumeroDeColunas;i++){
+        DadosColuna = table->DadosTabela[i];
+        while(DadosColuna != NULL){
+            DadosAux = DadosColuna->Proximo;
+            free(DadosColuna);
+            DadosColuna = DadosAux;
+        }
+    }
+    free(table);
+
+    return Sucesso;
 }

@@ -17,6 +17,7 @@ int GetColunaPerfil(char * string);
 
 
 // ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - INICIO
+DataType * AtivarPerfil(HashTable * table,DataType * PerfilAtual);
 DataType * GetInformacoesCriarPerfil(HashTable * table);
 int GetColunaAlvo(HashTable * table);
 DataType * GetPerfilAlvo(HashTable * table);

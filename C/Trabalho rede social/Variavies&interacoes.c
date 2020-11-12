@@ -43,6 +43,80 @@ static int GetIdPost(){
 
 
 // IMPLEMENTAÇÃO FUNÇÕES QUE INTERAGEM COM O USUARIO - INICIO
+Error PerfilNaoEncontrado(){
+    printf("\n+-----------------------+\n");
+    printf("| Perfil nao encontrado |\n");
+    printf("+-----------------------+\n\n");
+    return Sucesso;
+}
+Error AtivacaoDefault(){
+    printf("\n+-----------------------------------------+\n");
+    printf("| Primeiro eh necessario ativar um perfil |\n");
+    printf("+-----------------------------------------+\n\n");
+    return Sucesso;
+}
+DataType * AtivarPerfil(HashTable * table,DataType * PerfilAtual){
+    DataType * PerfilAlvo = NULL;
+    Item_lista * DadosColuna;
+    Boolean PerfilEncontrado = false;
+    Boolean ListarPerfis = false;
+    Boolean ColunaInvalida = false;
+    Error ReturnUser;
+    char NomeProcurado[Tamanho_MAX_usuario];
+    int ColunaID;
+
+    printf("\n\t+-----------------------+\n");
+    printf("\t| Ativacao de um perfil |\n");
+    printf("\t+-----------------------+\n");
+
+    if(PerfilAtual != NULL){
+        printf("Ola @%s, esperamos que retorne em breve.\n\n",PerfilAtual->NomeUsuario);
+    }
+
+    printf("Deseja ver uma lista com os perfis cadastrados:\n");
+    printf("[00] Sim.\n");
+    printf("[01] Nao.\n");
+    printf("Escolha: ");
+    scanf("%d",&ListarPerfis);
+
+    if(ListarPerfis == true) ReturnUser = ImprimirTODOSPerfis_HashTable(table);
+
+    if(ReturnUser != Perfil_inexistente && table->NumeroDeColunas != 0){
+        setbuf(stdin,NULL);
+        printf("\nDigite o nome de usuario do perfil: ");
+        scanf("%[^\n]s", NomeProcurado);
+        setbuf(stdin,NULL);
+    }else{
+        if(ListarPerfis == false){
+            printf("\n+------------------------------------------+\n");
+            printf("| Desculpe, mas nao ha perfis cadastrados. |\n");
+            printf("+------------------------------------------+\n\n");
+        }
+    }
+
+    ColunaID = (GetColunaPerfil(NomeProcurado) - 1);
+    if(ColunaID < 0 || ColunaID >= table->NumeroDeColunas)ColunaInvalida = true;
+    if(table->DadosTabela[ColunaID] == NULL)ColunaInvalida = true;
+
+    if(ColunaInvalida != true){
+        DadosColuna = table->DadosTabela[ColunaID];
+        while(DadosColuna != NULL){
+            if(strcmp(NomeProcurado,DadosColuna->DadosItem->NomeUsuario) == 0){
+                PerfilAlvo = DadosColuna->DadosItem;
+                PerfilEncontrado = true;
+                break;
+            }
+            DadosColuna = DadosColuna->Proximo;
+        }
+    }
+
+    if(PerfilEncontrado == false && ReturnUser == Sucesso)PerfilNaoEncontrado();
+    if(PerfilEncontrado == true){
+        PerfilAtual = PerfilAlvo;
+        printf("Perfil @%s ativado com sucesso.\n\n",PerfilAtual->NomeUsuario);
+    }
+    return PerfilAlvo;
+}
 DataType * GetInformacoesCriarPerfil(HashTable * table){
     DataType * NovoPerfil = (DataType*)malloc(sizeof(DataType));
     Item_lista * DadosColuna = NULL;
@@ -113,12 +187,6 @@ int GetColunaAlvo(HashTable * table){
     scanf("%d", &ColunaID);
 
     return ColunaID;
-}
-Error PerfilNaoEncontrado(){
-    printf("\n+-----------------------+\n");
-    printf("| Perfil nao encontrado |\n");
-    printf("+-----------------------+\n\n");
-    return Sucesso;
 }
 Error PerfilDeletado(unsigned int id){
     printf("\n+-------------------------------------+\n");
@@ -537,16 +605,21 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
     Item_lista * DadosFollows;
     Boolean PerfilEncontrado = false;
 
+    if(PerfilInicial == NULL) AtivacaoDefault();
     if(perfil == NULL)perfil = PerfilInicial;
-    DadosFollows = perfil->PerfilSeguindo->primeira;
+
+    printf("\nPerfil atual: %s\n",perfil->NomeCompleto);
+    printf("Nome de Usuario: %s\n",perfil->NomeUsuario);
+    printf("Biografia: %s\n\n",perfil->Biografia);
 
     while (Escolha_do_usuario != Encerrar_loop){
         printf("Oque deseja fazer @%s:\n",PerfilInicial->NomeUsuario);
         printf("[00] Encerrar.\n");
-        printf("[01] Listar quem @%s segue.\n",perfil->NomeUsuario);
-        printf("[02] Visitar um perfil que @%s segue.\n",perfil->NomeUsuario);
-        printf("[03] Ver as postagens de @%s.\n",perfil->NomeUsuario);
-        printf("[04] Curtir uma postagem de @%s.\n",perfil->NomeUsuario);
+        printf("[01] Listar quem o perfil segue.\n");
+        printf("[02] Visitar um perfil seguido.\n");
+        printf("[03] Ver as postagens.\n");
+        printf("[04] Curtir uma postagem.\n");
+        printf("[05] Descurtir uma postagem.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         printf("\n");
@@ -566,6 +639,7 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                 scanf("%[^\n]s", UserProcurado);
                 setbuf(stdin,NULL);
 
+                DadosFollows = perfil->PerfilSeguindo->primeira;
                 if(DadosFollows != NULL){    
                     for(i=0;i<perfil->PerfilSeguindo->CountFollows;i++){
                         if(strcmp(UserProcurado,DadosFollows->DadosItem->NomeUsuario) == 0){
@@ -576,7 +650,7 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                         DadosFollows = DadosFollows->Proximo;
                     }
                 }
-                if(PerfilEncontrado == false)PerfilNaoEncontrado();
+                if(PerfilEncontrado == false) PerfilNaoEncontrado();
                 PerfilEncontrado = false;
             break;
             case 3:
@@ -592,6 +666,28 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                     printf("+--------------------------+\n\n");
                 }else{
                     InserirHashTable(Postagem->Curtidas,PerfilInicial);
+                }
+            break;
+            case 5:
+                Postagem = GetPostAlvo(perfil->Postagens);
+                if(Postagem == NULL) {
+                    PostNaoEncontrado();
+                }else if(DadoExistenteHashTable(Postagem->Curtidas,PerfilInicial) == false){
+                    printf("\n+----------------------------+\n");
+                    printf("| Voce nao curtiu este post! |\n");
+                    printf("+----------------------------+\n\n");
+                }else{
+                    RemoverDadoHashTable(Postagem->Curtidas,PerfilInicial->NomeUsuario);
+                }
+            break;
+            case 6:
+                Postagem = GetPostAlvo(perfil->Postagens);
+                if(Postagem == NULL) {
+                    PostNaoEncontrado();
+                }else{
+                    printf("Identificador: %.3d\n",Postagem->ID);
+                    printf("Postagem: %s",Postagem->Postagem);
+                    ImprimirTODOSCurtidas_HashTable(Postagem->Curtidas);
                 }
             break;
             default:

@@ -22,6 +22,7 @@ int main(int argc, char const *argv[]){
     // DECLARAÇÃO DE VARIAVEIS AUXILIARES A MAIN - INICIO
     int Escolha_do_usuario = Variavel_de_inicio;
     HashTable * Usuarios = (HashTable*)malloc(sizeof(HashTable));
+    Perfil * AtualUser = NULL;
     // DECLARAÇÃO DE VARIAVEIS AUXILIARES A MAIN - FIM
     
     InicializarHashTable(Usuarios);
@@ -40,14 +41,14 @@ int main(int argc, char const *argv[]){
         printf("| Funcionalidades do software |\n");
         printf("+-----------------------------+\n");
         printf("[00] Encerrar.\n");
-        printf("[01] Criar perfil.\n");
-        printf("[02] Alterar dados perfil.\n");
+        printf("[01] Ativar um perfil.\n");
+        printf("[02] Criar perfil.\n");
         printf("[03] Deletar perfil.\n");
-        printf("[04] Imprimir todos os perfis.\n");
-        printf("[05] Seguir / parar de seguir.\n");
-        printf("[06] Alterar posts.\n");
-        printf("[07] .\n");
-        printf("[08] .\n");
+        printf("[04] Alterar dados perfil.\n");
+        printf("[05] Imprimir todos os perfis.\n");
+        printf("[06] Seguir / parar de seguir.\n");
+        printf("[07] Alterar posts.\n");
+        printf("[08] Navegar pelos perfis.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         // MENU DE FUNCIONALIDADE / ESCOLHA USUARIO - FIM
@@ -64,16 +65,13 @@ int main(int argc, char const *argv[]){
                 printf("            +-----------------------+\n\n");
             break;
             case 1:
-                /* EXECUÇÕES:
-                * 
-                */
-                InserirHashTable(Usuarios,GetInformacoesCriarPerfil(Usuarios));
+                AtualUser = AtivarPerfil(Usuarios,AtualUser);
             break;
             case 2:
                 /* EXECUÇÕES:
                 * 
                 */
-                AlterarInformacoesPerfil(Usuarios,GetPerfilAlvo(Usuarios));
+                InserirHashTable(Usuarios,GetInformacoesCriarPerfil(Usuarios));
             break;
             case 3:
                 /* EXECUÇÕES:
@@ -85,30 +83,31 @@ int main(int argc, char const *argv[]){
                 /* EXECUÇÕES:
                 * 
                 */
-                ImprimirTODOSPerfis_HashTable(Usuarios);
+                AlterarInformacoesPerfil(Usuarios,AtualUser);
             break;
             case 5:
                 /* EXECUÇÕES:
                 * 
                 */
-                Alterar_listaFollows(Usuarios,GetPerfilAlvo(Usuarios));
+                ImprimirTODOSPerfis_HashTable(Usuarios);
             break;
             case 6:
                 /* EXECUÇÕES:
                 * 
                 */
-                Alterar_listaPosts(Usuarios,GetPerfilAlvo(Usuarios));
+                Alterar_listaFollows(Usuarios,AtualUser);
             break;
             case 7:
                 /* EXECUÇÕES:
                 * 
                 */
-                NavegarEmUmPerfil(Usuarios,NULL,GetPerfilAlvo(Usuarios));
+                Alterar_listaPosts(Usuarios,AtualUser);
             break;
             case 8:
                 /* EXECUÇÕES:
                 * 
                 */
+                NavegarEmUmPerfil(Usuarios,NULL,AtualUser);
             break;
             case 9:
                 /* EXECUÇÕES:
@@ -116,6 +115,11 @@ int main(int argc, char const *argv[]){
                 */
             break;
             case 10:
+                /* EXECUÇÕES:
+                * 
+                */
+            break;
+            case 11:
                 /* EXECUÇÕES:
                 * 
                 */
@@ -135,6 +139,7 @@ int main(int argc, char const *argv[]){
 
 
     // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - INICIO
+    LimparUsersHashTable(Usuarios);
     // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - FIM
     
 

@@ -80,7 +80,7 @@ Error Imprimir_lista(Lista * lista){
     DataType * Aux;
 
     if(Lista_vazia(lista) != true){
-        printf("Perfis que voce segue: \n");
+        printf("Perfis seguidos: \n");
         printf(" ID: | User:\n");
         for(i=0;i<lista->CountFollows;i++){
             Aux = Dados_lista->DadosItem;
@@ -119,6 +119,7 @@ Boolean DadoContido_lista(Lista * lista, DataType * DadoAlvo){
             DadoExistente = true;
             break;
         }
+        Dados_lista = Dados_lista->Proximo;
     }
 
     return DadoExistente;
@@ -195,16 +196,17 @@ Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
     int ViwsID = (GetColunaPerfil(Visual->NomeUsuario) - 1);
 
     if(Lista_vaziaPost(lista) != true){
-        printf("Postagens: \n");
+        printf("Postagens(%.2d ultimas): \n",ImpressaoDePosts);
         printf(" ID: | Post:\n");
-        for(i=0;i<lista->NumeroDePostagens;i++){
-            Aux = Dados_lista->dadosItem;
-            Curtiu = DadoExistenteHashTable(Aux->Curtidas,Visual);
-            printf(" %.2d  | %-100s\n",Aux->ID,Aux->Postagem);
-            if(Curtiu == true){
-                printf("-> Voce curtiu essa postagem.\n");
+        for(i=0;i<ImpressaoDePosts;i++){
+            if(i<lista->NumeroDePostagens){
+                Aux = Dados_lista->dadosItem;
+                printf(" %.2d  | %-100s\n",Aux->ID,Aux->Postagem);
+                Curtiu = DadoExistenteHashTable(Aux->Curtidas,Visual);
+                if(Curtiu == true){
+                    printf("-> Voce curtiu essa postagem.\n");
+                }
             }
-            printf("\n");
             Dados_lista = Dados_lista->Proxima;
         }
         printf("\n");
@@ -223,6 +225,7 @@ Error Limpar_listaPost(ListaPostagens * lista){
     }
     for(i=0;i<lista->NumeroDePostagens;i++){
         Proximo_aux = Dados_lista->Proxima;
+        LimparPostHashTable(Dados_lista->dadosItem->Curtidas);
         free(Dados_lista);
         Dados_lista = Proximo_aux;
     }
