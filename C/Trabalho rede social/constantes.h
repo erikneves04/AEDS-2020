@@ -22,6 +22,8 @@ typedef unsigned int Boolean;
 #define Tamanho_MAX_NomeCompleto     (51)
 #define Tamanho_MAX_usuario          (16)
 #define Tamanho_MAX_bio             (101)
+#define Tamanho_MAX_post            (101)
+#define ImpressaoDePosts             (10)
 
 // DEFINIÇÃO DE ERROS        
 typedef unsigned int Error;  
