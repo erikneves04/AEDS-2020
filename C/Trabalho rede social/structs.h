@@ -18,6 +18,7 @@ typedef struct Perfil_t{
     char Biografia[Tamanho_MAX_bio];
     struct listaArestra * PerfilSeguindo;
     struct ListaPostagens_t * Postagens;
+    struct ListaPostagens_t * PostagensCurtidas;
 }Perfil;
 typedef Perfil DataType;
 

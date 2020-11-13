@@ -15,6 +15,7 @@
 #include "constantes.h"
 #include "Manipulacao_ListaEncadeada.h"
 #include "hash.h"
+#include "warnings.h"
 // INCLUSÃO DE BIBLIOTECAS - FIM
 
 
@@ -43,18 +44,7 @@ static int GetIdPost(){
 
 
 // IMPLEMENTAÇÃO FUNÇÕES QUE INTERAGEM COM O USUARIO - INICIO
-Error PerfilNaoEncontrado(){
-    printf("\n+-----------------------+\n");
-    printf("| Perfil nao encontrado |\n");
-    printf("+-----------------------+\n\n");
-    return Sucesso;
-}
-Error AtivacaoDefault(){
-    printf("\n+-----------------------------------------+\n");
-    printf("| Primeiro eh necessario ativar um perfil |\n");
-    printf("+-----------------------------------------+\n\n");
-    return Sucesso;
-}
+
 DataType * AtivarPerfil(HashTable * table,DataType * PerfilAtual){
     DataType * PerfilAlvo = NULL;
     Item_lista * DadosColuna;
@@ -168,9 +158,10 @@ DataType * GetInformacoesCriarPerfil(HashTable * table){
 
     NovoPerfil->PerfilSeguindo = (Followed_list*)malloc(sizeof(Followed_list));
     Inicializar_lista(NovoPerfil->PerfilSeguindo);
-
     NovoPerfil->Postagens = (ListaPostagens*)malloc(sizeof(ListaPostagens));
     Inicializar_listaPost(NovoPerfil->Postagens);
+    NovoPerfil->PostagensCurtidas = (ListaPostagens*)malloc(sizeof(ListaPostagens));
+    Inicializar_listaPost(NovoPerfil->PostagensCurtidas);
 
     printf("\n");
     printf("+---------------------------+\n");
@@ -180,26 +171,7 @@ DataType * GetInformacoesCriarPerfil(HashTable * table){
 
     return NovoPerfil;
 }
-int GetColunaAlvo(HashTable * table){
-    int ColunaID;
 
-    printf("\nDigite o numero da coluna desejada(Max. ID: %.4d): ",table->NumeroDeColunas);
-    scanf("%d", &ColunaID);
-
-    return ColunaID;
-}
-Error PerfilDeletado(unsigned int id){
-    printf("\n+-------------------------------------+\n");
-    printf("| Perfil(ID: %.2d) deletado com sucesso |\n",id);
-    printf("+-------------------------------------+\n\n");
-    return Sucesso;
-}
-Error PostNaoEncontrado(){
-    printf("\n+-------------------------+\n");
-    printf("| Postagem nao encontrada |\n");
-    printf("+-------------------------+\n\n");
-    return Sucesso;
-}
 DataType * GetPerfilAlvo(HashTable * table){
     DataType * Alvo = NULL;
     Item_lista * DadosColuna = NULL;
@@ -268,9 +240,10 @@ Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
         
         printf("\nQual alteracao deseja realizar: \n");
         printf("[00] Encerrar alteracoes.\n");
-        printf("[01] Alterar o nome do perfil.\n");
-        printf("[02] Alterar o nome de usuario.\n");
-        printf("[03] Alterar a biografia.\n");
+        printf("[01] Imprimir os dados atuais.\n");
+        printf("[02] Alterar o nome do perfil.\n");
+        printf("[03] Alterar o nome de usuario.\n");
+        printf("[04] Alterar a biografia.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         printf("\n");
@@ -280,13 +253,18 @@ Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
                 printf("| Encerrando alteracoes |\n");
             break;
             case 1:
+                printf("\nNome: %s\n",DadoAlvo->NomeCompleto);
+                printf("Usuario: %s\n",DadoAlvo->NomeUsuario);
+                printf("Biografia: %s\n\n",DadoAlvo->Biografia);
+            break;
+            case 2:
                 CamposAlterados[0] = true;
                 setbuf(stdin,NULL);
                 printf("\nDigite o novo nome do perfil(Max.:%.3d): ",Tamanho_MAX_NomeCompleto-1);
                 scanf("%[^\n]s", Aux->NomeCompleto);
                 setbuf(stdin,NULL);
             break;
-            case 2:
+            case 3:
                 CamposAlterados[1] = true;
                 setbuf(stdin,NULL);
                 printf("Digite o novo nome de usuario(Max.:%.3d): ",Tamanho_MAX_usuario-1);
@@ -321,7 +299,7 @@ Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
                     printf("\n");
                 }
             break;
-            case 3:
+            case 4:
                 CamposAlterados[2] = true;
                 setbuf(stdin,NULL);
                 printf("Digite sua nova biografia(Max.:%.3d): ",Tamanho_MAX_bio-1);
@@ -341,9 +319,10 @@ Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
     if(CamposAlterados[1] == false) printf("Usuario: %s\n",DadoAlvo->NomeUsuario);
     if(CamposAlterados[2] == true) printf("Biografia: %s\n",Aux->Biografia);
     if(CamposAlterados[2] == false) printf("Biografia: %s\n",DadoAlvo->Biografia);
-    printf("\nDeseja salvar as alteracoes ou deleta-las: \n");
-    printf("[00] Salva-las.\n");
-    printf("[01] Deleta-las.\n");
+    
+    printf("\nDeseja manter ou retroceder: \n");
+    printf("[00] Manter os novos dados.\n");
+    printf("[01] Retroceder aos antigos.\n");
     printf("Escolha: ");
     scanf("%d",&Escolha_do_usuario);
 
@@ -489,7 +468,6 @@ Error RealizarPostagem(HashTable * table, DataType * perfil){
     int i;
     int Escolha_do_usuario = Variavel_de_inicio;
     Post * NovaPostagem = (Post*)malloc(sizeof(Post));
-    HashTable * aux = (HashTable*)malloc(sizeof(HashTable));
 
     printf("+--------------------------------+\n");
     printf("|   No que voce esta pensando?   |\n");
@@ -503,7 +481,7 @@ Error RealizarPostagem(HashTable * table, DataType * perfil){
     setbuf(stdin,NULL);
 
     Insere_dadoPost(NovaPostagem,perfil->Postagens);
-    NovaPostagem->Curtidas = aux;
+    NovaPostagem->Curtidas = (HashTable*)malloc(sizeof(HashTable));;
     InicializarHashTable(NovaPostagem->Curtidas);
 
     printf("\n+--------------------------------+\n");
@@ -514,7 +492,7 @@ Error RealizarPostagem(HashTable * table, DataType * perfil){
 }
 Error DeletarPostagem(HashTable * table, DataType * perfil){
     Boolean VerListaFollows = false;
-    Post * EncerrarFollow;
+    Post * Deletarpost;
     Error RemoveReturn;
 
     int Escolha_do_usuario = Variavel_de_inicio;
@@ -530,11 +508,11 @@ Error DeletarPostagem(HashTable * table, DataType * perfil){
 
     while(Escolha_do_usuario != Encerrar_loop){
 
-        EncerrarFollow = GetPostAlvo(perfil->Postagens);
-        if(EncerrarFollow == NULL){
+        Deletarpost = GetPostAlvo(perfil->Postagens);
+        if(Deletarpost == NULL){
             PostNaoEncontrado();
         }else{
-            RemoveReturn = Remove_dadoPost(EncerrarFollow,perfil->Postagens);
+            RemoveReturn = Remove_dadoPost(Deletarpost,perfil->Postagens);
             if(RemoveReturn == Perfil_inexistente){
                 PostNaoEncontrado();
             }else if(RemoveReturn == Sucesso){
@@ -566,6 +544,7 @@ Error Alterar_listaPosts(HashTable * table, DataType * perfil){
     printf("\n+---------------------------------+\n");
     printf("| Manipule suas postagens aqui!!! |\n");
     printf("+---------------------------------+\n\n");
+
     while(Escolha_do_usuario != Encerrar_loop){
         printf("Oque deseja fazer:\n");
         printf("[00] Encerrar alteracoes.\n");
@@ -605,7 +584,10 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
     Item_lista * DadosFollows;
     Boolean PerfilEncontrado = false;
 
-    if(PerfilInicial == NULL) AtivacaoDefault();
+    if(PerfilInicial == NULL) {
+        AtivacaoDefault();
+        return Perfil_inexistente;
+    }
     if(perfil == NULL)perfil = PerfilInicial;
 
     printf("\nPerfil atual: %s\n",perfil->NomeCompleto);
@@ -620,6 +602,7 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
         printf("[03] Ver as postagens.\n");
         printf("[04] Curtir uma postagem.\n");
         printf("[05] Descurtir uma postagem.\n");
+        printf("[06] Detalhar uma postagem.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         printf("\n");
@@ -665,6 +648,7 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                     printf("| Voce ja curtiu este post |\n");
                     printf("+--------------------------+\n\n");
                 }else{
+                    Insere_dadoPost(Postagem,PerfilInicial->PostagensCurtidas);
                     InserirHashTable(Postagem->Curtidas,PerfilInicial);
                 }
             break;
@@ -677,6 +661,7 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                     printf("| Voce nao curtiu este post! |\n");
                     printf("+----------------------------+\n\n");
                 }else{
+                    Remove_dadoPost(Postagem,PerfilInicial->PostagensCurtidas);
                     RemoverDadoHashTable(Postagem->Curtidas,PerfilInicial->NomeUsuario);
                 }
             break;
@@ -687,7 +672,7 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                 }else{
                     printf("Identificador: %.3d\n",Postagem->ID);
                     printf("Postagem: %s",Postagem->Postagem);
-                    ImprimirTODOSCurtidas_HashTable(Postagem->Curtidas);
+                    ImprimirTODOSCurtidas_HashTable(Postagem);
                 }
             break;
             default:

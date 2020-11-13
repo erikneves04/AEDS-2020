@@ -26,8 +26,9 @@ Error Inicializar_listaPost(ListaPostagens * lista);
 Error Insere_dadoPost(Post * Valor,ListaPostagens * lista);
 Error Remove_dadoPost(Post * Valor,ListaPostagens * lista);
 Boolean Lista_vaziaPost(ListaPostagens * lista);
+Error RemoveCurtidas(ListaPostagens * lista, DataType * Removido);
 Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual);
-Error Limpar_listaPost(ListaPostagens * lista);
+Error Limpar_listaPost(ListaPostagens * lista,Boolean bool);
 Boolean DadoContido_listaPost(ListaPostagens * lista, unsigned int IDDadoAlvo);
 // IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (POST) - INICIO
 

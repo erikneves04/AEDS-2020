@@ -13,6 +13,7 @@
 #include "Variaveis&interacoes.h"
 #include "structs.h"
 #include "Manipulacao_ListaEncadeada.h"
+#include "warnings.h"
 
 
 Item_lista * GetColuna(HashTable * table,int ColunaID){
@@ -45,6 +46,7 @@ Error InserirHashTable(HashTable * table, DataType * dadosItem){
         for(i=table->NumeroDeColunas;i<ColunaID;i++){
             NewTable[i] = NULL;
         }
+        free(table->DadosTabela);
         table->DadosTabela = NewTable;
         table->NumeroDeColunas = ColunaID;
     }
@@ -63,47 +65,56 @@ DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario
     int ColunaId = (GetColunaPerfil(nome) - 1);
     Item_lista * Aux = NULL;
     Item_lista * DadoAnterior = NULL;
-    DataType * DataAux;
+    DataType * DataAux = NULL;
 
     if(table->DadosTabela[ColunaId] == NULL) return NULL; // Coluna inexistente
     Aux = table->DadosTabela[ColunaId];
-   
+    
     while(Aux != NULL){
         if(strcmp(nome,Aux->DadosItem->NomeUsuario) == 0){
-            table->DadosTabela[ColunaId] = Aux->Proximo;
+            if(DadoAnterior == NULL){
+                table->DadosTabela[ColunaId] = Aux->Proximo;
+                if(Aux->Proximo != NULL) Aux->Proximo->Anterior = NULL;
+            }else{
+                DadoAnterior->Proximo = Aux->Proximo;
+                if(Aux->Proximo != NULL) Aux->Proximo->Anterior = NULL;
+            }
             DataAux = Aux->DadosItem;
-            return DataAux;
+            free(Aux);
+            break;
         }
         DadoAnterior = Aux;
         Aux = Aux->Proximo;
     }
 
-    return NULL;
+    return DataAux;
 }
-Error DeletarPerfil(HashTable * table){
-    DataType * Alvo = GetPerfilAlvo(table);
+DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
     DataType * RemoveReturn = NULL;
-    Item_lista * DadosColuna;
-    int ColunaID;
 
     if(Alvo == NULL){
         PerfilNaoEncontrado();
-        return Perfil_inexistente;
+        return Alvo;
     }
-    ColunaID = (GetColunaPerfil(Alvo->NomeUsuario) - 1);
-    DadosColuna = table->DadosTabela[ColunaID];
 
     RemoveReturn = RemoverDadoHashTable(table,Alvo->NomeUsuario);
 
     if(RemoveReturn == NULL){
         PerfilNaoEncontrado();
-        return Perfil_inexistente;
+        return Alvo;
     }else{
+        Imprimir_listaPost(RemoveReturn->PostagensCurtidas,RemoveReturn);
         PerfilDeletado(RemoveReturn->PerfilID);
+        RemoveCurtidas(RemoveReturn->PostagensCurtidas,RemoveReturn);
+        Limpar_listaPost(RemoveReturn->PostagensCurtidas,false);
+        Limpar_lista(RemoveReturn->PerfilSeguindo);
+        Limpar_listaPost(RemoveReturn->Postagens,true);
         free(RemoveReturn);
+        RemoveReturn = NULL;
+        Alvo = NULL;
     }   
 
-    return Sucesso;
+    return Alvo;
 }
 Error ImprimirDadosColuna(HashTable * table, int coluna){
     DataType * dados = NULL;
@@ -156,40 +167,43 @@ Error ImprimirTODOSPerfis_HashTable(HashTable * table){
     printf("\n");
     return (TituloAtivado == true) ? Sucesso : Perfil_inexistente;
 }
-Error ImprimirTODOSCurtidas_HashTable(HashTable * table){
+Error ImprimirTODOSCurtidas_HashTable(Post * postagem){
     DataType * dados = NULL;
     Item_lista * DadosColuna = NULL;
     int i;
     Boolean TituloAtivado = false;
+    HashTable * table;
+
+    table = postagem->Curtidas;
 
     for(i=0;i<table->NumeroDeColunas;i++){
         DadosColuna = table->DadosTabela[i];
         while(DadosColuna != NULL){
             if(TituloAtivado == false){
                 TituloAtivado = true;
-                printf("\n+------------------------+\n");
+                printf("\n+----------------------+\n");
                 printf("| Curtidas deste post: |\n");
-                printf("+----------------------+\n\n");
-                printf("| %-25s |\n","User name:");
+                printf("+----------------------+\n");
+                printf("| %s\n","User name:");
             }
             dados = DadosColuna->DadosItem;
-            printf("| %-25s |\n",dados->NomeUsuario);
+            printf("| %s\n",dados->NomeUsuario);
             DadosColuna = DadosColuna->Proximo;
         }
     }
     if(TituloAtivado == false){
-        printf("\n+-------------------------------------------+\n");
-        printf("| Desculpe, mas nao ha curtidas neste post. |\n");
-        printf("+-------------------------------------------+\n");
+        printf("\n| -> Nao ha curtidas neste post. |\n");
     }
     printf("\n");
     return (TituloAtivado == true) ? Sucesso : Perfil_inexistente;
 }
 Boolean DadoExistenteHashTable(HashTable * table, DataType * dadosItem){
     Boolean DadoEncontrado = false;
-    int IDColuna = (GetColunaPerfil(dadosItem->NomeUsuario) - 1);
+    int IDColuna;
     Item_lista * DadosColuna;
 
+    if(dadosItem == NULL) return false;
+    IDColuna = (GetColunaPerfil(dadosItem->NomeUsuario) - 1);
     DadosColuna = GetColuna(table,IDColuna);
 
     while(DadosColuna != NULL){
@@ -212,7 +226,7 @@ Error LimparUsersHashTable(HashTable * table){
         while(DadosColuna != NULL){
             DadosAux = DadosColuna->Proximo;
             Limpar_lista(DadosColuna->DadosItem->PerfilSeguindo);
-            Limpar_listaPost(DadosColuna->DadosItem->Postagens);
+            Limpar_listaPost(DadosColuna->DadosItem->Postagens,true);
             if(DadosColuna != NULL )free(DadosColuna);
             DadosColuna = DadosAux;
         }

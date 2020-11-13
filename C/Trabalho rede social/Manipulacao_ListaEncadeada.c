@@ -188,26 +188,37 @@ Error Remove_dadoPost(Post * Valor,ListaPostagens * lista){
 Boolean Lista_vaziaPost(ListaPostagens * lista){
     return (lista->NumeroDePostagens == 0) ? true : false;
 }
+Error RemoveCurtidas(ListaPostagens * lista, DataType * Removido){
+    int i;
+    Item_Post * DadosPostagens = lista->Primeira;
+
+    for(i=0;i<lista->NumeroDePostagens;i++){
+        RemoverDadoHashTable(DadosPostagens->dadosItem->Curtidas,Removido->NomeUsuario);
+        DadosPostagens = DadosPostagens->Proxima;
+    }
+
+    return Sucesso;
+}
 Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
     int i;
     Item_Post * Dados_lista = lista->Primeira;
     Post * Aux;
     Boolean Curtiu = false;
-    int ViwsID = (GetColunaPerfil(Visual->NomeUsuario) - 1);
 
     if(Lista_vaziaPost(lista) != true){
         printf("Postagens(%.2d ultimas): \n",ImpressaoDePosts);
         printf(" ID: | Post:\n");
         for(i=0;i<ImpressaoDePosts;i++){
-            if(i<lista->NumeroDePostagens){
+            if(Dados_lista != NULL){
                 Aux = Dados_lista->dadosItem;
-                printf(" %.2d  | %-100s\n",Aux->ID,Aux->Postagem);
+                //CheckExistenciaPerfis_Curtidas(Aux);
+                printf(" %.2d  | %s\n",Aux->ID,Aux->Postagem);
                 Curtiu = DadoExistenteHashTable(Aux->Curtidas,Visual);
                 if(Curtiu == true){
-                    printf("-> Voce curtiu essa postagem.\n");
+                    printf("(%.2d)-> Voce curtiu essa postagem.\n",Aux->ID);
                 }
+                Dados_lista = Dados_lista->Proxima;
             }
-            Dados_lista = Dados_lista->Proxima;
         }
         printf("\n");
     }else{
@@ -215,7 +226,7 @@ Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
     }
     return Sucesso;
 }
-Error Limpar_listaPost(ListaPostagens * lista){
+Error Limpar_listaPost(ListaPostagens * lista,Boolean bool){
     Item_Post * Dados_lista = lista->Primeira;
     Item_Post * Proximo_aux = NULL;
     int i; 
@@ -225,7 +236,7 @@ Error Limpar_listaPost(ListaPostagens * lista){
     }
     for(i=0;i<lista->NumeroDePostagens;i++){
         Proximo_aux = Dados_lista->Proxima;
-        LimparPostHashTable(Dados_lista->dadosItem->Curtidas);
+        if(bool == true)LimparPostHashTable(Dados_lista->dadosItem->Curtidas);
         free(Dados_lista);
         Dados_lista = Proximo_aux;
     }

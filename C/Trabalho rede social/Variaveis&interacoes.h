@@ -19,12 +19,9 @@ int GetColunaPerfil(char * string);
 // ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - INICIO
 DataType * AtivarPerfil(HashTable * table,DataType * PerfilAtual);
 DataType * GetInformacoesCriarPerfil(HashTable * table);
-int GetColunaAlvo(HashTable * table);
 DataType * GetPerfilAlvo(HashTable * table);
 Post * GetPostAlvo(ListaPostagens * lista);
 Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo);
-Error PerfilNaoEncontrado();
-Error PerfilDeletado(unsigned int id);
 Error Alterar_listaFollows(HashTable * table, DataType * perfil);
 Error RealizarPostagem(HashTable * table, DataType * perfil);
 Error DeletarPostagem(HashTable * table, DataType * perfil);

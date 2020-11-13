@@ -41,14 +41,14 @@ int main(int argc, char const *argv[]){
         printf("| Funcionalidades do software |\n");
         printf("+-----------------------------+\n");
         printf("[00] Encerrar.\n");
-        printf("[01] Ativar um perfil.\n");
-        printf("[02] Criar perfil.\n");
-        printf("[03] Deletar perfil.\n");
-        printf("[04] Alterar dados perfil.\n");
-        printf("[05] Imprimir todos os perfis.\n");
-        printf("[06] Seguir / parar de seguir.\n");
-        printf("[07] Alterar posts.\n");
-        printf("[08] Navegar pelos perfis.\n");
+        printf("[01] Ativar/trocar perfil atual.\n");
+        printf("[02] Criar um novo perfil.\n");
+        printf("[03] Deletar perfil atual.\n");
+        printf("[04] Imprimir todos os perfis.\n");
+        printf("[05] Alterar dados do perfil atual.\n");
+        printf("[06] Seguir/deixar de seguir um perfil.\n");
+        printf("[07] Postagens.\n");
+        printf("[08] Visitar perfis.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         // MENU DE FUNCIONALIDADE / ESCOLHA USUARIO - FIM
@@ -77,19 +77,20 @@ int main(int argc, char const *argv[]){
                 /* EXECUÇÕES:
                 * 
                 */
-                DeletarPerfil(Usuarios);
+                AtualUser = DeletarPerfil(Usuarios,AtualUser);
             break;
             case 4:
                 /* EXECUÇÕES:
                 * 
                 */
-                AlterarInformacoesPerfil(Usuarios,AtualUser);
+                ImprimirTODOSPerfis_HashTable(Usuarios);
+                
             break;
             case 5:
                 /* EXECUÇÕES:
                 * 
                 */
-                ImprimirTODOSPerfis_HashTable(Usuarios);
+                AlterarInformacoesPerfil(Usuarios,AtualUser);
             break;
             case 6:
                 /* EXECUÇÕES:
@@ -108,21 +109,6 @@ int main(int argc, char const *argv[]){
                 * 
                 */
                 NavegarEmUmPerfil(Usuarios,NULL,AtualUser);
-            break;
-            case 9:
-                /* EXECUÇÕES:
-                * 
-                */
-            break;
-            case 10:
-                /* EXECUÇÕES:
-                * 
-                */
-            break;
-            case 11:
-                /* EXECUÇÕES:
-                * 
-                */
             break;
             default:
                 /* EXECUÇÕES:
