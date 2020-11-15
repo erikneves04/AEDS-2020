@@ -21,22 +21,32 @@
 
 // IMPLEMENTAÇÃO FUNÇÕES QUE RETORNAM VARIAVEIS DE CONTROLE - INICIO
 int GetColunaPerfil(char * string){
+    /*
+    * Função responsavel por calcular a coluna de uma string em uma tabela hash.
+    * @return identificador para uma coluna.
+    */
     int count = 0;
     int i;
     
     for(i=0;i<strlen(string);i++){
         count += (int)string[i];
     }
-    //printf("%s : %d\n",string,count);
     count =  (count/10);
-    //printf("count : %d\n",count);
     return (int)count;
 }
-static int GetIdPerfil(){
+int GetIdPerfil(){
+    /*
+    * Função responsavel por calcular o id de um novo perfil.
+    * @return identificador.
+    */
     static int ID = 1;
     return ID++;
 }
-static int GetIdPost(){
+int GetIdPost(){
+    /*
+    * Função responsavel por calcular o id de um novo post.
+    * @return identificador.
+    */
     static int PostID = 1;
     return PostID++;
 }
@@ -44,8 +54,11 @@ static int GetIdPost(){
 
 
 // IMPLEMENTAÇÃO FUNÇÕES QUE INTERAGEM COM O USUARIO - INICIO
-
 DataType * AtivarPerfil(HashTable * table,DataType * PerfilAtual){
+    /*
+    * Função responsavel por localizar um perfil para ser ativado.
+    * @return ponteiro para um perfil.
+    */
     DataType * PerfilAlvo = NULL;
     Item_lista * DadosColuna;
     Boolean PerfilEncontrado = false;
@@ -108,6 +121,10 @@ DataType * AtivarPerfil(HashTable * table,DataType * PerfilAtual){
     return PerfilAlvo;
 }
 DataType * GetInformacoesCriarPerfil(HashTable * table){
+    /*
+    * Função responsavel por alocar e coletar as informações de um novo perfil.
+    * @return ponteiro para um novo perfil.
+    */
     DataType * NovoPerfil = (DataType*)malloc(sizeof(DataType));
     Item_lista * DadosColuna = NULL;
     Boolean UsuarioValido = false;
@@ -142,6 +159,7 @@ DataType * GetInformacoesCriarPerfil(HashTable * table){
                 }
             }
         }
+        if(strcmp("",NovoPerfil->NomeUsuario) == 0)UsuarioValido = false;
         if(UsuarioValido == false){
             printf("\n");
             printf("+-------------------------------+\n");
@@ -171,8 +189,11 @@ DataType * GetInformacoesCriarPerfil(HashTable * table){
 
     return NovoPerfil;
 }
-
 DataType * GetPerfilAlvo(HashTable * table){
+    /*
+    * Função responsavel por localizar um perfil procurado.
+    * @return ponteiro para um perfil.
+    */
     DataType * Alvo = NULL;
     Item_lista * DadosColuna = NULL;
     char NomeProcurado[Tamanho_MAX_usuario];
@@ -199,6 +220,10 @@ DataType * GetPerfilAlvo(HashTable * table){
     return Alvo;
 }
 Post * GetPostAlvo(ListaPostagens * lista){
+    /*
+    * Função responsavel por localizar uma postagem existente.
+    * @return ponteiro para uma postagem.
+    */
     Item_Post * DadosLista = lista->Primeira;
     int IDPost;
     int i;
@@ -216,6 +241,10 @@ Post * GetPostAlvo(ListaPostagens * lista){
     return NULL;;
 }
 Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
+    /*
+    * Função responsavel por alterar as informações do pefil ativo atualmente.
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int Escolha_do_usuario = Variavel_de_inicio;
     int i;
     int ColunaID;
@@ -225,7 +254,7 @@ Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
     Item_lista * DadosColuna = NULL;
 
     if(DadoAlvo == NULL){
-        PerfilNaoEncontrado();
+        AtivacaoDefault();
         return Perfil_inexistente;
     }
 
@@ -340,7 +369,10 @@ Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
     return Sucesso;
 }
 Error StartNewFollow(HashTable * table,DataType * perfil){
-    //DataType * NovoFollow = GetPerfilAlvo(table);
+    /*
+    * Função responsavel por identificar e seguir um novo perfil.
+    * @return Sucesso caso ocorra tudo certo.
+    */
     DataType * NovoFollow;
     Boolean ListarPerfis = false;
     int Escolha_do_usuario = Variavel_de_inicio;
@@ -381,6 +413,10 @@ Error StartNewFollow(HashTable * table,DataType * perfil){
     return Sucesso;
 }
 Error StopFollow(HashTable * table, DataType * perfil){
+    /*
+    * Função responsavel por identificar e deixar de seguir um perfil.
+    * @return Sucesso caso ocorra tudo certo.
+    */
     Boolean VerListaFollows = false;
     DataType * EncerrarFollow;
     Error RemoveReturn;
@@ -423,11 +459,15 @@ Error StopFollow(HashTable * table, DataType * perfil){
     return Sucesso;
 }
 Error Alterar_listaFollows(HashTable * table, DataType * perfil){
+    /*
+    * Função que permite o usuario alterar quem ele segue ou ver esses dados.
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int i;
     int Escolha_do_usuario = Variavel_de_inicio;
 
     if(perfil == NULL){
-        PerfilNaoEncontrado();
+        AtivacaoDefault();
         return Perfil_inexistente;
     }
 
@@ -465,6 +505,10 @@ Error Alterar_listaFollows(HashTable * table, DataType * perfil){
     return Sucesso;
 }
 Error RealizarPostagem(HashTable * table, DataType * perfil){
+    /*
+    * Função resposavel por realizar uma nova postagem.
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int i;
     int Escolha_do_usuario = Variavel_de_inicio;
     Post * NovaPostagem = (Post*)malloc(sizeof(Post));
@@ -491,6 +535,10 @@ Error RealizarPostagem(HashTable * table, DataType * perfil){
     return Sucesso;
 }
 Error DeletarPostagem(HashTable * table, DataType * perfil){
+    /*
+    * Função resposavel por apagar uma postagem existente.
+    * @return Sucesso caso ocorra tudo certo.
+    */
     Boolean VerListaFollows = false;
     Post * Deletarpost;
     Error RemoveReturn;
@@ -533,11 +581,15 @@ Error DeletarPostagem(HashTable * table, DataType * perfil){
     return Sucesso;
 }
 Error Alterar_listaPosts(HashTable * table, DataType * perfil){
+    /*
+    * Função que permite o usuario alterar suas postagens ou ver os dados das mesmas.
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int i;
     int Escolha_do_usuario = Variavel_de_inicio;
 
     if(perfil == NULL){
-        PerfilNaoEncontrado();
+        AtivacaoDefault();
         return Perfil_inexistente;
     }
 
@@ -550,6 +602,7 @@ Error Alterar_listaPosts(HashTable * table, DataType * perfil){
         printf("[00] Encerrar alteracoes.\n");
         printf("[01] Realizar nova postagem.\n");
         printf("[02] Deletar uma postagem existente.\n");
+        printf("[03] Imprimir suas postagens.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         printf("\n");
@@ -566,6 +619,9 @@ Error Alterar_listaPosts(HashTable * table, DataType * perfil){
             case 2:
                 DeletarPostagem(table,perfil);
             break;
+            case 3:
+                Imprimir_listaPost(perfil->Postagens,perfil);
+            break;
             default:
                 printf("+--------------------------------------+\n");
                 printf("| Escolha invalida... Tente novamente! |\n");
@@ -576,6 +632,10 @@ Error Alterar_listaPosts(HashTable * table, DataType * perfil){
     return Sucesso;
 }
 Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilInicial){
+    /*
+    * Função que permite o usuario navegar entre os perfis que ele segue e seus conhecidos.
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int Escolha_do_usuario = Variavel_de_inicio;
     char UserProcurado[Tamanho_MAX_usuario];
     int i;

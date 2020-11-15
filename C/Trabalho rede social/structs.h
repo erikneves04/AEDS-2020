@@ -1,14 +1,15 @@
 /**
 * @file   structs.h
-* @brief  Arquibo com estruturas do software.
+* @brief  Arquivo com estruturas do software.
 * @author <Erik Neves>
 * @date   2020-11-08
 */
 #pragma once
-#include "constantes.h"
 
 #ifndef __structs_h__
 #define __structs_h__
+
+#include "constantes.h"
 
 // Dados perfil
 typedef struct Perfil_t{
