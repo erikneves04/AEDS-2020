@@ -6,25 +6,17 @@
  * @date   2020-11-05
 */
 
-// INCLUSÃO DE BIBLIOTECAS - INICIO
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "constantes.h"
 #include "Variaveis&interacoes.h"
 #include "structs.h"
 #include "Manipulacao_ListaEncadeada.h"
 #include "warnings.h"
-// INCLUSÃO DE BIBLIOTECAS - FIM
 
 
 Item_lista * GetColuna(HashTable * table,int ColunaID){
-    /*
-    * Função responsavel por identificar uma coluna em uma tabela hash. 
-    * @return ponteiro para o primeiro item da coluna procurada 
-    *              ou NULL caso a coluna não exista.
-    */
     Item_lista * DadosColuna = NULL;
 
     if(ColunaID < 0 || ColunaID > table->NumeroDeColunas) return NULL;
@@ -35,20 +27,12 @@ Item_lista * GetColuna(HashTable * table,int ColunaID){
 }
 
 Error InicializarHashTable(HashTable * table){
-    /*
-    * Função responsavel por inicializar a estrutura da tabela hash.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     table->NumeroDeColunas = 0;
     table->DadosTabela = (Item_lista**)malloc(sizeof(Item_lista*));
 
     return Sucesso;
 }
 Error InserirHashTable(HashTable * table, DataType * dadosItem){
-    /*
-    * Função responsavel por inserir um dado(DataType) na tabela hash. 
-    * @return Sucesso caso ocorra tudo certo.
-    */
     int ColunaID = GetColunaPerfil(dadosItem->NomeUsuario);
     int i;
     Item_lista ** NewTable = NULL;
@@ -78,10 +62,6 @@ Error InserirHashTable(HashTable * table, DataType * dadosItem){
     return Sucesso;
 }
 DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario]){
-    /*
-    * Função responsavel por remover um dado(DataType) da tabela hash. 
-    * @return ponteiro para um DataType caso ocorra tudo certo.
-    */
     int ColunaId = (GetColunaPerfil(nome) - 1);
     Item_lista * Aux = NULL;
     Item_lista * DadoAnterior = NULL;
@@ -110,14 +90,10 @@ DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario
     return DataAux;
 }
 DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
-    /*
-    * Função responsavel por deletar um dado(DataType) e limpar sua memoria no sistema. 
-    * @return ponteiro para um DataType caso ocorra tudo certo.
-    */
     DataType * RemoveReturn = NULL;
 
     if(Alvo == NULL){
-        AtivacaoDefault();
+        PerfilNaoEncontrado();
         return Alvo;
     }
 
@@ -141,11 +117,6 @@ DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
     return Alvo;
 }
 Error ImprimirDadosColuna(HashTable * table, int coluna){
-    /*
-    * Função responsavel por imprimir os dados de uma coluna.
-    *  -> Por default essa função não está sendo utilizada. 
-    * @return Sucesso caso ocorra tudo certo.
-    */
     DataType * dados = NULL;
     Item_lista * DadosColuna = NULL;
 
@@ -168,10 +139,6 @@ Error ImprimirDadosColuna(HashTable * table, int coluna){
     return Sucesso;
 }
 Error ImprimirTODOSPerfis_HashTable(HashTable * table){
-    /*
-    * Função responsavel por imprimir todos os perfis cadastrados.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     DataType * dados = NULL;
     Item_lista * DadosColuna = NULL;
     int i;
@@ -201,10 +168,6 @@ Error ImprimirTODOSPerfis_HashTable(HashTable * table){
     return (TituloAtivado == true) ? Sucesso : Perfil_inexistente;
 }
 Error ImprimirTODOSCurtidas_HashTable(Post * postagem){
-    /*
-    * Função responsavel por imprimir as curtidas de um determinado post.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     DataType * dados = NULL;
     Item_lista * DadosColuna = NULL;
     int i;
@@ -235,10 +198,6 @@ Error ImprimirTODOSCurtidas_HashTable(Post * postagem){
     return (TituloAtivado == true) ? Sucesso : Perfil_inexistente;
 }
 Boolean DadoExistenteHashTable(HashTable * table, DataType * dadosItem){
-    /*
-    * Função responsavel por verificar se um dado existe em uma tabela hash.
-    * @return Booleano(true or false).
-    */
     Boolean DadoEncontrado = false;
     int IDColuna;
     Item_lista * DadosColuna;
@@ -258,10 +217,6 @@ Boolean DadoExistenteHashTable(HashTable * table, DataType * dadosItem){
     return DadoEncontrado;
 }
 Error LimparUsersHashTable(HashTable * table){
-    /*
-    * Função responsavel por limpar os perfis de uma tabela hash.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     int i;
     Item_lista * DadosColuna;
     Item_lista * DadosAux;
@@ -281,10 +236,6 @@ Error LimparUsersHashTable(HashTable * table){
     return Sucesso;
 }
 Error LimparPostHashTable(HashTable * table){
-    /*
-    * Função responsavel por limpar as curtidas de um post.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     int i;
     Item_lista * DadosColuna;
     Item_lista * DadosAux;

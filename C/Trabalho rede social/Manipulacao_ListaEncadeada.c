@@ -1,38 +1,28 @@
 /*
- * @file   Manipulacao_ListaEncadeada.c
- * @brief  Implementaçao das funções de manipulação de lista duplamente encadeada.
+ * @file   funcoes.c
+ * @brief  Implementaçao das funçoes de manipulaçao de lista duplamente encadeada.
  * @author <Erik Neves>
  * @date   2020-11-10
 */
 
-// INCLUSÃO DE BIBLIOTECAS - INICIO
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "constantes.h"
 #include "structs.h"
 #include "hash.h"
 #include "Variaveis&interacoes.h"
-// INCLUSÃO DE BIBLIOTECAS - FIM
 
-
-// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (MANIPULA PERFIS) - INICIO
+// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (DATATYPE) - INICIO
 Error Inicializar_lista(Lista * lista){
-    /*
-    * Função responsavel por inicializar uma lista.
-    * @return Sucesso caso ocorra tudo certo.
-    */
+
     lista->CountFollows = 0;
     lista->primeira = NULL;
 
     return Sucesso;
 }
 Error Insere_dado(DataType * Valor,Lista * lista){
-    /*
-    * Função responsavel por inserir um dado em uma lista.
-    * @return Sucesso caso ocorra tudo certo.
-    */
+    /* INSERE NO INICIO DA LISTA */
     Item_lista * Novo_dado = (Item_lista*)malloc(sizeof(Item_lista));
 
     Novo_dado->DadosItem = Valor;
@@ -47,10 +37,6 @@ Error Insere_dado(DataType * Valor,Lista * lista){
     return Sucesso;
 }
 Error Remove_dado(DataType * Valor,Lista * lista){
-    /*
-    * Função responsavel por remover um dado em uma lista.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     int i;
     Item_lista * Dado_anterior = NULL;
     Item_lista * Dado_proximo  = NULL;
@@ -86,17 +72,9 @@ Error Remove_dado(DataType * Valor,Lista * lista){
     return Sucesso;
 }
 Boolean Lista_vazia(Lista * lista){
-    /*
-    * Função responsavel por verificar se uma lista esta vazia.
-    * @return Booleano(true or false).
-    */
     return (lista->CountFollows == 0) ? true : false;
 }
 Error Imprimir_lista(Lista * lista){
-    /*
-    * Função responsavel por imprimir os dados uma lista.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     int i;
     Item_lista * Dados_lista = lista->primeira;
     DataType * Aux;
@@ -116,10 +94,6 @@ Error Imprimir_lista(Lista * lista){
     return Sucesso;
 }
 Error Limpar_lista(Lista * lista){
-    /*
-    * Função responsavel por limpar os dados uma lista.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     Item_lista * Dados_lista = lista->primeira;
     Item_lista * Proximo_aux = NULL;
     int i; 
@@ -136,10 +110,6 @@ Error Limpar_lista(Lista * lista){
     return Sucesso;
 }
 Boolean DadoContido_lista(Lista * lista, DataType * DadoAlvo){
-    /*
-    * Função responsavel por verificar se um dado existe em uma vazia.
-    * @return Booleano(true or false).
-    */
     Item_lista * Dados_lista = lista->primeira;
     Boolean DadoExistente = false; 
     int i;
@@ -154,25 +124,19 @@ Boolean DadoContido_lista(Lista * lista, DataType * DadoAlvo){
 
     return DadoExistente;
 }
-// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (MANIPULA PERFIS) - FIM
+// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (DATATYPE) - FIM
 
 
-// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (MANIPULA POSTAGENS) - INICIO
+// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (POST) - INICIO
 Error Inicializar_listaPost(ListaPostagens * lista){
-    /*
-    * Função responsavel por inicializar uma lista.
-    * @return Sucesso caso ocorra tudo certo.
-    */
+
     lista->NumeroDePostagens = 0;
     lista->Primeira = NULL;
 
     return Sucesso;
 }
 Error Insere_dadoPost(Post * Valor,ListaPostagens * lista){
-    /*
-    * Função responsavel por inserir um dado em uma lista.
-    * @return Sucesso caso ocorra tudo certo.
-    */
+    /* INSERE NO INICIO DA LISTA */
     Item_Post * NovoPost = (Item_Post*)malloc(sizeof(Item_Post));
 
     NovoPost->dadosItem = Valor;
@@ -187,10 +151,6 @@ Error Insere_dadoPost(Post * Valor,ListaPostagens * lista){
     return Sucesso;
 }
 Error Remove_dadoPost(Post * Valor,ListaPostagens * lista){
-    /*
-    * Função responsavel por remover um dado em uma lista.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     int i;
     Item_Post * Dado_anterior = NULL;
     Item_Post * Dado_proximo  = NULL;
@@ -226,10 +186,6 @@ Error Remove_dadoPost(Post * Valor,ListaPostagens * lista){
     return Sucesso;
 }
 Boolean Lista_vaziaPost(ListaPostagens * lista){
-    /*
-    * Função responsavel por verificar se uma lista esta vazia.
-    * @return Booleano(true or false).
-    */
     return (lista->NumeroDePostagens == 0) ? true : false;
 }
 Error RemoveCurtidas(ListaPostagens * lista, DataType * Removido){
@@ -244,10 +200,6 @@ Error RemoveCurtidas(ListaPostagens * lista, DataType * Removido){
     return Sucesso;
 }
 Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
-    /*
-    * Função responsavel por imprimir os dados uma lista.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     int i;
     Item_Post * Dados_lista = lista->Primeira;
     Post * Aux;
@@ -259,7 +211,7 @@ Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
         for(i=0;i<ImpressaoDePosts;i++){
             if(Dados_lista != NULL){
                 Aux = Dados_lista->dadosItem;
-                
+                //CheckExistenciaPerfis_Curtidas(Aux);
                 printf(" %.2d  | %s\n",Aux->ID,Aux->Postagem);
                 Curtiu = DadoExistenteHashTable(Aux->Curtidas,Visual);
                 if(Curtiu == true){
@@ -275,10 +227,6 @@ Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
     return Sucesso;
 }
 Error Limpar_listaPost(ListaPostagens * lista,Boolean bool){
-    /*
-    * Função responsavel por limpar os dados uma lista.
-    * @return Sucesso caso ocorra tudo certo.
-    */
     Item_Post * Dados_lista = lista->Primeira;
     Item_Post * Proximo_aux = NULL;
     int i; 
@@ -296,10 +244,6 @@ Error Limpar_listaPost(ListaPostagens * lista,Boolean bool){
     return Sucesso;
 }
 Boolean DadoContido_listaPost(ListaPostagens * lista, unsigned int IDDadoAlvo){
-    /*
-    * Função responsavel por verificar se um dado existe em uma vazia.
-    * @return Booleano(true or false).
-    */
     Item_Post * Dados_lista = lista->Primeira;
     Boolean DadoExistente = false; 
     int i;
@@ -313,4 +257,4 @@ Boolean DadoContido_listaPost(ListaPostagens * lista, unsigned int IDDadoAlvo){
 
     return DadoExistente;
 }
-// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (MANIPULA POSTAGENS) - FIM
+// IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (POST) - FIM

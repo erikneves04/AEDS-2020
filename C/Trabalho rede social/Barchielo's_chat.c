@@ -1,9 +1,9 @@
 /*
  * @file   Barchielo's_chat.c
- * @brief  Arquivo da união dos modulos de controle da 
- *              rede social Barchielo's chat.
+ * @brief  Arquivo da união dos modulos de controle de rede social 
+ *                         Barchielo's chat.
  * @author <Erik Neves>
- * @date   2020-11-15
+ * @date   2020-11-08
 */
 
 // INCLUSÃO DE BIBLIOTECAS - INICIO
@@ -15,22 +15,17 @@
 #include "constantes.h"
 #include "Variaveis&interacoes.h"
 #include "hash.h"
-//#include "DataBase.h"
 // INCLUSÃO DE BIBLIOTECAS - FIM
 
-
 int main(int argc, char const *argv[]){
+
     // DECLARAÇÃO DE VARIAVEIS AUXILIARES A MAIN - INICIO
     int Escolha_do_usuario = Variavel_de_inicio;
-    Perfil * AtualUser = NULL;
     HashTable * Usuarios = (HashTable*)malloc(sizeof(HashTable));
+    Perfil * AtualUser = NULL;
     // DECLARAÇÃO DE VARIAVEIS AUXILIARES A MAIN - FIM
     
-    
-    // INICIALIZAÇÃO DA ESTRUTURA DE ARMAZENAMENTO DOS PERFIS - INICIO
     InicializarHashTable(Usuarios);
-    // INICIALIZAÇÃO DA ESTRUTURA DE ARMAZENAMENTO DOS PERFIS - FIM
-
 
     // IMPRESSÃO DE MENSAGEM DE BEM VINDO - INCIO
     printf("\t+-------------------------------+\n");
@@ -52,10 +47,8 @@ int main(int argc, char const *argv[]){
         printf("[04] Imprimir todos os perfis.\n");
         printf("[05] Alterar dados do perfil atual.\n");
         printf("[06] Seguir/deixar de seguir um perfil.\n");
-        printf("[07] Fazer/Deletar um post.\n");
+        printf("[07] Postagens.\n");
         printf("[08] Visitar perfis.\n");
-        printf("[09] load data.\n");
-        printf("[10] save data.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         // MENU DE FUNCIONALIDADE / ESCOLHA USUARIO - FIM
@@ -66,68 +59,56 @@ int main(int argc, char const *argv[]){
             case 0:
                 /* EXECUÇÕES:
                 * Impressão mensagem de encerramento do software
-                * Chamada da função para realização do salvamento 
-                *            dos dados da rede social
                 */
                 printf("\n            +-----------------------+\n");
                 printf("            | Encerrando o software |\n");
                 printf("            +-----------------------+\n\n");
             break;
             case 1:
-                /* EXECUÇÕES:
-                * Chamada da função para a ativação/troca do perfil que esta em uso
-                */
                 AtualUser = AtivarPerfil(Usuarios,AtualUser);
             break;
             case 2:
                 /* EXECUÇÕES:
-                * Chamada da função para a inserção de um novo perfil
-                * @Param Retorno de uma função que coleta os dados para um novo perfil
+                * 
                 */
                 InserirHashTable(Usuarios,GetInformacoesCriarPerfil(Usuarios));
             break;
             case 3:
                 /* EXECUÇÕES:
-                * Chamada da função que remove o perfil atual do usuario
+                * 
                 */
                 AtualUser = DeletarPerfil(Usuarios,AtualUser);
             break;
             case 4:
                 /* EXECUÇÕES:
-                * Chamada da função que imprime para o usuario todos os perfis cadastrados
+                * 
                 */
                 ImprimirTODOSPerfis_HashTable(Usuarios);
+                
             break;
             case 5:
                 /* EXECUÇÕES:
-                * Chamada da função para realizar alterações nos dados do perfil atual
+                * 
                 */
                 AlterarInformacoesPerfil(Usuarios,AtualUser);
             break;
             case 6:
                 /* EXECUÇÕES:
-                * Chamada da função para seguir ou deixar de seguir um perfil existente
+                * 
                 */
                 Alterar_listaFollows(Usuarios,AtualUser);
             break;
             case 7:
                 /* EXECUÇÕES:
-                * Chamada da função para fazer ou apagar um post
+                * 
                 */
                 Alterar_listaPosts(Usuarios,AtualUser);
             break;
             case 8:
                 /* EXECUÇÕES:
-                * Chamada da função para navegar nos perfis, partindo do atual e podendo atingir
-                *              todos que ele segue, incluindo o que os demais seguem
+                * 
                 */
                 NavegarEmUmPerfil(Usuarios,NULL,AtualUser);
-            break;
-            case 9:
-                //LoadAllSavedData(Usuarios);
-            break;
-            case 10:
-                //SaveAllData(Usuarios);
             break;
             default:
                 /* EXECUÇÕES:

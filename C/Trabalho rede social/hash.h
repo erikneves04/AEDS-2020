@@ -9,7 +9,6 @@
 
 #ifndef __HashTable_h__
 #define __HashTable_h__
-
 #include "constantes.h"
 #include "structs.h"
 
