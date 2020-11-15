@@ -62,7 +62,6 @@ Error InserirHashTable(HashTable * table, DataType * dadosItem){
         for(i=table->NumeroDeColunas;i<ColunaID;i++){
             NewTable[i] = NULL;
         }
-        free(table->DadosTabela);
         table->DadosTabela = NewTable;
         table->NumeroDeColunas = ColunaID;
     }
