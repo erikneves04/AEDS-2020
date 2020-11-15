@@ -9,10 +9,13 @@
 
 #ifndef __Interact_h__
 #define __Interact_h__
+
 #include "structs.h"
 
 // ASSINATURAS DAS FUNÇÕES QUE RETORNAM VARIAVEIS DE CONTROLE - INICIO
 int GetColunaPerfil(char * string);
+int GetIdPerfil();
+int GetIdPost();
 // ASSINATURAS DAS FUNÇÕES QUE RETORNAM VARIAVEIS DE CONTROLE - FIM
 
 

@@ -11,9 +11,12 @@
 #define __Warning_h__
 #include "constantes.h"
 
+// ASSINATURAS DAS FUNÇÕES DE AVISOS - INICIO
 Error PerfilNaoEncontrado();
 Error AtivacaoDefault();
 Error PerfilDeletado(unsigned int id);
 Error PostNaoEncontrado();
+Error ArquivoCorrompido();
+// ASSINATURAS DAS FUNÇÕES DE AVISOS - FIM
 
 #endif /* __Warning_h__ */

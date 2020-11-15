@@ -29,5 +29,6 @@ typedef unsigned int Boolean;
 typedef unsigned int Error;  
 #define Perfil_inexistente           (01)
 #define Erro_lista_vazia             (02)
+#define Arquivo_corrompido           (03)
 
 #endif /* __const_h__ */
