@@ -1,14 +1,15 @@
 /**
 * @file   structs.h
-* @brief  Arquibo com estruturas do software.
+* @brief  Arquivo com estruturas do software.
 * @author <Erik Neves>
 * @date   2020-11-08
 */
 #pragma once
-#include "constantes.h"
 
 #ifndef __structs_h__
 #define __structs_h__
+
+#include "constantes.h"
 
 // Dados perfil
 typedef struct Perfil_t{
@@ -17,7 +18,9 @@ typedef struct Perfil_t{
     char NomeUsuario[Tamanho_MAX_usuario];
     char Biografia[Tamanho_MAX_bio];
     struct listaArestra * PerfilSeguindo;
+    struct listaArestra * Seguidores;
     struct ListaPostagens_t * Postagens;
+    struct ListaPostagens_t * PostagensCurtidas;
 }Perfil;
 typedef Perfil DataType;
 
@@ -52,6 +55,7 @@ typedef struct Item_lista_t{
 }Item_lista;
 typedef struct HashTable{
     unsigned int NumeroDeColunas;
+    unsigned int NumeroDePerfis;
     Item_lista ** DadosTabela;
 }HashTable;
 

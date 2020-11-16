@@ -9,7 +9,7 @@
 #ifndef __const_h__
 #define __const_h__
 
-// DEFINIÇÃO DE BOOLEANOS
+// DEFINIÇÃO DE TIPO BOOLEANO
 typedef unsigned int Boolean;
 #define true                         (00)
 #define false                        (!true)
@@ -29,6 +29,6 @@ typedef unsigned int Boolean;
 typedef unsigned int Error;  
 #define Perfil_inexistente           (01)
 #define Erro_lista_vazia             (02)
-
+#define Arquivo_corrompido           (03)
 
 #endif /* __const_h__ */
