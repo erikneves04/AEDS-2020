@@ -1,9 +1,9 @@
-/*
- * @file   Barchielo's_chat.c
- * @brief  Arquivo da união dos modulos de controle da 
- *              rede social Barchielo's chat.
- * @author <Erik Neves>
- * @date   2020-11-15
+/**
+* @file   Barchielo's_chat.c
+* @brief  Arquivo da união dos modulos de controle da 
+*              rede social Barchielo's chat.
+* @author <Erik Neves>
+* @date   2020-11-15
 */
 
 // INCLUSÃO DE BIBLIOTECAS - INICIO

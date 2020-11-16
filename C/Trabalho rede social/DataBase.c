@@ -6,28 +6,25 @@
 * @date   2020-11-14
 */
 
+// INCLUSÃO DE BIBLIOTECAS - INICIO
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "constantes.h"
 #include "warnings.h"
 #include "structs.h"
 #include "hash.h"
 #include "Variaveis&interacoes.h"
 #include "Manipulacao_ListaEncadeada.h"
+// INCLUSÃO DE BIBLIOTECAS - FIM
 
-//TODO liberação de memoria -- loader
-
-typedef struct EstruturaBin {
-    char Biografia[Tamanho_MAX_bio];
-    char NomeCompleto[Tamanho_MAX_NomeCompleto];
-    char NomeUsuario[Tamanho_MAX_usuario];
-    unsigned int PerfilID;
-    int NumPosts;
-    unsigned int NumFollows;
-}StructFiles;
 
 Error LoadAllSavedData(HashTable * table){
+    /**
+    * Função responsavel por carregar os dados dos arquivos na memória do programa.
+    * @return Sucesso caso tudo ocorra de forma correta.
+    */
     int i,j,k;
     int aux;
     int NumPosts;
@@ -40,6 +37,7 @@ Error LoadAllSavedData(HashTable * table){
     StructFiles DadosLeitura;
     Post * PostsAux;
     Item_Post * ItemPostAux;
+    Boolean EmptyFiles = false;
     long int NumeroDePerfis = 0;
     char UsersNameAux[Tamanho_MAX_usuario];
     int EscritaNomeUsuario = sizeof(char) * Tamanho_MAX_usuario;
@@ -49,6 +47,8 @@ Error LoadAllSavedData(HashTable * table){
     int ** NumeroDeLikes;
 
     DataType ** Perfis;
+
+    int NumeroStaticPerfis,NumeroStaticPosts;
 
     ArquivoPerfis = fopen(".\\saves\\Perfis.bin","r+b");
     ArquivoPostagens = fopen(".\\saves\\Posts.bin","r+b");
@@ -61,10 +61,18 @@ Error LoadAllSavedData(HashTable * table){
     }
 
     fseek(ArquivoPerfis, 0, SEEK_END);
-    NumeroDePerfis = (ftell(ArquivoPerfis)/sizeof(StructFiles));
+    aux = ftell(ArquivoPerfis);
+    NumeroDePerfis = ((aux - (2 * sizeof(int)))/sizeof(StructFiles));
     fseek(ArquivoPerfis, 0, SEEK_SET);
 
-
+    if(aux == 0) EmptyFiles = true;
+    if(EmptyFiles == false){
+        fread(&NumeroStaticPerfis,sizeof(int),1,ArquivoPerfis);
+        for(i=0;i<NumeroStaticPerfis;i++)GetIdPerfil();
+        fread(&NumeroStaticPosts,sizeof(int),1,ArquivoPerfis);
+        for(i=0;i<NumeroStaticPosts;i++)GetIdPost();
+    }
+    
     NumeroDeFollows = (int*)malloc(sizeof(int) * NumeroDePerfis);
     NumeroDeLikes = (int**)malloc(NumeroDePerfis * sizeof(int*));
     Perfis = (DataType**)malloc(sizeof(DataType*) * NumeroDePerfis);
@@ -72,7 +80,6 @@ Error LoadAllSavedData(HashTable * table){
     for(i=0;i<NumeroDePerfis;i++){
         PerfisAux = (DataType*)malloc(sizeof(DataType));
         Perfis[i] = PerfisAux;
-        GetIdPerfil();
         fread(&DadosLeitura,sizeof(StructFiles),1,ArquivoPerfis);
         strcpy(PerfisAux->Biografia,DadosLeitura.Biografia);
         strcpy(PerfisAux->NomeCompleto,DadosLeitura.NomeCompleto);
@@ -91,7 +98,6 @@ Error LoadAllSavedData(HashTable * table){
 
         NumeroDeLikes[i] = (int*)calloc(DadosLeitura.NumPosts,sizeof(int));
         for(j=0;j<DadosLeitura.NumPosts;j++){
-            GetIdPost();
             PostsAux = (Post*)malloc(sizeof(Post));
             PostsAux->Curtidas = (HashTable*)malloc(sizeof(HashTable));;
             InicializarHashTable(PostsAux->Curtidas);
@@ -135,8 +141,11 @@ Error LoadAllSavedData(HashTable * table){
     free(NumeroDeFollows);
     return Sucesso;
 }
-
 Error SaveAllData(HashTable * table){
+    /**
+    * Função responsavel por salvar os dados do programa nos aquivos.
+    * @return Sucesso caso tudo ocorra de forma correta.
+    */
     int i,j,k;
     int aux;
     FILE * ArquivoPerfis;
@@ -160,6 +169,11 @@ Error SaveAllData(HashTable * table){
         ArquivoCorrompido();
         return Arquivo_corrompido;
     }
+
+    aux = (GetIdPerfil()-1);
+    fwrite(&aux,sizeof(int),1,ArquivoPerfis);
+    aux = (GetIdPost()-1);
+    fwrite(&aux,sizeof(int),1,ArquivoPerfis);
 
     for(i=0;i<table->NumeroDeColunas;i++){
         DadosColuna = table->DadosTabela[i];

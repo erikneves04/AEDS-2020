@@ -1,8 +1,8 @@
-/*
- * @file   Manipulacao_ListaEncadeada.c
- * @brief  Implementaçao das funções de manipulação de lista duplamente encadeada.
- * @author <Erik Neves>
- * @date   2020-11-10
+/**
+* @file   Manipulacao_ListaEncadeada.c
+* @brief  Implementaçao das funções de manipulação de lista duplamente encadeada.
+* @author <Erik Neves>
+* @date   2020-11-10
 */
 
 // INCLUSÃO DE BIBLIOTECAS - INICIO
@@ -19,7 +19,7 @@
 
 // IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (MANIPULA PERFIS) - INICIO
 Error Inicializar_lista(Lista * lista){
-    /*
+    /**
     * Função responsavel por inicializar uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -29,7 +29,7 @@ Error Inicializar_lista(Lista * lista){
     return Sucesso;
 }
 Error Insere_dado(DataType * Valor,Lista * lista){
-    /*
+    /**
     * Função responsavel por inserir um dado em uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -47,7 +47,7 @@ Error Insere_dado(DataType * Valor,Lista * lista){
     return Sucesso;
 }
 Error Remove_dado(DataType * Valor,Lista * lista){
-    /*
+    /**
     * Função responsavel por remover um dado em uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -86,14 +86,14 @@ Error Remove_dado(DataType * Valor,Lista * lista){
     return Sucesso;
 }
 Boolean Lista_vazia(Lista * lista){
-    /*
+    /**
     * Função responsavel por verificar se uma lista esta vazia.
     * @return Booleano(true or false).
     */
     return (lista->CountFollows == 0) ? true : false;
 }
 Error Imprimir_lista(Lista * lista){
-    /*
+    /**
     * Função responsavel por imprimir os dados uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -116,7 +116,7 @@ Error Imprimir_lista(Lista * lista){
     return Sucesso;
 }
 Error Limpar_lista(Lista * lista){
-    /*
+    /**
     * Função responsavel por limpar os dados uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -136,7 +136,7 @@ Error Limpar_lista(Lista * lista){
     return Sucesso;
 }
 Boolean DadoContido_lista(Lista * lista, DataType * DadoAlvo){
-    /*
+    /**
     * Função responsavel por verificar se um dado existe em uma vazia.
     * @return Booleano(true or false).
     */
@@ -159,7 +159,7 @@ Boolean DadoContido_lista(Lista * lista, DataType * DadoAlvo){
 
 // IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (MANIPULA POSTAGENS) - INICIO
 Error Inicializar_listaPost(ListaPostagens * lista){
-    /*
+    /**
     * Função responsavel por inicializar uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -169,7 +169,7 @@ Error Inicializar_listaPost(ListaPostagens * lista){
     return Sucesso;
 }
 Error Insere_dadoPost(Post * Valor,ListaPostagens * lista){
-    /*
+    /**
     * Função responsavel por inserir um dado em uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -187,7 +187,7 @@ Error Insere_dadoPost(Post * Valor,ListaPostagens * lista){
     return Sucesso;
 }
 Error Remove_dadoPost(Post * Valor,ListaPostagens * lista){
-    /*
+    /**
     * Função responsavel por remover um dado em uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -226,13 +226,17 @@ Error Remove_dadoPost(Post * Valor,ListaPostagens * lista){
     return Sucesso;
 }
 Boolean Lista_vaziaPost(ListaPostagens * lista){
-    /*
+    /**
     * Função responsavel por verificar se uma lista esta vazia.
     * @return Booleano(true or false).
     */
     return (lista->NumeroDePostagens == 0) ? true : false;
 }
 Error RemoveCurtidas(ListaPostagens * lista, DataType * Removido){
+    /**
+    * Função responsavel por remover as curtidas de todos os posts de um usuario.
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int i;
     Item_Post * DadosPostagens = lista->Primeira;
 
@@ -244,7 +248,7 @@ Error RemoveCurtidas(ListaPostagens * lista, DataType * Removido){
     return Sucesso;
 }
 Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
-    /*
+    /**
     * Função responsavel por imprimir os dados uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -277,7 +281,7 @@ Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
     return Sucesso;
 }
 Error Limpar_listaPost(ListaPostagens * lista,Boolean bool){
-    /*
+    /**
     * Função responsavel por limpar os dados uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -298,7 +302,7 @@ Error Limpar_listaPost(ListaPostagens * lista,Boolean bool){
     return Sucesso;
 }
 Boolean DadoContido_listaPost(ListaPostagens * lista, unsigned int IDDadoAlvo){
-    /*
+    /**
     * Função responsavel por verificar se um dado existe em uma vazia.
     * @return Booleano(true or false).
     */

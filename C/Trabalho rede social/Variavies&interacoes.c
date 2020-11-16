@@ -1,9 +1,9 @@
-/*
- * @file   Variaveis&interacoes.c
- * @brief  Arquivo com implementação das funções para interagir com o usuario
- *                  & variavies constantemente acessadas.
- * @author <Erik Neves>
- * @date   2020-11-08
+/**
+* @file   Variaveis&interacoes.c
+* @brief  Arquivo com implementação das funções para interagir com o usuario
+*                  & variavies constantemente acessadas.
+* @author <Erik Neves>
+* @date   2020-11-08
 */
 
 // INCLUSÃO DE BIBLIOTECAS - INICIO
@@ -21,7 +21,7 @@
 
 // IMPLEMENTAÇÃO FUNÇÕES QUE RETORNAM VARIAVEIS DE CONTROLE - INICIO
 int GetColunaPerfil(char * string){
-    /*
+    /**
     * Função responsavel por calcular a coluna de uma string em uma tabela hash.
     * @return identificador para uma coluna.
     */
@@ -35,7 +35,7 @@ int GetColunaPerfil(char * string){
     return (int)count;
 }
 int GetIdPerfil(){
-    /*
+    /**
     * Função responsavel por calcular o id de um novo perfil.
     * @return identificador.
     */
@@ -43,7 +43,7 @@ int GetIdPerfil(){
     return ID++;
 }
 int GetIdPost(){
-    /*
+    /**
     * Função responsavel por calcular o id de um novo post.
     * @return identificador.
     */
@@ -55,7 +55,7 @@ int GetIdPost(){
 
 // IMPLEMENTAÇÃO FUNÇÕES QUE INTERAGEM COM O USUARIO - INICIO
 DataType * AtivarPerfil(HashTable * table,DataType * PerfilAtual){
-    /*
+    /**
     * Função responsavel por localizar um perfil para ser ativado.
     * @return ponteiro para um perfil.
     */
@@ -121,7 +121,7 @@ DataType * AtivarPerfil(HashTable * table,DataType * PerfilAtual){
     return PerfilAlvo;
 }
 DataType * GetInformacoesCriarPerfil(HashTable * table){
-    /*
+    /**
     * Função responsavel por alocar e coletar as informações de um novo perfil.
     * @return ponteiro para um novo perfil.
     */
@@ -192,7 +192,7 @@ DataType * GetInformacoesCriarPerfil(HashTable * table){
     return NovoPerfil;
 }
 DataType * GetPerfilAlvo(HashTable * table){
-    /*
+    /**
     * Função responsavel por localizar um perfil procurado.
     * @return ponteiro para um perfil.
     */
@@ -222,7 +222,7 @@ DataType * GetPerfilAlvo(HashTable * table){
     return Alvo;
 }
 Post * GetPostAlvo(ListaPostagens * lista){
-    /*
+    /**
     * Função responsavel por localizar uma postagem existente.
     * @return ponteiro para uma postagem.
     */
@@ -243,7 +243,7 @@ Post * GetPostAlvo(ListaPostagens * lista){
     return NULL;;
 }
 Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
-    /*
+    /**
     * Função responsavel por alterar as informações do pefil ativo atualmente.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -371,7 +371,7 @@ Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo){
     return Sucesso;
 }
 Error StartNewFollow(HashTable * table,DataType * perfil){
-    /*
+    /**
     * Função responsavel por identificar e seguir um novo perfil.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -416,7 +416,7 @@ Error StartNewFollow(HashTable * table,DataType * perfil){
     return Sucesso;
 }
 Error StopFollow(HashTable * table, DataType * perfil){
-    /*
+    /**
     * Função responsavel por identificar e deixar de seguir um perfil.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -463,7 +463,7 @@ Error StopFollow(HashTable * table, DataType * perfil){
     return Sucesso;
 }
 Error Alterar_listaFollows(HashTable * table, DataType * perfil){
-    /*
+    /**
     * Função que permite o usuario alterar quem ele segue ou ver esses dados.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -517,7 +517,7 @@ Error Alterar_listaFollows(HashTable * table, DataType * perfil){
     return Sucesso;
 }
 Error RealizarPostagem(HashTable * table, DataType * perfil){
-    /*
+    /**
     * Função resposavel por realizar uma nova postagem.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -547,7 +547,7 @@ Error RealizarPostagem(HashTable * table, DataType * perfil){
     return Sucesso;
 }
 Error DeletarPostagem(HashTable * table, DataType * perfil){
-    /*
+    /**
     * Função resposavel por apagar uma postagem existente.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -593,7 +593,7 @@ Error DeletarPostagem(HashTable * table, DataType * perfil){
     return Sucesso;
 }
 Error Alterar_listaPosts(HashTable * table, DataType * perfil){
-    /*
+    /**
     * Função que permite o usuario alterar suas postagens ou ver os dados das mesmas.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -644,7 +644,7 @@ Error Alterar_listaPosts(HashTable * table, DataType * perfil){
     return Sucesso;
 }
 Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilInicial){
-    /*
+    /**
     * Função que permite o usuario navegar entre os perfis que ele segue e seus conhecidos.
     * @return Sucesso caso ocorra tudo certo.
     */

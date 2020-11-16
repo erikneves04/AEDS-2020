@@ -47,7 +47,7 @@ typedef struct ListaPostagens_t {
     Item_Post * Primeira;
 }ListaPostagens;
 
-//Armazenamento via Hash Table
+// Armazenamento via Hash Table
 typedef struct Item_lista_t{
     DataType * DadosItem;
     struct Item_lista_t * Anterior;
@@ -58,5 +58,15 @@ typedef struct HashTable{
     unsigned int NumeroDePerfis;
     Item_lista ** DadosTabela;
 }HashTable;
+
+// Armazenamento binário em arquivos
+typedef struct EstruturaBin {
+    char Biografia[Tamanho_MAX_bio];
+    char NomeCompleto[Tamanho_MAX_NomeCompleto];
+    char NomeUsuario[Tamanho_MAX_usuario];
+    unsigned int PerfilID;
+    int NumPosts;
+    unsigned int NumFollows;
+}StructFiles;
 
 #endif /* structs_h */
