@@ -41,6 +41,7 @@ Error InicializarHashTable(HashTable * table){
     */
     table->NumeroDeColunas = 0;
     table->DadosTabela = (Item_lista**)malloc(sizeof(Item_lista*));
+    table->NumeroDePerfis = 0;
 
     return Sucesso;
 }
@@ -57,6 +58,7 @@ Error InserirHashTable(HashTable * table, DataType * dadosItem){
 
     NovoItemTabela->DadosItem = dadosItem;
     NovoItemTabela->Proximo = NULL;
+    table->NumeroDePerfis++;
     if(table->NumeroDeColunas < ColunaID){
         NewTable = (Item_lista**)realloc(table->DadosTabela,sizeof(Item_lista*) * ColunaID);
         for(i=table->NumeroDeColunas;i<ColunaID;i++){
@@ -100,6 +102,7 @@ DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario
             }
             DataAux = Aux->DadosItem;
             free(Aux);
+            table->NumeroDePerfis--;
             break;
         }
         DadoAnterior = Aux;
@@ -108,12 +111,29 @@ DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario
 
     return DataAux;
 }
+Error RemoverIndexPost_PerfisQCurtiram(Post * postagem){
+    int i;
+    Item_lista * DadosCurtidas;//postagem->Curtidas->DadosTabela;
+
+    for(i=0;i<postagem->Curtidas->NumeroDeColunas;i++){
+        DadosCurtidas = postagem->Curtidas->DadosTabela[i];
+        while(DadosCurtidas != NULL){
+            Remove_dadoPost(postagem,DadosCurtidas->DadosItem->PostagensCurtidas);
+            DadosCurtidas = DadosCurtidas->Proximo;
+        }
+    }
+
+    return Sucesso;
+}
 DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
     /*
     * Função responsavel por deletar um dado(DataType) e limpar sua memoria no sistema. 
     * @return ponteiro para um DataType caso ocorra tudo certo.
     */
     DataType * RemoveReturn = NULL;
+    Item_Post * DadosPosts = NULL;
+    Item_lista * DadosPerfis = NULL;
+    int i;
 
     if(Alvo == NULL){
         AtivacaoDefault();
@@ -124,13 +144,31 @@ DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
 
     if(RemoveReturn == NULL){
         PerfilNaoEncontrado();
-        return Alvo;
     }else{
-        Imprimir_listaPost(RemoveReturn->PostagensCurtidas,RemoveReturn);
         PerfilDeletado(RemoveReturn->PerfilID);
         RemoveCurtidas(RemoveReturn->PostagensCurtidas,RemoveReturn);
+        
+        DadosPosts = RemoveReturn->Postagens->Primeira;
+        for(i=0;i<RemoveReturn->Postagens->NumeroDePostagens;i++){
+            RemoverIndexPost_PerfisQCurtiram(DadosPosts->dadosItem);
+            DadosPosts = DadosPosts->Proxima;
+        }
         Limpar_listaPost(RemoveReturn->PostagensCurtidas,false);
+        
+        DadosPerfis = RemoveReturn->PerfilSeguindo->primeira;
+        for(i=0;i<RemoveReturn->PerfilSeguindo->CountFollows;i++){
+            Remove_dado(RemoveReturn,DadosPerfis->DadosItem->Seguidores);
+            DadosPerfis = DadosPerfis->Proximo;
+        }
         Limpar_lista(RemoveReturn->PerfilSeguindo);
+
+        DadosPerfis = RemoveReturn->Seguidores->primeira;
+        for(i=0;i<RemoveReturn->Seguidores->CountFollows;i++){
+            Remove_dado(RemoveReturn,DadosPerfis->DadosItem->PerfilSeguindo);
+            DadosPerfis = DadosPerfis->Proximo;
+        }
+        Limpar_lista(RemoveReturn->Seguidores);
+
         Limpar_listaPost(RemoveReturn->Postagens,true);
         free(RemoveReturn);
         RemoveReturn = NULL;
@@ -270,6 +308,7 @@ Error LimparUsersHashTable(HashTable * table){
         while(DadosColuna != NULL){
             DadosAux = DadosColuna->Proximo;
             Limpar_lista(DadosColuna->DadosItem->PerfilSeguindo);
+            Limpar_lista(DadosColuna->DadosItem->Seguidores);
             Limpar_listaPost(DadosColuna->DadosItem->Postagens,true);
             if(DadosColuna != NULL )free(DadosColuna);
             DadosColuna = DadosAux;
@@ -299,4 +338,28 @@ Error LimparPostHashTable(HashTable * table){
     free(table);
 
     return Sucesso;
+}
+DataType * GetPerfilAlvo_NoInteract(HashTable * table, char NomeProcurado[Tamanho_MAX_usuario]){
+    /*
+    * Função responsavel por localizar um perfil procurado.
+    * @return ponteiro para um perfil.
+    */
+    DataType * Alvo = NULL;
+    Item_lista * DadosColuna = NULL;
+    int ColunaID;
+
+    ColunaID = (GetColunaPerfil(NomeProcurado) - 1);
+    if(ColunaID < 0 || ColunaID >= table->NumeroDeColunas) return Alvo;
+    if(table->DadosTabela[ColunaID] == NULL) return Alvo;
+
+    DadosColuna = table->DadosTabela[ColunaID];
+    while(DadosColuna != NULL){
+        if(strcmp(NomeProcurado,DadosColuna->DadosItem->NomeUsuario) == 0){
+            Alvo = DadosColuna->DadosItem;
+            break;
+        }
+        DadosColuna = DadosColuna->Proximo;
+    }
+
+    return Alvo;
 }

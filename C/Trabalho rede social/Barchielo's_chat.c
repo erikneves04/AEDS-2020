@@ -15,28 +15,28 @@
 #include "constantes.h"
 #include "Variaveis&interacoes.h"
 #include "hash.h"
-//#include "DataBase.h"
+#include "DataBase.h"
 // INCLUSÃO DE BIBLIOTECAS - FIM
 
 
 int main(int argc, char const *argv[]){
     // DECLARAÇÃO DE VARIAVEIS AUXILIARES A MAIN - INICIO
-    int Escolha_do_usuario = Variavel_de_inicio;
     Perfil * AtualUser = NULL;
+    int Escolha_do_usuario = Variavel_de_inicio;
     HashTable * Usuarios = (HashTable*)malloc(sizeof(HashTable));
     // DECLARAÇÃO DE VARIAVEIS AUXILIARES A MAIN - FIM
     
     
-    // INICIALIZAÇÃO DA ESTRUTURA DE ARMAZENAMENTO DOS PERFIS - INICIO
+    /* INICIALIZAÇÃO DA ESTRUTURA DE ARMAZENAMENTO DOS PERFIS */
     InicializarHashTable(Usuarios);
-    // INICIALIZAÇÃO DA ESTRUTURA DE ARMAZENAMENTO DOS PERFIS - FIM
 
+    /* CARREGAMENTO DOS DADOS ANTERIORES */
+    LoadAllSavedData(Usuarios);
 
-    // IMPRESSÃO DE MENSAGEM DE BEM VINDO - INCIO
+    /* IMPRESSÃO DE MENSAGEM DE BEM VINDO */
     printf("\t+-------------------------------+\n");
     printf("\t| BEM VINDO AO BARCHIELO'S CHAT |\n");
     printf("\t+-------------------------------+\n\n");
-    // IMPRESSÃO DE MENSAGEM DE BEM VINDO - FIM
 
 
     // EXECUÇÃO DO LOOP PARA TER ACESSO AOS MODULOS DO SOFTWARE - INICIO
@@ -54,8 +54,6 @@ int main(int argc, char const *argv[]){
         printf("[06] Seguir/deixar de seguir um perfil.\n");
         printf("[07] Fazer/Deletar um post.\n");
         printf("[08] Visitar perfis.\n");
-        printf("[09] load data.\n");
-        printf("[10] save data.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         // MENU DE FUNCIONALIDADE / ESCOLHA USUARIO - FIM
@@ -123,12 +121,6 @@ int main(int argc, char const *argv[]){
                 */
                 NavegarEmUmPerfil(Usuarios,NULL,AtualUser);
             break;
-            case 9:
-                //LoadAllSavedData(Usuarios);
-            break;
-            case 10:
-                //SaveAllData(Usuarios);
-            break;
             default:
                 /* EXECUÇÕES:
                 * Impressão informando escolha invalida dentre as opções
@@ -143,12 +135,12 @@ int main(int argc, char const *argv[]){
     // EXECUÇÃO DO LOOP PARA TER ACESSO AOS MODULOS DO SOFTWARE - FIM
 
 
-    // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - INICIO
-    LimparUsersHashTable(Usuarios);
-    // LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO - FIM
-    
+    /* SAVE DOS DADOS ATUAIS */
+    SaveAllData(Usuarios);
 
-    // FINALIZAÇÃO COM EXITO DO SOFTWARE - INICIO
+    /* LIBERAÇÃO DE MEMORIA ANTES DO ENCERRAMENTO */
+    LimparUsersHashTable(Usuarios);    
+
+    /* FINALIZAÇÃO COM EXITO DO SOFTWARE */
     return Sucesso;
-    // FINALIZAÇÃO COM EXITO DO SOFTWARE - FIM
 }

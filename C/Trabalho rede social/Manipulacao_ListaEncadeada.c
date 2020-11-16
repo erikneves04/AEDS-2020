@@ -102,7 +102,7 @@ Error Imprimir_lista(Lista * lista){
     DataType * Aux;
 
     if(Lista_vazia(lista) != true){
-        printf("Perfis seguidos: \n");
+        printf("Perfis: \n");
         printf(" ID: | User:\n");
         for(i=0;i<lista->CountFollows;i++){
             Aux = Dados_lista->DadosItem;
@@ -249,12 +249,14 @@ Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
     * @return Sucesso caso ocorra tudo certo.
     */
     int i;
+    int NumeroDePosts = lista->NumeroDePostagens;
     Item_Post * Dados_lista = lista->Primeira;
     Post * Aux;
     Boolean Curtiu = false;
 
     if(Lista_vaziaPost(lista) != true){
-        printf("Postagens(%.2d ultimas): \n",ImpressaoDePosts);
+        if(NumeroDePosts > ImpressaoDePosts) NumeroDePosts = ImpressaoDePosts;
+        printf("Postagens(%.2d ultimas): \n",NumeroDePosts);
         printf(" ID: | Post:\n");
         for(i=0;i<ImpressaoDePosts;i++){
             if(Dados_lista != NULL){

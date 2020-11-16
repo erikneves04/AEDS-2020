@@ -176,6 +176,8 @@ DataType * GetInformacoesCriarPerfil(HashTable * table){
 
     NovoPerfil->PerfilSeguindo = (Followed_list*)malloc(sizeof(Followed_list));
     Inicializar_lista(NovoPerfil->PerfilSeguindo);
+    NovoPerfil->Seguidores = (Followed_list*)malloc(sizeof(Followed_list));
+    Inicializar_lista(NovoPerfil->Seguidores);
     NovoPerfil->Postagens = (ListaPostagens*)malloc(sizeof(ListaPostagens));
     Inicializar_listaPost(NovoPerfil->Postagens);
     NovoPerfil->PostagensCurtidas = (ListaPostagens*)malloc(sizeof(ListaPostagens));
@@ -400,6 +402,7 @@ Error StartNewFollow(HashTable * table,DataType * perfil){
             printf("+---------------------------+\n\n");
         }else{
             Insere_dado(NovoFollow,perfil->PerfilSeguindo);
+            Insere_dado(perfil,NovoFollow->Seguidores);
         }
 
         printf("Deseja seguir mais perfis: \n");
@@ -442,6 +445,7 @@ Error StopFollow(HashTable * table, DataType * perfil){
             if(RemoveReturn == Perfil_inexistente){
                 PerfilNaoEncontrado();
             }else if(RemoveReturn == Sucesso){
+                Remove_dado(perfil,EncerrarFollow->Seguidores);
                 printf("\n+-----------------------------+\n");
                 printf("| Follow removido com sucesso |\n");
                 printf("+-----------------------------+\n\n");
@@ -479,6 +483,8 @@ Error Alterar_listaFollows(HashTable * table, DataType * perfil){
         printf("[00] Encerrar buscas.\n");
         printf("[01] Seguir um novo perfil.\n");
         printf("[02] Deixar de serguir um perfil.\n");
+        printf("[03] Ver os perfis que voce segue.\n");
+        printf("[04] Ver os perfis que seguem voce.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         printf("\n");
@@ -494,6 +500,12 @@ Error Alterar_listaFollows(HashTable * table, DataType * perfil){
             break;
             case 2:
                 StopFollow(table,perfil);
+            break;
+            case 3:
+                Imprimir_lista(perfil->PerfilSeguindo);
+            break;
+            case 4:
+                Imprimir_lista(perfil->Seguidores);
             break;
             default:
                 printf("+--------------------------------------+\n");
