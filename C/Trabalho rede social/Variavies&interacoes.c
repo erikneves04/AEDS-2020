@@ -17,6 +17,7 @@
 #include "hash.h"
 #include "warnings.h"
 #include "Recomendacoes.h"
+#include "Buscas.h"
 // INCLUSÃO DE BIBLIOTECAS - FIM
 
 
@@ -676,11 +677,12 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
         printf("Oque deseja fazer @%s:\n",PerfilInicial->NomeUsuario);
         printf("[00] Encerrar.\n");
         printf("[01] Listar quem o perfil segue.\n");
-        printf("[02] Visitar um perfil seguido.\n");
-        printf("[03] Ver as postagens.\n");
-        printf("[04] Curtir uma postagem.\n");
-        printf("[05] Descurtir uma postagem.\n");
-        printf("[06] Detalhar uma postagem.\n");
+        printf("[02] Listar os perfis a uma destancia de %d.\n",DistanciaListagemConhecidos);
+        printf("[03] Visitar um perfil seguido.\n");
+        printf("[04] Ver as postagens.\n");
+        printf("[05] Curtir uma postagem.\n");
+        printf("[06] Descurtir uma postagem.\n");
+        printf("[07] Detalhar uma postagem.\n");
         printf("Escolha: ");
         scanf("%d", &Escolha_do_usuario);
         printf("\n");
@@ -695,6 +697,9 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                 Imprimir_lista(perfil->PerfilSeguindo);
             break;
             case 2:
+                BuscarDeSeguidores_Largura(perfil,table);
+            break;
+            case 3:
                 printf("Digite o nome de usuario do perfil para visitar:");
                 setbuf(stdin,NULL);
                 scanf("%[^\n]s", UserProcurado);
@@ -714,10 +719,10 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                 if(PerfilEncontrado == false) PerfilNaoEncontrado();
                 PerfilEncontrado = false;
             break;
-            case 3:
+            case 4:
                 Imprimir_listaPost(perfil->Postagens,PerfilInicial);
             break;
-            case 4:
+            case 5:
                 Postagem = GetPostAlvo(perfil->Postagens);
                 if(Postagem == NULL) {
                     PostNaoEncontrado();
@@ -730,7 +735,7 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                     InserirHashTable(Postagem->Curtidas,PerfilInicial);
                 }
             break;
-            case 5:
+            case 6:
                 Postagem = GetPostAlvo(perfil->Postagens);
                 if(Postagem == NULL) {
                     PostNaoEncontrado();
@@ -743,7 +748,7 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                     RemoverDadoHashTable(Postagem->Curtidas,PerfilInicial->NomeUsuario);
                 }
             break;
-            case 6:
+            case 7:
                 Postagem = GetPostAlvo(perfil->Postagens);
                 if(Postagem == NULL) {
                     PostNaoEncontrado();

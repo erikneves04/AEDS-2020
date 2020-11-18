@@ -14,6 +14,7 @@
 #include "structs.h"
 
 Item_lista * GetColuna(HashTable * table,int ColunaID);
+int GetMaiorIDAtual(HashTable * table);
 Error InicializarHashTable(HashTable * table);
 Error InserirHashTable(HashTable * table, DataType * dadosItem);
 DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario]);

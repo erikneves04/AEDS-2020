@@ -34,6 +34,26 @@ Item_lista * GetColuna(HashTable * table,int ColunaID){
 
     return DadosColuna;
 }
+int GetMaiorIDAtual(HashTable * table){
+    /**
+    * Função responsavel por identificar o maios ID da tabela.
+    * @return inteiro ID.
+    */
+    DataType * dados = NULL;
+    Item_lista * DadosColuna = NULL;
+    int i;
+    int MaiorID = 0;
+
+    for(i=0;i<table->NumeroDeColunas;i++){
+        DadosColuna = table->DadosTabela[i];
+        while(DadosColuna != NULL){
+            dados = DadosColuna->DadosItem;
+            if(dados->PerfilID > MaiorID)MaiorID = dados->PerfilID;
+            DadosColuna = DadosColuna->Proximo;
+        }
+    }
+    return MaiorID;
+}
 
 Error InicializarHashTable(HashTable * table){
     /**
