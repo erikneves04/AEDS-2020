@@ -16,6 +16,7 @@
 #include "structs.h"
 #include "Manipulacao_ListaEncadeada.h"
 #include "warnings.h"
+#include "Recomendacoes.h"
 // INCLUSÃO DE BIBLIOTECAS - FIM
 
 
@@ -129,7 +130,7 @@ Error RemoverIndexPost_PerfisQCurtiram(Post * postagem){
 
     return Sucesso;
 }
-DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
+DataType * DeletarPerfil(HashTable * table, DataType * Alvo,DataType * Atual, Recomendacoes * recomendacoes){
     /**
     * Função responsavel por deletar um dado(DataType) e limpar sua memoria no sistema. 
     * @return ponteiro para um DataType caso ocorra tudo certo.
@@ -137,6 +138,7 @@ DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
     DataType * RemoveReturn = NULL;
     Item_Post * DadosPosts = NULL;
     Item_lista * DadosPerfis = NULL;
+    Boolean AtualAlvo = false;
     int i;
 
     if(Alvo == NULL){
@@ -149,6 +151,8 @@ DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
     if(RemoveReturn == NULL){
         PerfilNaoEncontrado();
     }else{
+        if(RemoveReturn->PerfilID == Atual->PerfilID)AtualAlvo = true;
+        RemoveIndexPerfilRecomedado(RemoveReturn,recomendacoes);
         PerfilDeletado(RemoveReturn->PerfilID);
         RemoveCurtidas(RemoveReturn->PostagensCurtidas,RemoveReturn);
         
@@ -178,8 +182,7 @@ DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
         RemoveReturn = NULL;
         Alvo = NULL;
     }   
-
-    return Alvo;
+    return (AtualAlvo == true) ? NULL : Atual;
 }
 Error ImprimirDadosColuna(HashTable * table, int coluna){
     /**

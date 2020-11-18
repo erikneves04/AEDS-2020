@@ -25,7 +25,7 @@ typedef struct Perfil_t{
 typedef Perfil DataType;
 
 // Manipulação de seguidores
-typedef struct listaArestra {
+typedef struct listaArestra{
     unsigned int CountFollows; 
     struct Item_lista_t * primeira;
 }Followed_list;
@@ -35,6 +35,7 @@ typedef Followed_list Lista;
 typedef struct post_t{
     unsigned int ID;
     char Postagem[Tamanho_MAX_post];
+    char Owner[Tamanho_MAX_usuario];
     struct HashTable * Curtidas;
 }Post;
 typedef struct item_post{
@@ -42,7 +43,7 @@ typedef struct item_post{
     struct item_post * Anterior;
     struct item_post * Proxima;
 }Item_Post;
-typedef struct ListaPostagens_t {
+typedef struct ListaPostagens_t{
     unsigned int NumeroDePostagens;
     Item_Post * Primeira;
 }ListaPostagens;
@@ -60,7 +61,7 @@ typedef struct HashTable{
 }HashTable;
 
 // Armazenamento binário em arquivos
-typedef struct EstruturaBin {
+typedef struct EstruturaBin{
     char Biografia[Tamanho_MAX_bio];
     char NomeCompleto[Tamanho_MAX_NomeCompleto];
     char NomeUsuario[Tamanho_MAX_usuario];
@@ -68,5 +69,11 @@ typedef struct EstruturaBin {
     int NumPosts;
     unsigned int NumFollows;
 }StructFiles;
+
+// Recomendações 
+typedef struct Recomendacoes_t{
+    Lista * perfis;
+    ListaPostagens * posts;
+}Recomendacoes;
 
 #endif /* structs_h */

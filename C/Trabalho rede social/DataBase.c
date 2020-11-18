@@ -17,10 +17,11 @@
 #include "hash.h"
 #include "Variaveis&interacoes.h"
 #include "Manipulacao_ListaEncadeada.h"
+#include "Recomendacoes.h"
 // INCLUSÃO DE BIBLIOTECAS - FIM
 
 
-Error LoadAllSavedData(HashTable * table){
+Error LoadAllSavedData(HashTable * table,Recomendacoes * recomendacoes){
     /**
     * Função responsavel por carregar os dados dos arquivos na memória do programa.
     * @return Sucesso caso tudo ocorra de forma correta.
@@ -29,15 +30,18 @@ Error LoadAllSavedData(HashTable * table){
     int aux;
     int NumPosts;
     int NumLikes;
+    int NumPerfisRecomendados;
+    int NumPostsRecomendados;
+    int PostIDAux;
     FILE * ArquivoPerfis;
     FILE * ArquivoPostagens;
     FILE * ArquivoFollows;
     FILE * ArquivoLikes;
+    FILE * ArquivoRecomendacoes;
     DataType * PerfisAux;
     StructFiles DadosLeitura;
     Post * PostsAux;
     Item_Post * ItemPostAux;
-    Boolean EmptyFiles = false;
     long int NumeroDePerfis = 0;
     char UsersNameAux[Tamanho_MAX_usuario];
     int EscritaNomeUsuario = sizeof(char) * Tamanho_MAX_usuario;
@@ -54,8 +58,10 @@ Error LoadAllSavedData(HashTable * table){
     ArquivoPostagens = fopen(".\\saves\\Posts.bin","r+b");
     ArquivoFollows = fopen(".\\saves\\Follows.bin","r+b");
     ArquivoLikes = fopen(".\\saves\\Likes.bin","r+b");
+    ArquivoRecomendacoes = fopen(".\\saves\\Recomendacoes.bin","r+b");
 
-    if(ArquivoPerfis == NULL || ArquivoPostagens == NULL || ArquivoFollows == NULL || ArquivoLikes == NULL){
+
+    if(ArquivoPerfis == NULL || ArquivoPostagens == NULL || ArquivoFollows == NULL || ArquivoLikes == NULL || ArquivoRecomendacoes == NULL){
         ArquivoCorrompido();
         return Arquivo_corrompido;
     }
@@ -65,13 +71,12 @@ Error LoadAllSavedData(HashTable * table){
     NumeroDePerfis = ((aux - (2 * sizeof(int)))/sizeof(StructFiles));
     fseek(ArquivoPerfis, 0, SEEK_SET);
 
-    if(aux == 0) EmptyFiles = true;
-    if(EmptyFiles == false){
-        fread(&NumeroStaticPerfis,sizeof(int),1,ArquivoPerfis);
-        for(i=0;i<NumeroStaticPerfis;i++)GetIdPerfil();
-        fread(&NumeroStaticPosts,sizeof(int),1,ArquivoPerfis);
-        for(i=0;i<NumeroStaticPosts;i++)GetIdPost();
-    }
+    if(aux == 0) return Arquivo_vazio;
+    
+    fread(&NumeroStaticPerfis,sizeof(int),1,ArquivoPerfis);
+    for(i=0;i<NumeroStaticPerfis;i++)GetIdPerfil();
+    fread(&NumeroStaticPosts,sizeof(int),1,ArquivoPerfis);
+    for(i=0;i<NumeroStaticPosts;i++)GetIdPost();
     
     NumeroDeFollows = (int*)malloc(sizeof(int) * NumeroDePerfis);
     NumeroDeLikes = (int**)malloc(NumeroDePerfis * sizeof(int*));
@@ -135,13 +140,43 @@ Error LoadAllSavedData(HashTable * table){
         }
     }
     
+
+    /*
+    InserirNovoPerfilRecomendado
+    InserirNovoPostRecomendado
+    */
+    fseek(ArquivoRecomendacoes, 0, SEEK_END);
+    aux = ftell(ArquivoRecomendacoes);
+    fseek(ArquivoRecomendacoes, 0, SEEK_SET);
+
+    if(aux == 0){
+        NumPerfisRecomendados = 0;
+        NumPostsRecomendados = 0;
+    }else{
+        fread(&NumPerfisRecomendados,sizeof(int),1,ArquivoRecomendacoes);
+        fread(&NumPostsRecomendados,sizeof(int),1,ArquivoRecomendacoes);
+    }
+
+    for(i=0;i<NumPerfisRecomendados;i++){
+        fread(UsersNameAux,EscritaNomeUsuario,1,ArquivoRecomendacoes);
+        PerfisAux = GetPerfilAlvo_NoInteract(table,UsersNameAux);
+        InserirNovoPerfilRecomendado(PerfisAux,recomendacoes);   
+    }
+    for(i=0;i<NumPostsRecomendados;i++){
+        fread(UsersNameAux,EscritaNomeUsuario,1,ArquivoRecomendacoes);
+        PerfisAux = GetPerfilAlvo_NoInteract(table,UsersNameAux);
+        fread(&PostIDAux,sizeof(int),1,ArquivoRecomendacoes);
+        PostsAux = GetDado_listaPost_NoInteract(PerfisAux->Postagens,PostIDAux);
+        InserirNovoPostRecomendado(PostsAux,recomendacoes);
+    }
+
     for(i=0;i<NumeroDePerfis;i++)free(NumeroDeLikes[i]);
     free(NumeroDeLikes);
     free(Perfis);
     free(NumeroDeFollows);
     return Sucesso;
 }
-Error SaveAllData(HashTable * table){
+Error SaveAllData(HashTable * table,Recomendacoes * recomendacoes){
     /**
     * Função responsavel por salvar os dados do programa nos aquivos.
     * @return Sucesso caso tudo ocorra de forma correta.
@@ -152,7 +187,10 @@ Error SaveAllData(HashTable * table){
     FILE * ArquivoPostagens;
     FILE * ArquivoFollows;
     FILE * ArquivoLikes;
+    FILE * ArquivoRecomendacoes;
     Item_Post * DadosPostagens;
+    Item_Post * PostsREC;
+    Item_lista * PerfisREC;
     Item_lista * DadosColuna;
     Item_lista * DadosCurtidas;
     Item_lista * DadosFollows;
@@ -164,8 +202,9 @@ Error SaveAllData(HashTable * table){
     ArquivoPostagens = fopen(".\\saves\\Posts.bin","w+b");
     ArquivoFollows = fopen(".\\saves\\Follows.bin","w+b");
     ArquivoLikes = fopen(".\\saves\\Likes.bin","w+b");
+    ArquivoRecomendacoes = fopen(".\\saves\\Recomendacoes.bin","w+b");
 
-    if(ArquivoPerfis == NULL || ArquivoPostagens == NULL || ArquivoFollows == NULL || ArquivoLikes == NULL){
+    if(ArquivoPerfis == NULL || ArquivoPostagens == NULL || ArquivoFollows == NULL || ArquivoLikes == NULL || ArquivoRecomendacoes == NULL){
         ArquivoCorrompido();
         return Arquivo_corrompido;
     }
@@ -211,5 +250,23 @@ Error SaveAllData(HashTable * table){
         }   
     }
     
+    aux = recomendacoes->perfis->CountFollows;
+    fwrite(&aux,sizeof(int),1,ArquivoRecomendacoes);
+    aux = recomendacoes->posts->NumeroDePostagens;
+    fwrite(&aux,sizeof(int),1,ArquivoRecomendacoes);
+
+    PerfisREC = recomendacoes->perfis->primeira;
+    for(i=0;i<recomendacoes->perfis->CountFollows;i++){
+        fwrite(PerfisREC->DadosItem->NomeUsuario,EscritaNomeUsuario,1,ArquivoRecomendacoes);
+        PerfisREC = PerfisREC->Proximo;
+    }
+
+    PostsREC = recomendacoes->posts->Primeira;
+    for(i=0;i<recomendacoes->posts->NumeroDePostagens;i++){
+        fwrite(PostsREC->dadosItem->Owner,EscritaNomeUsuario,1,ArquivoRecomendacoes);
+        fwrite(&PostsREC->dadosItem->ID,sizeof(int),1,ArquivoRecomendacoes);
+        PostsREC = PostsREC->Proxima;
+    }
+
     return Sucesso;
 }

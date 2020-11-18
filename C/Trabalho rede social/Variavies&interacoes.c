@@ -16,6 +16,7 @@
 #include "Manipulacao_ListaEncadeada.h"
 #include "hash.h"
 #include "warnings.h"
+#include "Recomendacoes.h"
 // INCLUSÃO DE BIBLIOTECAS - FIM
 
 
@@ -120,7 +121,7 @@ DataType * AtivarPerfil(HashTable * table,DataType * PerfilAtual){
     }
     return PerfilAlvo;
 }
-DataType * GetInformacoesCriarPerfil(HashTable * table){
+DataType * GetInformacoesCriarPerfil(HashTable * table,Recomendacoes * recomendados){
     /**
     * Função responsavel por alocar e coletar as informações de um novo perfil.
     * @return ponteiro para um novo perfil.
@@ -183,6 +184,7 @@ DataType * GetInformacoesCriarPerfil(HashTable * table){
     NovoPerfil->PostagensCurtidas = (ListaPostagens*)malloc(sizeof(ListaPostagens));
     Inicializar_listaPost(NovoPerfil->PostagensCurtidas);
 
+    InserirNovoPerfilRecomendado(NovoPerfil,recomendados);
     printf("\n");
     printf("+---------------------------+\n");
     printf("| Perfil criado com sucesso |\n");
@@ -516,7 +518,7 @@ Error Alterar_listaFollows(HashTable * table, DataType * perfil){
     }
     return Sucesso;
 }
-Error RealizarPostagem(HashTable * table, DataType * perfil){
+Error RealizarPostagem(HashTable * table, DataType * perfil, Recomendacoes * recomendados){
     /**
     * Função resposavel por realizar uma nova postagem.
     * @return Sucesso caso ocorra tudo certo.
@@ -530,6 +532,7 @@ Error RealizarPostagem(HashTable * table, DataType * perfil){
     printf("|  Compartilhe com a comunidade! |\n");
     printf("+--------------------------------+\n\n");
 
+    strcpy(NovaPostagem->Owner,perfil->NomeUsuario);
     NovaPostagem->ID = GetIdPost();
     printf("Digite a mensagem da postagem: ");
     setbuf(stdin,NULL);
@@ -540,13 +543,15 @@ Error RealizarPostagem(HashTable * table, DataType * perfil){
     NovaPostagem->Curtidas = (HashTable*)malloc(sizeof(HashTable));;
     InicializarHashTable(NovaPostagem->Curtidas);
 
+    InserirNovoPostRecomendado(NovaPostagem,recomendados);
+
     printf("\n+--------------------------------+\n");
     printf("| Postagem realizada com sucesso |\n");
     printf("+--------------------------------+\n\n");
 
     return Sucesso;
 }
-Error DeletarPostagem(HashTable * table, DataType * perfil){
+Error DeletarPostagem(HashTable * table, DataType * perfil,Recomendacoes * recomendacoes){
     /**
     * Função resposavel por apagar uma postagem existente.
     * @return Sucesso caso ocorra tudo certo.
@@ -572,6 +577,7 @@ Error DeletarPostagem(HashTable * table, DataType * perfil){
         if(Deletarpost == NULL){
             PostNaoEncontrado();
         }else{
+            RemoveIndexPostRecomedado(Deletarpost,recomendacoes);
             RemoveReturn = Remove_dadoPost(Deletarpost,perfil->Postagens);
             if(RemoveReturn == Perfil_inexistente){
                 PostNaoEncontrado();
@@ -592,7 +598,7 @@ Error DeletarPostagem(HashTable * table, DataType * perfil){
 
     return Sucesso;
 }
-Error Alterar_listaPosts(HashTable * table, DataType * perfil){
+Error Alterar_listaPosts(HashTable * table, DataType * perfil, Recomendacoes * recomendacoes){
     /**
     * Função que permite o usuario alterar suas postagens ou ver os dados das mesmas.
     * @return Sucesso caso ocorra tudo certo.
@@ -626,10 +632,10 @@ Error Alterar_listaPosts(HashTable * table, DataType * perfil){
                 printf("+-----------------------+\n\n");
             break;
             case 1:
-                RealizarPostagem(table,perfil);
+                RealizarPostagem(table,perfil,recomendacoes);
             break;
             case 2:
-                DeletarPostagem(table,perfil);
+                DeletarPostagem(table,perfil,recomendacoes);
             break;
             case 3:
                 Imprimir_listaPost(perfil->Postagens,perfil);
@@ -745,6 +751,89 @@ Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilIn
                     printf("Identificador: %.3d\n",Postagem->ID);
                     printf("Postagem: %s",Postagem->Postagem);
                     ImprimirTODOSCurtidas_HashTable(Postagem);
+                }
+            break;
+            default:
+                printf("+--------------------------------------+\n");
+                printf("| Escolha invalida... Tente novamente! |\n");
+                printf("+--------------------------------------+\n\n");
+            break;
+        }
+    }
+
+    return Sucesso;
+}
+Error NavegarRecomendados(HashTable * table, Recomendacoes * recomendacoes,DataType * PerfilAtual){
+    /**
+    * Função que permite o usuario ver/seguir os perfis recomendados no momento.
+    * @return Sucesso caso ocorra tudo certo.
+    */
+    int Escolha_do_usuario = Variavel_de_inicio;
+    DataType * NovoFollow = NULL;
+    Post * Postagem = NULL;
+
+    if(PerfilAtual == NULL) {
+        AtivacaoDefault();
+        return Perfil_inexistente;
+    }
+
+    printf("\n+-----------------------------------+\n");
+    printf("| Recomendacoes da Barchielo's chat |\n");
+    printf("+-----------------------------------+\n\n");
+
+    while(Escolha_do_usuario != Encerrar_loop){
+        printf("Funcionalidades do modulo:\n");
+        printf("[00] Encerrar.\n");
+        printf("[01] Ver os perfis recomendados.\n");
+        printf("[02] Seguir um perfil recomendado.\n");
+        printf("[03] Ver as postagens recomendadas.\n");
+        printf("[04] Curtir uma postagem recomendada.\n");
+        printf("Escolha: ");
+        scanf("%d", &Escolha_do_usuario);
+        printf("\n");
+    
+        switch(Escolha_do_usuario){
+            case 0:
+                printf("+-----------------------+\n");
+                printf("| Manipulacao encerrada |\n");
+                printf("+-----------------------+\n\n");
+            break;
+            case 1:
+                ImprimirPerfisRecomendados(recomendacoes);
+            break;
+            case 2:
+                NovoFollow = GetDado_lista(recomendacoes->perfis);
+                if(NovoFollow == NULL){
+                    PerfilNaoEncontrado();
+                }else if(NovoFollow->PerfilID == PerfilAtual->PerfilID){
+                    printf("\n+-------------------------+\n");
+                    printf("| Voce nao pode se seguir |\n");
+                    printf("+-------------------------+\n\n");
+                }else if(DadoContido_lista(PerfilAtual->PerfilSeguindo,NovoFollow) == true){
+                    printf("\n+---------------------------+\n");
+                    printf("| Voce ja segue esse perfil |\n");
+                    printf("+---------------------------+\n\n");
+                }else{
+                    Insere_dado(NovoFollow,PerfilAtual->PerfilSeguindo);
+                    Insere_dado(PerfilAtual,NovoFollow->Seguidores);
+                    printf("| Perfil seguido. |\n\n");
+                }
+            break;
+            case 3:
+                ImprimirPostsRecomendados(recomendacoes);
+            break;
+            case 4:
+                Postagem = GetDado_listaPost(recomendacoes->posts);
+                if(Postagem == NULL) {
+                    PostNaoEncontrado();
+                }else if(DadoExistenteHashTable(Postagem->Curtidas,PerfilAtual) == true){
+                    printf("\n+--------------------------+\n");
+                    printf("| Voce ja curtiu este post |\n");
+                    printf("+--------------------------+\n\n");
+                }else{
+                    Insere_dadoPost(Postagem,PerfilAtual->PostagensCurtidas);
+                    InserirHashTable(Postagem->Curtidas,PerfilAtual);
+                    printf("| Postagem curtida. |\n\n");
                 }
             break;
             default:
