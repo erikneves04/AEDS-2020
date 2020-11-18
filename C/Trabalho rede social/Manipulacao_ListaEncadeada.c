@@ -472,7 +472,6 @@ Post * GetDado_listaPost_NoInteract(ListaPostagens * lista, int IDProcurado){
     Boolean PerfilEncontrado = false;
     Post * PostAlvo = NULL;
     Item_Post * DadosLista = lista->Primeira;
-    
     for(i=0;i<lista->NumeroDePostagens;i++){
         if(IDProcurado == DadosLista->dadosItem->ID){
             PerfilEncontrado = true;
