@@ -178,6 +178,7 @@ DataType * DeletarPerfil(HashTable * table, DataType * Alvo,DataType * Atual, Re
         
         DadosPosts = RemoveReturn->Postagens->Primeira;
         for(i=0;i<RemoveReturn->Postagens->NumeroDePostagens;i++){
+            RemoveIndexPostRecomedado(DadosPosts->dadosItem,recomendacoes);
             RemoverIndexPost_PerfisQCurtiram(DadosPosts->dadosItem);
             DadosPosts = DadosPosts->Proxima;
         }

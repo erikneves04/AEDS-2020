@@ -30,10 +30,8 @@ Error LoadVerticesNaLista(Lista * FilaDeVertices,Lista * Dados,DataType * Inicia
         ArestraAux = VerticeAtual->PerfilSeguindo->primeira;
         for(j=0;j<VerticeAtual->PerfilSeguindo->CountFollows;j++){
             if(EstadoAcessos[VerticeAtual->PerfilID] == preto) break;
-            //printf("%s %d\n",ArestraAux->DadosItem->NomeUsuario,EstadoAcessos[ArestraAux->DadosItem->PerfilID]);
             if(EstadoAcessos[ArestraAux->DadosItem->PerfilID] == branco && ContagemDistancia < DistanciaListagemConhecidos){
                 EstadoAcessos[ArestraAux->DadosItem->PerfilID] = cinza;
-                //printf("Joined %s %d\n",ArestraAux->DadosItem->NomeUsuario,EstadoAcessos[VerticeAtual->PerfilID]);
                 Insere_dado_MODOFILA(ArestraAux->DadosItem,FilaDeVertices);
                 Insere_dado_MODOFILA(ArestraAux->DadosItem,Dados);
             }
@@ -41,17 +39,12 @@ Error LoadVerticesNaLista(Lista * FilaDeVertices,Lista * Dados,DataType * Inicia
         }
         ContagemDistancia++;
 
-        //printf("Perfil atual: %s\n",VerticeAtual->NomeUsuario);
-        //Imprimir_lista(FilaDeVertices);
         EstadoAcessos[VerticeAtual->PerfilID] = preto;
         if(Lista_vazia(FilaDeVertices) == true){
-            printf("Lista vazia.\n");
             BuscaEncerrada = true;
             break;
         }
         VerticeAtual = Remove_dado_MODOFILA(FilaDeVertices);
-        //printf("Perfil aAAtual: %s\n",VerticeAtual->NomeUsuario);
-        printf("");
         if(ContagemDistancia < DistanciaListagemConhecidos){
             LoadVerticesNaLista(FilaDeVertices,Dados,VerticeAtual,EstadoAcessos,ContagemDistancia);
         }
@@ -71,8 +64,6 @@ Error * BuscarDeSeguidores_Largura(DataType * Inicial,HashTable * table){
 
     Inicializar_lista(FilaDeVertices);
     Inicializar_lista(DadosAcessiveis);
-    
-    printf("CHAMADA : %s\n",Inicial->NomeUsuario);
 
     LoadVerticesNaLista(FilaDeVertices,DadosAcessiveis,Inicial,EstadoAcessos,ContagemDistancia);
     
