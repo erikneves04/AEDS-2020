@@ -44,6 +44,8 @@ Error LoadAllSavedData(HashTable * table,Recomendacoes * recomendacoes){
     Item_Post * ItemPostAux;
     long int NumeroDePerfis = 0;
     char UsersNameAux[Tamanho_MAX_usuario];
+    char PostOwnerAux[Tamanho_MAX_usuario];
+    char PerfilUserAux[Tamanho_MAX_usuario];
     int EscritaNomeUsuario = sizeof(char) * Tamanho_MAX_usuario;
     int EscritaPost = sizeof(char) * Tamanho_MAX_post;
 
@@ -110,6 +112,7 @@ Error LoadAllSavedData(HashTable * table,Recomendacoes * recomendacoes){
             fread(PostsAux->Postagem,EscritaPost,1,ArquivoPostagens);
             fread(&NumLikes,sizeof(int),1,ArquivoPostagens);
             NumeroDeLikes[i][j] = NumLikes;
+            strcpy(PostsAux->Owner,PerfisAux->NomeUsuario);
             Insere_dadoPost(PostsAux,PerfisAux->Postagens);
         }
         InserirHashTable(table,PerfisAux);
@@ -140,11 +143,6 @@ Error LoadAllSavedData(HashTable * table,Recomendacoes * recomendacoes){
         }
     }
     
-
-    /*
-    InserirNovoPerfilRecomendado
-    InserirNovoPostRecomendado
-    */
     fseek(ArquivoRecomendacoes, 0, SEEK_END);
     aux = ftell(ArquivoRecomendacoes);
     fseek(ArquivoRecomendacoes, 0, SEEK_SET);
@@ -158,13 +156,13 @@ Error LoadAllSavedData(HashTable * table,Recomendacoes * recomendacoes){
     }
 
     for(i=0;i<NumPerfisRecomendados;i++){
-        fread(UsersNameAux,EscritaNomeUsuario,1,ArquivoRecomendacoes);
-        PerfisAux = GetPerfilAlvo_NoInteract(table,UsersNameAux);
+        fread(PerfilUserAux,EscritaNomeUsuario,1,ArquivoRecomendacoes);
+        PerfisAux = GetPerfilAlvo_NoInteract(table,PerfilUserAux);
         InserirNovoPerfilRecomendado(PerfisAux,recomendacoes);   
     }
     for(i=0;i<NumPostsRecomendados;i++){
-        fread(UsersNameAux,EscritaNomeUsuario,1,ArquivoRecomendacoes);
-        PerfisAux = GetPerfilAlvo_NoInteract(table,UsersNameAux);
+        fread(PostOwnerAux,EscritaNomeUsuario,1,ArquivoRecomendacoes);
+        PerfisAux = GetPerfilAlvo_NoInteract(table,PostOwnerAux);
         fread(&PostIDAux,sizeof(int),1,ArquivoRecomendacoes);
         PostsAux = GetDado_listaPost_NoInteract(PerfisAux->Postagens,PostIDAux);
         InserirNovoPostRecomendado(PostsAux,recomendacoes);
@@ -188,6 +186,7 @@ Error SaveAllData(HashTable * table,Recomendacoes * recomendacoes){
     FILE * ArquivoFollows;
     FILE * ArquivoLikes;
     FILE * ArquivoRecomendacoes;
+    DataType * PerfilAUX;
     Item_Post * DadosPostagens;
     Item_Post * PostsREC;
     Item_lista * PerfisREC;
@@ -197,6 +196,7 @@ Error SaveAllData(HashTable * table,Recomendacoes * recomendacoes){
     StructFiles DadosEscrita;
     int EscritaPost = sizeof(char) * Tamanho_MAX_post;
     int EscritaNomeUsuario = sizeof(char) * Tamanho_MAX_usuario;
+    char UserName[Tamanho_MAX_usuario];
 
     ArquivoPerfis = fopen(".\\saves\\Perfis.bin","w+b");
     ArquivoPostagens = fopen(".\\saves\\Posts.bin","w+b");
@@ -263,7 +263,8 @@ Error SaveAllData(HashTable * table,Recomendacoes * recomendacoes){
 
     PostsREC = recomendacoes->posts->Primeira;
     for(i=0;i<recomendacoes->posts->NumeroDePostagens;i++){
-        fwrite(PostsREC->dadosItem->Owner,EscritaNomeUsuario,1,ArquivoRecomendacoes);
+        strcpy(UserName,PostsREC->dadosItem->Owner);
+        fwrite(UserName,EscritaNomeUsuario,1,ArquivoRecomendacoes);
         fwrite(&PostsREC->dadosItem->ID,sizeof(int),1,ArquivoRecomendacoes);
         PostsREC = PostsREC->Proxima;
     }
