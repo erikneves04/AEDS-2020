@@ -432,6 +432,7 @@ Boolean DadoContido_listaPost(ListaPostagens * lista, int IDDadoAlvo){
             DadoExistente = true;
             break;
         }
+        Dados_lista = Dados_lista->Proxima;
     }
 
     return DadoExistente;
