@@ -63,7 +63,7 @@ public class Interacoes {
             System.out.println("[02] Alterar seu nome de usuario.");
             System.out.println("[03] Imprimir as informacoes atuais.");
             System.out.print("Escolha: ");
-            Escolha_do_usuario = Input.nextInt();
+            Escolha_do_usuario = Integer.parseInt(Input.nextLine());
             System.out.println("");
             
             switch(Escolha_do_usuario){
@@ -78,7 +78,7 @@ public class Interacoes {
                     boolean UsuarioDisponivel = false;
                     while(!UsuarioDisponivel){
                         System.out.print("Digite o nome de usuario: ");
-                        Aux = Input.next();
+                        Aux = Input.nextLine();
                         UsuarioDisponivel = !table.PerfilExistente(Aux);
                         if(!UsuarioDisponivel){
                             System.out.println("\n| O nome de usuario " + Aux + " ja esta em uso |\n");
@@ -130,11 +130,11 @@ public class Interacoes {
         System.out.println("[00] Sim.");
         System.out.println("[01] Nao.");
         System.out.print("Escolha: ");
-        Escolha_do_usuario = Input.nextInt();
+        Escolha_do_usuario = Integer.parseInt(Input.nextLine());
         if(Escolha_do_usuario == 0) table.ImprimirTodosOsPerfis();
         
         System.out.print("Digite o nome de usuario para ativacao: ");
-        UserName = Input.next();
+        UserName = Input.nextLine();
         
         procurado = table.GetPerfil(UserName);
         
@@ -157,11 +157,11 @@ public class Interacoes {
         System.out.println("[00] Sim.");
         System.out.println("[01] Nao.");
         System.out.print("Escolha: ");
-        Escolha_do_usuario = Input.nextInt();
+        Escolha_do_usuario = Integer.parseInt(Input.nextLine());
         if(Escolha_do_usuario == 0) table.ImprimirTodosOsPerfis();
         
         System.out.print("Digite o nome de usuario do perfil: ");
-        UserName = Input.next();
+        UserName = Input.nextLine();
         
         return UserName;
     }
@@ -202,11 +202,11 @@ public class Interacoes {
         System.out.println("[00] Sim.");
         System.out.println("[01] Nao.");
         System.out.print("Escolha: ");
-        Escolha_do_usuario = Input.nextInt();
+        Escolha_do_usuario = Integer.parseInt(Input.nextLine());
         if(Escolha_do_usuario == 0) AtualUser.Seguindo.ImprimirPerfisDaLista();
         
         System.out.print("Digite o nome de usuario do perfil: ");
-        NomeProcurado = Input.next();
+        NomeProcurado = Input.nextLine();
         ObjetoProcurado = table.GetPerfil(NomeProcurado);
         
         if(ObjetoProcurado == null){
@@ -242,7 +242,7 @@ public class Interacoes {
             System.out.println("[03] Ver seus seguidores.");
             System.out.println("[04] Ver quem voce segue.");
             System.out.print("Escolha: ");
-            Escolha_do_usuario = Input.nextInt();
+            Escolha_do_usuario = Integer.parseInt(Input.nextLine());
             System.out.println("");
             
             switch(Escolha_do_usuario){
@@ -275,7 +275,7 @@ public class Interacoes {
         String ConteudoPost;
         
         System.out.print("Digite o conteudo da postagem: ");
-        ConteudoPost = Input.next();
+        ConteudoPost = Input.nextLine();
         
         NovoPost.InserirDadosPostagem(COntagemIdentificadoresPosts++, ConteudoPost, AtualUser.GetUserName());
         
@@ -291,18 +291,19 @@ public class Interacoes {
         System.out.println("[00] Sim.");
         System.out.println("[01] Nao;");
         System.out.print("Escolha: ");
-        Escolha_do_usuario = Input.nextInt();
+        Escolha_do_usuario = Integer.parseInt(Input.nextLine());
         
-        if(Escolha_do_usuario == 0) AtualUser.Postagens.ImprimirPostsDaLista();
+        if(Escolha_do_usuario == 0) AtualUser.Postagens.ImprimirPostsDaLista(null);
         
         System.out.print("Digite o Id da postagem: ");
-        PostIdAux = Input.nextInt();
+        PostIdAux = Integer.parseInt(Input.nextLine());
         
         Alvo = AtualUser.Postagens.GetPostagem(PostIdAux);
         if(!AtualUser.Postagens.DadoContido(Alvo)){
             System.out.println("| Postagem nao encontrada |\n");
         }else{
             AtualUser.Postagens.RemoverItem(Alvo);
+            
             System.out.println("| Postagem removida com sucesso |\n");
         }
         
@@ -329,7 +330,7 @@ public class Interacoes {
             System.out.println("[03] Imprimir minhas postagens.");
             System.out.println("[04] Detalhar uma postagem.");
             System.out.print("Escolha: ");
-            Escolha_do_usuario = Input.nextInt();
+            Escolha_do_usuario = Integer.parseInt(Input.nextLine());
             System.out.println("");
             
             switch(Escolha_do_usuario){
@@ -344,13 +345,109 @@ public class Interacoes {
                     this.DeletarPostagem(AtualUser);
                 break;
                 case 3:
-                    AtualUser.Postagens.ImprimirPostsDaLista();
+                    AtualUser.Postagens.ImprimirPostsDaLista(null);
                 break;
                 default:
                     System.out.println("| Escolha invalida! Tente novamente. |\n");
                 break;
             }
         }
+        
+        return Const.Sucesso;
+    }
+    public int NavegarEmUmPerfil(HashTable table,Perfil AtualUser, Perfil PerfilVisitado){
+        Scanner Input = new Scanner(System.in);
+        int Escolha_do_usuario = Const.Variavel_de_inicio;
+        int IdAux;
+        Postagem PostAlvo;
+        
+        if(AtualUser == null) return Const.UsuarioInvalido;
+        if(PerfilVisitado == null) PerfilVisitado = AtualUser;
+        
+        System.out.println("Dados do perfil:");
+        PerfilVisitado.ImprimirDadosPerfil();
+        System.out.println("");
+        
+        while(Escolha_do_usuario != Const.Encerrar_loop){
+            System.out.println("Oque deseja fazer @"+AtualUser.GetUserName()+"?");
+            System.out.println("[00] Encerrar.");
+            System.out.println("[01] Listar quem o perfil segue.");
+            //System.out.println("[02] Listar os perfis a uma distancia de.");
+            System.out.println("[03] Visitar um perfil seguido.");
+            System.out.println("[04] Ver as postagens.");
+            System.out.println("[05] Curtir uma postagem.");
+            System.out.println("[06] Descurtir uma postagem.");
+            System.out.println("[07] Detalhar uma postagem.");
+            System.out.print("Escolha: ");
+            Escolha_do_usuario = Integer.parseInt(Input.nextLine());
+            
+            switch(Escolha_do_usuario){
+                case 0:
+                    System.out.println("\n| Encerrando alteracoes |\n");
+                break;
+                case 1:
+                    System.out.println("");
+                    PerfilVisitado.Seguindo.ImprimirPerfisDaLista();
+                break;
+                case 2:
+                    //Falta implementação
+                break;
+                case 3:
+                    String Aux = null;
+                    Perfil Alvo;
+                    System.out.print("\nDigite o nome do perfil que voce deseja visitar: ");
+                    Aux = Input.nextLine();
+                    Alvo = table.GetPerfil(Aux);
+                    
+                    if(Alvo == null){
+                        System.out.println("\n| Perfil nao encontrado |\n");
+                    }else if(!PerfilVisitado.Seguindo.DadoContido(Alvo)){
+                        System.out.println("\n| O perfil @"+PerfilVisitado.GetUserName()+" nao segue o @"+Alvo.GetUserName()+" |\n");
+                    }else{
+                        System.out.println("");
+                        this.NavegarEmUmPerfil(table, AtualUser, Alvo);
+                        if(!AtualUser.equals(Alvo)) Escolha_do_usuario = Const.Encerrar_loop;
+                    }
+                break;
+                case 4:
+                    System.out.println("");
+                    PerfilVisitado.Postagens.ImprimirPostsDaLista(AtualUser);
+                break;
+                case 5:    
+                    System.out.print("\nDigite o id da postagem para curti-la: ");
+                    IdAux = Integer.parseInt(Input.nextLine());
+                    
+                    PostAlvo = PerfilVisitado.Postagens.GetPostagem(IdAux);
+                    if(PostAlvo == null){
+                        System.out.println("\n| Postagem nao encontrada |\n");
+                    }else{
+                        PostAlvo.Curtidas.InserirNovoItem(AtualUser);
+                        System.out.println("\n| Postagem curtida com sucesso |\n");
+                    }
+                break;
+                case 6:
+                    System.out.print("\nDigite o id da postagem para descurti-la: ");
+                    IdAux = Integer.parseInt(Input.nextLine());
+                    
+                    PostAlvo = PerfilVisitado.Postagens.GetPostagem(IdAux);
+                    if(PostAlvo == null){
+                        System.out.println("\n| Postagem nao encontrada |\n");
+                    }else if(PostAlvo.Curtidas.PerfilExistente(AtualUser.GetUserName())){
+                        PostAlvo.Curtidas.RemovePerfilByObjetc(AtualUser);
+                        System.out.println("\n| Curtida removida com sucesso |\n");
+                    }else{
+                        System.out.println("\n| Voce nao curtiu essa postagem |\n");
+                    }
+                break;
+                case 7:
+                break;
+                default:
+                    System.out.println("\n| Escolha invalida! Tente novamente. |\n");
+                break;
+            }
+            
+        }
+        
         
         return Const.Sucesso;
     }

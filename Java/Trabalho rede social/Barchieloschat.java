@@ -39,10 +39,10 @@ public class Barchieloschat {
             System.out.println("[07] Alterar dados de outro perfil.");
             System.out.println("[08] Seguir/Deixar de seguir um perfil.");
             System.out.println("[09] Fazer/Deletar uma postagem.");
-            System.out.println("[10] .");
+            System.out.println("[10] Visitar perfis.");
             System.out.println("[11] .");
             System.out.print("Escolha: ");
-            Escolha_do_usuario = InputEscolha.nextInt();
+            Escolha_do_usuario = Integer.parseInt(InputEscolha.nextLine());
             System.out.println("");
             // MENU DE FUNCIONALIDADE / ESCOLHA USUARIO - FIM
             
@@ -73,7 +73,8 @@ public class Barchieloschat {
                     /* EXECUÇÕES:
                     * Chamada da função que remove o perfil atual do usuario.
                     */
-
+                    String aux = InputEscolha.nextLine();
+                    System.out.println(aux);
                 break;
                 case 4:
                     /* EXECUÇÕES:
@@ -116,13 +117,13 @@ public class Barchieloschat {
                     * Chamada da função para navegar nos perfis, partindo do atual e podendo atingir
                     *              todos que ele segue, incluindo o que os demais seguem.
                     */
-
+                    Interact.NavegarEmUmPerfil(Usuarios, AtualUser, null);
                 break;
                 case 11:
                     /* EXECUÇÕES:
                     * Chamada da função para navegar nas recomendações de perfis e postagens
                     */
-
+                    
                 break;
                 default:
                     /* EXECUÇÕES:

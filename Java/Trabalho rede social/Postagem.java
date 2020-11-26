@@ -8,8 +8,8 @@ public class Postagem {
     
     private int Id;
     private String Conteudo;
-    public HashTable Curtidas;
     private String Owner;
+    public HashTable Curtidas;
     
     public int InserirDadosPostagem(int id,String post,String user){
         this.Id = id;

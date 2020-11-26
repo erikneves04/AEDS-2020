@@ -15,6 +15,9 @@ public class ListaEncadeadaPerfis {
         
         return Const.Sucesso;
     }
+    public ItemLista GetPrimeiroItem(){
+        return this.Primeiro;
+    }
     
     public int InserirNovoItem(Perfil NovoPerfil){
         ItemLista NovoItem = new ItemLista();

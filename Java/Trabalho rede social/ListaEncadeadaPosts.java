@@ -14,6 +14,9 @@ public class ListaEncadeadaPosts {
         
         return Const.Sucesso;
     }
+    public ItemListaPost GetPrimeiroItem(){
+        return this.Primeiro;
+    }
     
     public int InserirNovoItem(Postagem NovaPostagem){
         ItemListaPost NovoItem = new ItemListaPost();
@@ -75,7 +78,7 @@ public class ListaEncadeadaPosts {
         
         return DadoEncontrado;
     }
-    public int ImprimirPostsDaLista(){
+    public int ImprimirPostsDaLista(Perfil AtualUser){
         ItemListaPost DadosLista = this.Primeiro;
         
         if(!this.ListaVazia()){
@@ -85,7 +88,13 @@ public class ListaEncadeadaPosts {
             for(int i=0;i<this.NumeroDeItens;i++){
                 System.out.println("| Id: " + DadosLista.GetDadosItem().GetIdPostagem());
                 System.out.println("| Post: " + DadosLista.GetDadosItem().GetTextoPostagem());
+                if(AtualUser != null){    
+                    if(DadosLista.GetDadosItem().Curtidas.PerfilExistente(AtualUser.GetUserName())){
+                        System.out.println("| -> Voce curtiu essa postagem.");
+                    }
+                }
                 DadosLista = DadosLista.GetProximoItemLista();
+                System.out.println("+--------");
             }
         }else{
             System.out.println("+---------------------------------+");
@@ -93,6 +102,7 @@ public class ListaEncadeadaPosts {
             System.out.println("+---------------------------------+");
         }
         System.out.println("");
+        
         return Const.Sucesso;
     }
     public Postagem GetPostagem(int id){

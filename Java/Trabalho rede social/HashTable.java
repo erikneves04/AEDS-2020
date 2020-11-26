@@ -24,6 +24,7 @@ public class HashTable {
         return (count/10);
     }
     
+    
     public int InserirNovoItem(Perfil NovoPerfil){
         int IndexNovoPerfil = this.GetIndexPerfil(NovoPerfil.GetUserName());
         ItemLista NovoItem = new ItemLista();
@@ -133,9 +134,9 @@ public class HashTable {
             System.out.println("| Nenhum perfil armazenado |");
             System.out.println("+--------------------------+\n");
         }else{
-            System.out.println("\n+----------------------------------+");
-            System.out.println("| Imprimindo os perfis armazenados |");
-            System.out.println("+----------------------------------+");
+            System.out.println("\n+--------------------+");
+            System.out.println("| Perfis armazenados |");
+            System.out.println("+--------------------+");
             System.out.println("| User name:");
             
             for(int i=0;i<this.NumeroDeColunas;i++){
@@ -148,6 +149,61 @@ public class HashTable {
             System.out.println("");
         }
         
+        
+        return Const.Sucesso;
+    }
+    public int ImprimirTodosOsPerfisQueCurtiram(){
+        ItemLista DadosPerfis;
+        
+        if(this.TabelaVazia()){
+            System.out.println("\n+----------------------------+");
+            System.out.println("| Nenhuma curtida nesse post |");
+            System.out.println("+----------------------------+\n");
+        }else{
+            System.out.println("\n+----------------------+");
+            System.out.println("| Perfis que curtiram: |");
+            System.out.println("+----------------------+");
+            System.out.println("| User name:");
+            
+            for(int i=0;i<this.NumeroDeColunas;i++){
+                DadosPerfis = this.DadosTabela.get(i);
+                while(DadosPerfis != null){
+                    System.out.println("| " +DadosPerfis.GetDadosItem().GetUserName());
+                    DadosPerfis = DadosPerfis.GetProximoItemLista();
+                }
+            }
+            System.out.println("");
+        }
+        
+        
+        return Const.Sucesso;
+    }
+    public int DeletarPerfil(Perfil Alvo){
+        if(Alvo == null) return Const.UsuarioInvalido;
+        ItemListaPost DadosPosts;
+        ItemLista DadosFollows;
+        
+        DadosFollows = Alvo.Seguindo.GetPrimeiroItem();
+        while(DadosFollows != null){
+            DadosFollows.GetDadosItem().Seguidores.RemoverItem(Alvo);
+            DadosFollows = DadosFollows.GetProximoItemLista();
+        }
+        DadosFollows = Alvo.Seguidores.GetPrimeiroItem();
+        while(DadosFollows != null){
+            DadosFollows.GetDadosItem().Seguindo.RemoverItem(Alvo);
+            DadosFollows = DadosFollows.GetProximoItemLista();
+        }
+        
+        DadosPosts = Alvo.Postagens.GetPrimeiroItem();
+        while(DadosPosts != null){
+            //TODO implementar a remoção da lista de custidas
+            Alvo.Postagens.RemoverItem(DadosPosts.GetDadosItem());
+            DadosPosts = DadosPosts.GetProximoItemLista();
+        }
+        
+        return Const.Sucesso;
+    }
+    public int RemoverTodasAsCurtidasDeUmPost(Postagem post){
         
         return Const.Sucesso;
     }

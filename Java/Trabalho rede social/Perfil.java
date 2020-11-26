@@ -53,7 +53,7 @@ public class Perfil {
     }
     
     public int ImprimirDadosPerfil(){
-        System.out.println("Identificador do perfil: " + this.Id);
+        System.out.println("Id: " + this.Id);
         System.out.println("Nome completo: " + this.NomeCompleto);
         System.out.println("Nome de usuario " + this.NomeUsuario);
         return Const.Sucesso;
