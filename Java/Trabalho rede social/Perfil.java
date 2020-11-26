@@ -9,16 +9,23 @@ public class Perfil {
     private int Id;
     private String NomeCompleto;
     private String NomeUsuario;
-    private ListaEncadeadaPerfis Seguindo;
-    private ListaEncadeadaPerfis Seguidores;
+    public ListaEncadeadaPerfis Seguindo;
+    public ListaEncadeadaPerfis Seguidores;
+    public ListaEncadeadaPosts Postagens;
     
-    public int SetInformacoesPerfil(int ID, String NCompleto, String NUser){
+    public int SetInformacoesPerfil(int ID, String NCompleto, String NUser, boolean Inicializando){
         this.Id = ID;
         this.NomeCompleto = NCompleto;
         this.NomeUsuario = NUser;
         
-        Seguindo = new ListaEncadeadaPerfis();
-        Seguidores = new ListaEncadeadaPerfis();
+        if(Inicializando){
+            Seguindo = new ListaEncadeadaPerfis();
+            Seguindo.InicializarListaEncadeada();
+            Seguidores = new ListaEncadeadaPerfis();
+            Seguidores.InicializarListaEncadeada();
+            Postagens = new ListaEncadeadaPosts();
+            Postagens.InicializarListaEncadeada();
+        }
         
         return Const.Sucesso;
     }
@@ -47,8 +54,8 @@ public class Perfil {
     
     public int ImprimirDadosPerfil(){
         System.out.println("Identificador do perfil: " + this.Id);
-        System.out.println("Nome completo: %s" + this.NomeCompleto);
-        System.out.println("Nome de usuario %s" + this.NomeUsuario + "\n");
+        System.out.println("Nome completo: " + this.NomeCompleto);
+        System.out.println("Nome de usuario " + this.NomeUsuario);
         return Const.Sucesso;
     }
 }

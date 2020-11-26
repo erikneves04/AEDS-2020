@@ -1,12 +1,11 @@
 /**
  *
  * @author Erik Neves
- * @date 2020-11-25
+ * @date 2020-11-26
 */
 
-public class ListaEncadeadaPerfis {
-    
-    private ItemLista Primeiro;
+public class ListaEncadeadaPosts {
+    private ItemListaPost Primeiro;
     private int NumeroDeItens;
     
     public int InicializarListaEncadeada(){
@@ -16,25 +15,25 @@ public class ListaEncadeadaPerfis {
         return Const.Sucesso;
     }
     
-    public int InserirNovoItem(Perfil NovoPerfil){
-        ItemLista NovoItem = new ItemLista();
+    public int InserirNovoItem(Postagem NovaPostagem){
+        ItemListaPost NovoItem = new ItemListaPost();
         
         if(this.Primeiro != null){
             this.Primeiro.SetAnteriorItemLista(NovoItem);
         }
-        NovoItem.InicializarItemLista(NovoPerfil, this.Primeiro, null);
+        NovoItem.InicializarItemLista(NovaPostagem, this.Primeiro, null);
         this.Primeiro = NovoItem;
         this.NumeroDeItens++;
         
         return Const.Sucesso;
     }
-    public int RemoverItem(Perfil PerfilAlvo){
-        ItemLista DadosPerfis = this.Primeiro;
+    public int RemoverItem(Postagem PostagemAlvo){
+        ItemListaPost DadosPerfis = this.Primeiro;
         boolean DadoEncontrado = false;
         
         
         for(int i=0;i<this.NumeroDeItens;i++){
-            if(PerfilAlvo.equals(DadosPerfis.GetDadosItem())){
+            if(PostagemAlvo.equals(DadosPerfis.GetDadosItem())){
                 if(DadosPerfis.GetAnteriorItemLista() == null){
                     this.Primeiro = this.Primeiro.GetProximoItemLista();
                     if(this.Primeiro != null) this.Primeiro.SetAnteriorItemLista(null);
@@ -51,7 +50,6 @@ public class ListaEncadeadaPerfis {
             DadosPerfis = DadosPerfis.GetProximoItemLista();
         }
         
-        
         if(!DadoEncontrado){
             return Const.Dado_nao_encontrado;
         }
@@ -61,12 +59,14 @@ public class ListaEncadeadaPerfis {
     public boolean ListaVazia(){
         return(this.NumeroDeItens == 0);
     }
-    public boolean DadoContido(Perfil PerfilProcurado){
+    public boolean DadoContido(Postagem Post){
         boolean DadoEncontrado = false;
-        ItemLista DadosLista = this.Primeiro;
+        ItemListaPost DadosLista = this.Primeiro;
+        
+        if(Post == null) return DadoEncontrado;
         
         for(int i=0;i<this.NumeroDeItens;i++){
-            if(PerfilProcurado.equals(DadosLista.GetDadosItem())){
+            if(Post.equals(DadosLista.GetDadosItem())){
                 DadoEncontrado = true;
                 break;
             }
@@ -75,26 +75,38 @@ public class ListaEncadeadaPerfis {
         
         return DadoEncontrado;
     }
-    public int ImprimirPerfisDaLista(){
-        ItemLista DadosLista = this.Primeiro;
+    public int ImprimirPostsDaLista(){
+        ItemListaPost DadosLista = this.Primeiro;
         
         if(!this.ListaVazia()){
-            System.out.println("+------------------------------------------+");
-            System.out.println("| Estes sao os perfis existentes na lista: |");
-            System.out.println("+------------------------------------------+");
-
-            System.out.println("| Nome de usuario: ");
+            System.out.println("+-----------------------------------------+");
+            System.out.println("| Estes sao os posts existentes na lista: |");
+            System.out.println("+-----------------------------------------+");
             for(int i=0;i<this.NumeroDeItens;i++){
-                System.out.println("| " + DadosLista.GetDadosItem().GetUserName());
+                System.out.println("| Id: " + DadosLista.GetDadosItem().GetIdPostagem());
+                System.out.println("| Post: " + DadosLista.GetDadosItem().GetTextoPostagem());
                 DadosLista = DadosLista.GetProximoItemLista();
             }
         }else{
-            System.out.println("+-----------------------------------+");
-            System.out.println("| Nao ha nenhum perfil nesta lista! |");
-            System.out.println("+-----------------------------------+");
+            System.out.println("+---------------------------------+");
+            System.out.println("| Nao ha nenhum post nesta lista! |");
+            System.out.println("+---------------------------------+");
         }
         System.out.println("");
         return Const.Sucesso;
     }
-    
+    public Postagem GetPostagem(int id){
+        Postagem procurada = null;
+        ItemListaPost DadosLista = this.Primeiro;
+        
+        for(int i=0;i<this.NumeroDeItens;i++){
+            if(DadosLista.GetDadosItem().GetIdPostagem() == id){
+                procurada = DadosLista.GetDadosItem();
+                break;
+            }
+            DadosLista = DadosLista.GetProximoItemLista();
+        }
+        
+        return procurada;
+    }
 }

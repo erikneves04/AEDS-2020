@@ -14,9 +14,10 @@ public class Barchieloschat {
         int Escolha_do_usuario = Const.Variavel_de_inicio;
         HashTable Usuarios = new HashTable();
         Interacoes Interact = new Interacoes();
+        Perfil AtualUser = null;
         // Declaração de varíaveis - FIM
         
-        /* Impressão das mensagens de bem vindo */
+        /* Impressão da mensagen de bem vindo */
         System.out.println("+-------------------------------+");
         System.out.println("| BEM VINDO AO BARCHIELO'S CHAT |");
         System.out.println("+-------------------------------+\n");
@@ -29,15 +30,15 @@ public class Barchieloschat {
             System.out.println("| Funcionalidades do software |");
             System.out.println("+-----------------------------+");
             System.out.println("[00] Encerrar.");
-            System.out.println("[01] .");
+            System.out.println("[01] Ativar um perfil.");
             System.out.println("[02] Criar um novo perfil.");
             System.out.println("[03] .");
             System.out.println("[04] .");
-            System.out.println("[05] .");
-            System.out.println("[06] .");
-            System.out.println("[07] .");
-            System.out.println("[08] .");
-            System.out.println("[09] .");
+            System.out.println("[05] Imprimir TODOS os perfis cadastrados.");
+            System.out.println("[06] Alterar informacoes do perfil atual.");
+            System.out.println("[07] Alterar dados de outro perfil.");
+            System.out.println("[08] Seguir/Deixar de seguir um perfil.");
+            System.out.println("[09] Fazer/Deletar uma postagem.");
             System.out.println("[10] .");
             System.out.println("[11] .");
             System.out.print("Escolha: ");
@@ -50,8 +51,6 @@ public class Barchieloschat {
                 case 0:
                     /* EXECUÇÕES:
                     * Impressão mensagem de encerramento do software
-                    * Chamada da função para realização do salvamento 
-                    *            dos dados da rede social
                     */
                     System.out.println("            +-----------------------+");
                     System.out.println("            | Encerrando o software |");
@@ -61,7 +60,7 @@ public class Barchieloschat {
                     /* EXECUÇÕES:
                     * Chamada da função para a ativação/troca do perfil que esta em uso.
                     */
-                    
+                    AtualUser = Interact.AtivarUmPerfil(Usuarios, AtualUser);
                 break;
                 case 2:
                     /* EXECUÇÕES:
@@ -86,31 +85,31 @@ public class Barchieloschat {
                     /* EXECUÇÕES:
                     * Chamada da função que imprime para o usuario todos os perfis cadastrados.
                     */
-
+                    Usuarios.ImprimirTodosOsPerfis();
                 break;
                 case 6:
                     /* EXECUÇÕES:
                     * Chamada da função para realizar alterações nos dados do perfil atual.
                     */
-
+                    Interact.AlterarInformacoesDoPerfil(Usuarios,AtualUser);
                 break;
                 case 7:
                     /* EXECUÇÕES:
                     * Chamada da função para realizar alterações em um perfil.
                     */
-
+                    Interact.AlterarInformacoesDoPerfil(Usuarios,Usuarios.GetPerfil(Interact.GetUserName(Usuarios)));
                 break;
                 case 8:
                     /* EXECUÇÕES:
                     * Chamada da função para seguir ou deixar de seguir um perfil existente.
                     */
-
+                    Interact.AlterarDadosSeguidores(Usuarios, AtualUser);
                 break;
                 case 9:
                     /* EXECUÇÕES:
                     * Chamada da função para fazer ou apagar um post.
                     */
-
+                    Interact.AlterarDadosPostagens(Usuarios, AtualUser);
                 break;
                 case 10:
                     /* EXECUÇÕES:
