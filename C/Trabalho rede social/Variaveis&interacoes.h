@@ -21,15 +21,16 @@ int GetIdPost();
 
 // ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - INICIO
 DataType * AtivarPerfil(HashTable * table,DataType * PerfilAtual);
-DataType * GetInformacoesCriarPerfil(HashTable * table);
+DataType * GetInformacoesCriarPerfil(HashTable * table,Recomendacoes * recomendados);
 DataType * GetPerfilAlvo(HashTable * table);
 Post * GetPostAlvo(ListaPostagens * lista);
 Error AlterarInformacoesPerfil(HashTable * table,DataType * DadoAlvo);
 Error Alterar_listaFollows(HashTable * table, DataType * perfil);
-Error RealizarPostagem(HashTable * table, DataType * perfil);
-Error DeletarPostagem(HashTable * table, DataType * perfil);
-Error Alterar_listaPosts(HashTable * table, DataType * perfil);
+Error RealizarPostagem(HashTable * table, DataType * perfil, Recomendacoes * recomendados);
+Error DeletarPostagem(HashTable * table, DataType * perfil,Recomendacoes * recomendacoes);
+Error Alterar_listaPosts(HashTable * table, DataType * perfil, Recomendacoes * recomendacoes);
 Error NavegarEmUmPerfil(HashTable * table,DataType * perfil, DataType * PerfilInicial);
+Error NavegarRecomendados(HashTable * table, Recomendacoes * recomendacoes,DataType * PerfilAtual);
 // ASSINATURAS DAS FUNÇÕES QUE INTERAGEM COM O USUARIO - FIM
 
 #endif /* Interact_h */

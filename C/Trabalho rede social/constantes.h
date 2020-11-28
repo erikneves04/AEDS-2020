@@ -24,11 +24,19 @@ typedef unsigned int Boolean;
 #define Tamanho_MAX_bio             (101)
 #define Tamanho_MAX_post            (101)
 #define ImpressaoDePosts             (10)
+#define Numero_de_recomendacoes      (05)
+#define DistanciaListagemConhecidos  (03)
 
 // DEFINIÇÃO DE ERROS        
 typedef unsigned int Error;  
 #define Perfil_inexistente           (01)
 #define Erro_lista_vazia             (02)
 #define Arquivo_corrompido           (03)
+#define Arquivo_vazio                (04)
+
+// DEFINIÇÃO DE ESTADOS NA BUSCA
+#define branco                       (00)
+#define cinza                        (01)
+#define preto                        (02)
 
 #endif /* __const_h__ */

@@ -1,9 +1,9 @@
-/*
- * @file   warnings.c
- * @brief  Arquivo com a implementação das funções 
- *              de avisos da rede social.
- * @author <Erik Neves>
- * @date   2020-11-13
+/**
+* @file   warnings.c
+* @brief  Arquivo com a implementação das funções 
+*              de avisos da rede social.
+* @author <Erik Neves>
+* @date   2020-11-13
 */
 
 // INCLUSÃO DE BIBLIOTECAS - INICIO
@@ -16,7 +16,7 @@
 
 
 Error PerfilNaoEncontrado(){
-    /*
+    /**
     * Função resposavel por informar um erro por parte do usuario.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -26,7 +26,7 @@ Error PerfilNaoEncontrado(){
     return Sucesso;
 }
 Error AtivacaoDefault(){
-    /*
+    /**
     * Função resposavel por informar um erro por parte do usuario.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -36,7 +36,7 @@ Error AtivacaoDefault(){
     return Sucesso;
 }
 Error PerfilDeletado(unsigned int id){
-    /*
+    /**
     * Função resposavel por informar um erro por parte do usuario.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -46,7 +46,7 @@ Error PerfilDeletado(unsigned int id){
     return Sucesso;
 }
 Error PostNaoEncontrado(){
-    /*
+    /**
     * Função resposavel por informar um erro por parte do usuario.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -56,7 +56,7 @@ Error PostNaoEncontrado(){
     return Sucesso;
 }
 Error ArquivoCorrompido(){
-    /*
+    /**
     * Função resposavel por informar um erro por parte do usuario.
     * @return Sucesso caso ocorra tudo certo.
     */

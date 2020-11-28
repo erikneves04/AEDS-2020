@@ -12,7 +12,7 @@
 #ifndef __DataSave_h__
 #define __DataSave_h__
 
-Error LoadAllSavedData(HashTable * table);
-Error SaveAllData(HashTable * table);
+Error LoadAllSavedData(HashTable * table,Recomendacoes * recomendacoes);
+Error SaveAllData(HashTable * table,Recomendacoes * recomendacoes);
 
 #endif /* __DataSave_h__ */

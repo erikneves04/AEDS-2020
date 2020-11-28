@@ -1,8 +1,8 @@
-/*
- * @file   Manipulacao_ListaEncadeada.c
- * @brief  Implementaçao das funções de manipulação de lista duplamente encadeada.
- * @author <Erik Neves>
- * @date   2020-11-10
+/**
+* @file   Manipulacao_ListaEncadeada.c
+* @brief  Implementaçao das funções de manipulação de lista duplamente encadeada.
+* @author <Erik Neves>
+* @date   2020-11-10
 */
 
 // INCLUSÃO DE BIBLIOTECAS - INICIO
@@ -19,7 +19,7 @@
 
 // IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (MANIPULA PERFIS) - INICIO
 Error Inicializar_lista(Lista * lista){
-    /*
+    /**
     * Função responsavel por inicializar uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -29,7 +29,7 @@ Error Inicializar_lista(Lista * lista){
     return Sucesso;
 }
 Error Insere_dado(DataType * Valor,Lista * lista){
-    /*
+    /**
     * Função responsavel por inserir um dado em uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -46,8 +46,35 @@ Error Insere_dado(DataType * Valor,Lista * lista){
 
     return Sucesso;
 }
+Error Insere_dado_MODOFILA(DataType * Valor,Lista * lista){
+    /**
+    * Função responsavel por inserir um dado no fim de uma lista.
+    * @return Sucesso caso ocorra tudo certo.
+    */
+    int i;
+    Item_lista * Novo_dado = (Item_lista*)malloc(sizeof(Item_lista));
+    Item_lista * Dadoslista = lista->primeira;
+    
+    Novo_dado->DadosItem = Valor;
+    for(i=0;i<lista->CountFollows;i++){
+        if(Dadoslista->Proximo != NULL) Dadoslista = Dadoslista->Proximo;
+    }
+
+    if(Dadoslista == NULL){
+        lista->primeira = Novo_dado;
+        Novo_dado->Anterior = NULL;
+    }else{
+        Dadoslista->Proximo = Novo_dado;
+        Novo_dado->Anterior = Dadoslista;
+    }
+
+    Novo_dado->Proximo = NULL;
+    lista->CountFollows++;
+
+    return Sucesso;
+}
 Error Remove_dado(DataType * Valor,Lista * lista){
-    /*
+    /**
     * Função responsavel por remover um dado em uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -85,15 +112,33 @@ Error Remove_dado(DataType * Valor,Lista * lista){
     }
     return Sucesso;
 }
+DataType * Remove_dado_MODOFILA(Lista * lista){
+    /**
+    * Função responsavel por remover um dado no inicio de uma lista.
+    * @return Ponteiro para o perfil removido.
+    */
+    Item_lista * Primeiro = lista->primeira;
+    DataType * aux = NULL;
+
+    if(Primeiro != NULL){
+        lista->CountFollows--;
+        aux = Primeiro->DadosItem;
+        lista->primeira = Primeiro->Proximo;
+        if(Primeiro->Proximo != NULL) Primeiro->Proximo->Anterior = NULL;
+        free(Primeiro);
+    }
+
+    return Primeiro->DadosItem;
+}
 Boolean Lista_vazia(Lista * lista){
-    /*
+    /**
     * Função responsavel por verificar se uma lista esta vazia.
     * @return Booleano(true or false).
     */
     return (lista->CountFollows == 0) ? true : false;
 }
 Error Imprimir_lista(Lista * lista){
-    /*
+    /**
     * Função responsavel por imprimir os dados uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -116,7 +161,7 @@ Error Imprimir_lista(Lista * lista){
     return Sucesso;
 }
 Error Limpar_lista(Lista * lista){
-    /*
+    /**
     * Função responsavel por limpar os dados uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -136,7 +181,7 @@ Error Limpar_lista(Lista * lista){
     return Sucesso;
 }
 Boolean DadoContido_lista(Lista * lista, DataType * DadoAlvo){
-    /*
+    /**
     * Função responsavel por verificar se um dado existe em uma vazia.
     * @return Booleano(true or false).
     */
@@ -154,12 +199,40 @@ Boolean DadoContido_lista(Lista * lista, DataType * DadoAlvo){
 
     return DadoExistente;
 }
+DataType * GetDado_lista(Lista * lista){
+    /**
+    * Função responsavel por identificar um perfil 
+    *      caso ele exista nessa lista.        
+    * @return Ponteiro para um perfil.
+    */
+    int i;
+    Boolean PerfilEncontrado = false;
+    DataType * DataAlvo = NULL;
+    Item_lista * DadosLista = lista->primeira;
+    char NomeProcurado[Tamanho_MAX_usuario];
+
+    printf("Digite o nome de usuario do perfil: ");
+    setbuf(stdin,NULL);
+    scanf("%[^\n]s", NomeProcurado);
+    setbuf(stdin,NULL);
+    
+    for(i=0;i<lista->CountFollows;i++){
+        if(strcmp(NomeProcurado,DadosLista->DadosItem->NomeUsuario) == 0){
+            PerfilEncontrado = true;
+            DataAlvo = DadosLista->DadosItem;
+            break;
+        }
+        DadosLista = DadosLista->Proximo;
+    }
+
+    return (PerfilEncontrado == true) ? DataAlvo : NULL;
+}
 // IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (MANIPULA PERFIS) - FIM
 
 
 // IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (MANIPULA POSTAGENS) - INICIO
 Error Inicializar_listaPost(ListaPostagens * lista){
-    /*
+    /**
     * Função responsavel por inicializar uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -169,7 +242,7 @@ Error Inicializar_listaPost(ListaPostagens * lista){
     return Sucesso;
 }
 Error Insere_dadoPost(Post * Valor,ListaPostagens * lista){
-    /*
+    /**
     * Função responsavel por inserir um dado em uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -183,11 +256,37 @@ Error Insere_dadoPost(Post * Valor,ListaPostagens * lista){
     }
     lista->NumeroDePostagens++;
     lista->Primeira = NovoPost;
+    return Sucesso;
+}
+Error Insere_dadoPost_MODOFILA(Post * Valor,ListaPostagens * lista){
+    /**
+    * Função responsavel por inserir um dado no fim de uma lista.
+    * @return Sucesso caso ocorra tudo certo.
+    */
+    int i;
+    Item_Post * Novo_dado = (Item_Post*)malloc(sizeof(Item_Post));
+    Item_Post * Dadoslista = lista->Primeira;
+    
+    Novo_dado->dadosItem = Valor;
+    for(i=0;i<lista->NumeroDePostagens;i++){
+        if(Dadoslista->Proxima != NULL)Dadoslista = Dadoslista->Proxima;
+    }
+
+    if(Dadoslista == NULL){
+        lista->Primeira = Novo_dado;
+        Novo_dado->Anterior = NULL;
+    }else{
+        Dadoslista->Proxima = Novo_dado;
+        Novo_dado->Anterior = Dadoslista;
+    }
+
+    Novo_dado->Proxima = NULL;
+    lista->NumeroDePostagens++;
 
     return Sucesso;
 }
 Error Remove_dadoPost(Post * Valor,ListaPostagens * lista){
-    /*
+    /**
     * Função responsavel por remover um dado em uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -225,14 +324,36 @@ Error Remove_dadoPost(Post * Valor,ListaPostagens * lista){
     }
     return Sucesso;
 }
+Post * Remove_dadoPost_MODOFILA(ListaPostagens * lista){
+    /**
+    * Função responsavel por remover um dado no inicio de uma lista.
+    * @return Ponteiro para o perfil removido.
+    */
+    Item_Post * Primeiro = lista->Primeira;
+    Post * aux = NULL;
+
+    if(Primeiro != NULL){
+        lista->NumeroDePostagens--;
+        aux = Primeiro->dadosItem;
+        lista->Primeira = Primeiro->Proxima;
+        if(Primeiro->Proxima != NULL) Primeiro->Proxima->Anterior = NULL;
+        free(Primeiro);
+    }
+
+    return Primeiro->dadosItem;
+}
 Boolean Lista_vaziaPost(ListaPostagens * lista){
-    /*
+    /**
     * Função responsavel por verificar se uma lista esta vazia.
     * @return Booleano(true or false).
     */
     return (lista->NumeroDePostagens == 0) ? true : false;
 }
 Error RemoveCurtidas(ListaPostagens * lista, DataType * Removido){
+    /**
+    * Função responsavel por remover as curtidas de todos os posts de um usuario.
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int i;
     Item_Post * DadosPostagens = lista->Primeira;
 
@@ -244,7 +365,7 @@ Error RemoveCurtidas(ListaPostagens * lista, DataType * Removido){
     return Sucesso;
 }
 Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
-    /*
+    /**
     * Função responsavel por imprimir os dados uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -277,7 +398,7 @@ Error Imprimir_listaPost(ListaPostagens * lista,DataType * Visual){
     return Sucesso;
 }
 Error Limpar_listaPost(ListaPostagens * lista,Boolean bool){
-    /*
+    /**
     * Função responsavel por limpar os dados uma lista.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -297,8 +418,8 @@ Error Limpar_listaPost(ListaPostagens * lista,Boolean bool){
     free(lista);
     return Sucesso;
 }
-Boolean DadoContido_listaPost(ListaPostagens * lista, unsigned int IDDadoAlvo){
-    /*
+Boolean DadoContido_listaPost(ListaPostagens * lista, int IDDadoAlvo){
+    /**
     * Função responsavel por verificar se um dado existe em uma vazia.
     * @return Booleano(true or false).
     */
@@ -311,8 +432,56 @@ Boolean DadoContido_listaPost(ListaPostagens * lista, unsigned int IDDadoAlvo){
             DadoExistente = true;
             break;
         }
+        Dados_lista = Dados_lista->Proxima;
     }
 
     return DadoExistente;
+}
+Post * GetDado_listaPost(ListaPostagens * lista){
+    /**
+    * Função responsavel por identificar uma postagem 
+    *        caso ela exista nessa lista.        
+    * @return Ponteiro para uma postagem.
+    */
+    int i;
+    Boolean PerfilEncontrado = false;
+    Post * PostAlvo = NULL;
+    Item_Post * DadosLista = lista->Primeira;
+    int IDProcurado;
+
+    printf("Digite o id da postagem: ");
+    scanf("%d", &IDProcurado);
+    
+    for(i=0;i<lista->NumeroDePostagens;i++){
+        if(IDProcurado == DadosLista->dadosItem->ID){
+            PerfilEncontrado = true;
+            PostAlvo = DadosLista->dadosItem;
+            break;
+        }
+        DadosLista = DadosLista->Proxima;
+    }
+
+    return (PerfilEncontrado == true) ? PostAlvo : NULL;
+}
+Post * GetDado_listaPost_NoInteract(ListaPostagens * lista, int IDProcurado){
+    /**
+    * Função responsavel por identificar uma postagem 
+    *        caso ela exista nessa lista.        
+    * @return Ponteiro para uma postagem.
+    */
+    int i;
+    Boolean PerfilEncontrado = false;
+    Post * PostAlvo = NULL;
+    Item_Post * DadosLista = lista->Primeira;
+    for(i=0;i<lista->NumeroDePostagens;i++){
+        if(IDProcurado == DadosLista->dadosItem->ID){
+            PerfilEncontrado = true;
+            PostAlvo = DadosLista->dadosItem;
+            break;
+        }
+        DadosLista = DadosLista->Proxima;
+    }
+
+    return (PerfilEncontrado == true) ? PostAlvo : NULL;
 }
 // IMPLEMENTAÇÃO MANIPULAÇÃO LISTA DP. ENCADEADA (MANIPULA POSTAGENS) - FIM

@@ -1,9 +1,9 @@
-/*
- * @file   hash.c
- * @brief  Arquivo com implementação das funções de 
- *              manipulação da tabela hash.
- * @author <Erik Neves>
- * @date   2020-11-05
+/**
+* @file   hash.c
+* @brief  Arquivo com implementação das funções de 
+*              manipulação da tabela hash.
+* @author <Erik Neves>
+* @date   2020-11-05
 */
 
 // INCLUSÃO DE BIBLIOTECAS - INICIO
@@ -16,11 +16,12 @@
 #include "structs.h"
 #include "Manipulacao_ListaEncadeada.h"
 #include "warnings.h"
+#include "Recomendacoes.h"
 // INCLUSÃO DE BIBLIOTECAS - FIM
 
 
 Item_lista * GetColuna(HashTable * table,int ColunaID){
-    /*
+    /**
     * Função responsavel por identificar uma coluna em uma tabela hash. 
     * @return ponteiro para o primeiro item da coluna procurada 
     *              ou NULL caso a coluna não exista.
@@ -33,9 +34,29 @@ Item_lista * GetColuna(HashTable * table,int ColunaID){
 
     return DadosColuna;
 }
+int GetMaiorIDAtual(HashTable * table){
+    /**
+    * Função responsavel por identificar o maios ID da tabela.
+    * @return inteiro ID.
+    */
+    DataType * dados = NULL;
+    Item_lista * DadosColuna = NULL;
+    int i;
+    int MaiorID = 0;
+
+    for(i=0;i<table->NumeroDeColunas;i++){
+        DadosColuna = table->DadosTabela[i];
+        while(DadosColuna != NULL){
+            dados = DadosColuna->DadosItem;
+            if(dados->PerfilID > MaiorID)MaiorID = dados->PerfilID;
+            DadosColuna = DadosColuna->Proximo;
+        }
+    }
+    return MaiorID;
+}
 
 Error InicializarHashTable(HashTable * table){
-    /*
+    /**
     * Função responsavel por inicializar a estrutura da tabela hash.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -46,7 +67,7 @@ Error InicializarHashTable(HashTable * table){
     return Sucesso;
 }
 Error InserirHashTable(HashTable * table, DataType * dadosItem){
-    /*
+    /**
     * Função responsavel por inserir um dado(DataType) na tabela hash. 
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -79,7 +100,7 @@ Error InserirHashTable(HashTable * table, DataType * dadosItem){
     return Sucesso;
 }
 DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario]){
-    /*
+    /**
     * Função responsavel por remover um dado(DataType) da tabela hash. 
     * @return ponteiro para um DataType caso ocorra tudo certo.
     */
@@ -112,8 +133,12 @@ DataType * RemoverDadoHashTable(HashTable * table, char nome[Tamanho_MAX_usuario
     return DataAux;
 }
 Error RemoverIndexPost_PerfisQCurtiram(Post * postagem){
+    /**
+    * Função responsavel por remover as curtidas de um usuario nos demais posts. 
+    * @return Sucesso caso ocorra tudo certo.
+    */
     int i;
-    Item_lista * DadosCurtidas;//postagem->Curtidas->DadosTabela;
+    Item_lista * DadosCurtidas;
 
     for(i=0;i<postagem->Curtidas->NumeroDeColunas;i++){
         DadosCurtidas = postagem->Curtidas->DadosTabela[i];
@@ -125,14 +150,15 @@ Error RemoverIndexPost_PerfisQCurtiram(Post * postagem){
 
     return Sucesso;
 }
-DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
-    /*
+DataType * DeletarPerfil(HashTable * table, DataType * Alvo,DataType * Atual, Recomendacoes * recomendacoes){
+    /**
     * Função responsavel por deletar um dado(DataType) e limpar sua memoria no sistema. 
     * @return ponteiro para um DataType caso ocorra tudo certo.
     */
     DataType * RemoveReturn = NULL;
     Item_Post * DadosPosts = NULL;
     Item_lista * DadosPerfis = NULL;
+    Boolean AtualAlvo = false;
     int i;
 
     if(Alvo == NULL){
@@ -145,11 +171,14 @@ DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
     if(RemoveReturn == NULL){
         PerfilNaoEncontrado();
     }else{
+        if(RemoveReturn->PerfilID == Atual->PerfilID)AtualAlvo = true;
+        RemoveIndexPerfilRecomedado(RemoveReturn,recomendacoes);
         PerfilDeletado(RemoveReturn->PerfilID);
         RemoveCurtidas(RemoveReturn->PostagensCurtidas,RemoveReturn);
         
         DadosPosts = RemoveReturn->Postagens->Primeira;
         for(i=0;i<RemoveReturn->Postagens->NumeroDePostagens;i++){
+            RemoveIndexPostRecomedado(DadosPosts->dadosItem,recomendacoes);
             RemoverIndexPost_PerfisQCurtiram(DadosPosts->dadosItem);
             DadosPosts = DadosPosts->Proxima;
         }
@@ -174,11 +203,10 @@ DataType * DeletarPerfil(HashTable * table, DataType * Alvo){
         RemoveReturn = NULL;
         Alvo = NULL;
     }   
-
-    return Alvo;
+    return (AtualAlvo == true) ? NULL : Atual;
 }
 Error ImprimirDadosColuna(HashTable * table, int coluna){
-    /*
+    /**
     * Função responsavel por imprimir os dados de uma coluna.
     *  -> Por default essa função não está sendo utilizada. 
     * @return Sucesso caso ocorra tudo certo.
@@ -205,7 +233,7 @@ Error ImprimirDadosColuna(HashTable * table, int coluna){
     return Sucesso;
 }
 Error ImprimirTODOSPerfis_HashTable(HashTable * table){
-    /*
+    /**
     * Função responsavel por imprimir todos os perfis cadastrados.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -238,7 +266,7 @@ Error ImprimirTODOSPerfis_HashTable(HashTable * table){
     return (TituloAtivado == true) ? Sucesso : Perfil_inexistente;
 }
 Error ImprimirTODOSCurtidas_HashTable(Post * postagem){
-    /*
+    /**
     * Função responsavel por imprimir as curtidas de um determinado post.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -272,7 +300,7 @@ Error ImprimirTODOSCurtidas_HashTable(Post * postagem){
     return (TituloAtivado == true) ? Sucesso : Perfil_inexistente;
 }
 Boolean DadoExistenteHashTable(HashTable * table, DataType * dadosItem){
-    /*
+    /**
     * Função responsavel por verificar se um dado existe em uma tabela hash.
     * @return Booleano(true or false).
     */
@@ -295,7 +323,7 @@ Boolean DadoExistenteHashTable(HashTable * table, DataType * dadosItem){
     return DadoEncontrado;
 }
 Error LimparUsersHashTable(HashTable * table){
-    /*
+    /**
     * Função responsavel por limpar os perfis de uma tabela hash.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -319,7 +347,7 @@ Error LimparUsersHashTable(HashTable * table){
     return Sucesso;
 }
 Error LimparPostHashTable(HashTable * table){
-    /*
+    /**
     * Função responsavel por limpar as curtidas de um post.
     * @return Sucesso caso ocorra tudo certo.
     */
@@ -340,7 +368,7 @@ Error LimparPostHashTable(HashTable * table){
     return Sucesso;
 }
 DataType * GetPerfilAlvo_NoInteract(HashTable * table, char NomeProcurado[Tamanho_MAX_usuario]){
-    /*
+    /**
     * Função responsavel por localizar um perfil procurado.
     * @return ponteiro para um perfil.
     */
