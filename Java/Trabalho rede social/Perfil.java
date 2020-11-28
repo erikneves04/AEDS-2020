@@ -12,6 +12,7 @@ public class Perfil {
     public ListaEncadeadaPerfis Seguindo;
     public ListaEncadeadaPerfis Seguidores;
     public ListaEncadeadaPosts Postagens;
+    public ListaEncadeadaPosts PostagensCurtidas;
     
     public int SetInformacoesPerfil(int ID, String NCompleto, String NUser, boolean Inicializando){
         this.Id = ID;
@@ -19,12 +20,14 @@ public class Perfil {
         this.NomeUsuario = NUser;
         
         if(Inicializando){
-            Seguindo = new ListaEncadeadaPerfis();
-            Seguindo.InicializarListaEncadeada();
-            Seguidores = new ListaEncadeadaPerfis();
-            Seguidores.InicializarListaEncadeada();
-            Postagens = new ListaEncadeadaPosts();
-            Postagens.InicializarListaEncadeada();
+            this.Seguindo = new ListaEncadeadaPerfis();
+            this.Seguindo.InicializarListaEncadeada();
+            this.Seguidores = new ListaEncadeadaPerfis();
+            this.Seguidores.InicializarListaEncadeada();
+            this.Postagens = new ListaEncadeadaPosts();
+            this.Postagens.InicializarListaEncadeada();
+            this.PostagensCurtidas = new ListaEncadeadaPosts();
+            this.PostagensCurtidas.InicializarListaEncadeada();
         }
         
         return Const.Sucesso;

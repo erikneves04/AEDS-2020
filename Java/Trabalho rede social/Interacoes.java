@@ -8,17 +8,17 @@ import java.util.Scanner;
 
 public class Interacoes {
     
-    private static int ContagemIdentificadores = 0;
+    public static int ContagemIdentificadores = 0;
     private static int COntagemIdentificadoresPosts = 0;
     
     public Perfil CriarUmNovoPerfil(HashTable table){
         Scanner Input = new Scanner(System.in);
         Perfil NovoPerfil = new Perfil();
         String UserName = null;
-        String Name;
+        String Name = "null";
         
-        System.out.print("Digite seu nome completo: ");
-        Name = Input.nextLine();
+        //System.out.print("Digite seu nome completo: ");
+        //Name = Input.nextLine();
         
         boolean UserNameDisponivel = false;
         while(!UserNameDisponivel){
@@ -143,7 +143,7 @@ public class Interacoes {
             System.out.println("| Procedimento cancelado |\n");
             procurado = AtualUser;
         }else{
-            System.out.println("\n| Perfil @"+procurado.GetUserName()+" ativado com sucesso |\n");
+            System.out.println("| Perfil @"+procurado.GetUserName()+" ativado com sucesso |\n");
         }
         
         return procurado;
@@ -303,7 +303,7 @@ public class Interacoes {
             System.out.println("| Postagem nao encontrada |\n");
         }else{
             AtualUser.Postagens.RemoverItem(Alvo);
-            
+            Alvo.Curtidas.RemoverTodasAsCurtidasDeUmPost(Alvo);
             System.out.println("| Postagem removida com sucesso |\n");
         }
         
@@ -347,6 +347,17 @@ public class Interacoes {
                 case 3:
                     AtualUser.Postagens.ImprimirPostsDaLista(null);
                 break;
+                case 4:
+                    System.out.print("Digite o id da postagem para detalha-la: ");
+                    int IdAux = Integer.parseInt(Input.nextLine());
+                    
+                    Postagem PostAlvo = AtualUser.Postagens.GetPostagem(IdAux);
+                    if(PostAlvo == null){
+                        System.out.println("\n| Postagem nao encontrada |\n");
+                    }else{
+                        PostAlvo.DetalharPostagem();
+                    }
+                break;
                 default:
                     System.out.println("| Escolha invalida! Tente novamente. |\n");
                 break;
@@ -372,7 +383,7 @@ public class Interacoes {
             System.out.println("Oque deseja fazer @"+AtualUser.GetUserName()+"?");
             System.out.println("[00] Encerrar.");
             System.out.println("[01] Listar quem o perfil segue.");
-            //System.out.println("[02] Listar os perfis a uma distancia de.");
+            System.out.println("[02] Listar os perfis a uma distancia de "+Const.DistanciaPerfis+".");
             System.out.println("[03] Visitar um perfil seguido.");
             System.out.println("[04] Ver as postagens.");
             System.out.println("[05] Curtir uma postagem.");
@@ -390,7 +401,9 @@ public class Interacoes {
                     PerfilVisitado.Seguindo.ImprimirPerfisDaLista();
                 break;
                 case 2:
-                    //Falta implementação
+                    Buscas buscas = new Buscas();
+                    System.out.println("");
+                    buscas.BuscaPorLargura(PerfilVisitado);
                 break;
                 case 3:
                     String Aux = null;
@@ -422,6 +435,7 @@ public class Interacoes {
                         System.out.println("\n| Postagem nao encontrada |\n");
                     }else{
                         PostAlvo.Curtidas.InserirNovoItem(AtualUser);
+                        AtualUser.PostagensCurtidas.InserirNovoItem(PostAlvo);
                         System.out.println("\n| Postagem curtida com sucesso |\n");
                     }
                 break;
@@ -434,12 +448,22 @@ public class Interacoes {
                         System.out.println("\n| Postagem nao encontrada |\n");
                     }else if(PostAlvo.Curtidas.PerfilExistente(AtualUser.GetUserName())){
                         PostAlvo.Curtidas.RemovePerfilByObjetc(AtualUser);
+                        AtualUser.PostagensCurtidas.RemoverItem(PostAlvo);
                         System.out.println("\n| Curtida removida com sucesso |\n");
                     }else{
                         System.out.println("\n| Voce nao curtiu essa postagem |\n");
                     }
                 break;
                 case 7:
+                    System.out.print("\nDigite o id da postagem para detalha-la: ");
+                    IdAux = Integer.parseInt(Input.nextLine());
+                    
+                    PostAlvo = PerfilVisitado.Postagens.GetPostagem(IdAux);
+                    if(PostAlvo == null){
+                        System.out.println("\n| Postagem nao encontrada |\n");
+                    }else{
+                        PostAlvo.DetalharPostagem();
+                    }
                 break;
                 default:
                     System.out.println("\n| Escolha invalida! Tente novamente. |\n");

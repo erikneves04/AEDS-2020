@@ -36,4 +36,13 @@ public class Postagem {
         return this.Conteudo;
     }
     
+    public int DetalharPostagem(){
+        
+        System.out.println("\nId: "+this.Id);
+        System.out.println("Post: "+this.Conteudo);
+        this.Curtidas.ImprimirTodosOsPerfisQueCurtiram();
+        
+        return Const.Sucesso;
+    }
+    
 }

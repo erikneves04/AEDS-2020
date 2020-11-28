@@ -18,6 +18,9 @@ public class ListaEncadeadaPerfis {
     public ItemLista GetPrimeiroItem(){
         return this.Primeiro;
     }
+    public int GetNumeroDeItens(){
+        return this.NumeroDeItens;
+    }
     
     public int InserirNovoItem(Perfil NovoPerfil){
         ItemLista NovoItem = new ItemLista();
@@ -27,6 +30,26 @@ public class ListaEncadeadaPerfis {
         }
         NovoItem.InicializarItemLista(NovoPerfil, this.Primeiro, null);
         this.Primeiro = NovoItem;
+        this.NumeroDeItens++;
+        
+        return Const.Sucesso;
+    }
+    public int InserirNovoItem_MODOFILA(Perfil NovoPerfil){
+        ItemLista NovoItem = new ItemLista();
+        ItemLista Ultimo = this.Primeiro;
+        
+        for(int i=0;i<this.NumeroDeItens;i++){
+            if(Ultimo.GetProximoItemLista() != null){
+                Ultimo = Ultimo.GetProximoItemLista();
+            }
+        }
+        
+        if(Ultimo != null){
+            Ultimo.SetProximoItemLista(NovoItem);
+        }else{
+            this.Primeiro = NovoItem;
+        }
+        NovoItem.InicializarItemLista(NovoPerfil,null, Ultimo);
         this.NumeroDeItens++;
         
         return Const.Sucesso;
@@ -60,6 +83,19 @@ public class ListaEncadeadaPerfis {
         }
         
         return Const.Sucesso;
+    }
+    public Perfil RemoverItem_MODOFILA(){
+        boolean PrimeiroValido = false;
+        Perfil primeiro = null;
+        
+        if(this.Primeiro != null){
+            PrimeiroValido = true;
+            primeiro = this.Primeiro.GetDadosItem();
+            this.Primeiro = this.Primeiro.GetProximoItemLista();
+            this.NumeroDeItens--;
+        }
+       
+        return (PrimeiroValido) ? primeiro : null;
     }
     public boolean ListaVazia(){
         return(this.NumeroDeItens == 0);

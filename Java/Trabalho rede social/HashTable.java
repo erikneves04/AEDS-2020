@@ -24,7 +24,6 @@ public class HashTable {
         return (count/10);
     }
     
-    
     public int InserirNovoItem(Perfil NovoPerfil){
         int IndexNovoPerfil = this.GetIndexPerfil(NovoPerfil.GetUserName());
         ItemLista NovoItem = new ItemLista();
@@ -82,6 +81,7 @@ public class HashTable {
             DadosColuna = DadosColuna.GetProximoItemLista();
         }
         
+        this.NumeroDePerfis--;
         return (PerfilEncontrado) ? Const.Sucesso : Const.Dado_nao_encontrado;
     }
     private boolean TabelaVazia(){
@@ -178,33 +178,53 @@ public class HashTable {
         
         return Const.Sucesso;
     }
-    public int DeletarPerfil(Perfil Alvo){
-        if(Alvo == null) return Const.UsuarioInvalido;
-        ItemListaPost DadosPosts;
-        ItemLista DadosFollows;
+    public int RemoverTodasAsCurtidasDeUmPost(Postagem post){
+        ItemLista DadosColuna;
         
-        DadosFollows = Alvo.Seguindo.GetPrimeiroItem();
-        while(DadosFollows != null){
-            DadosFollows.GetDadosItem().Seguidores.RemoverItem(Alvo);
-            DadosFollows = DadosFollows.GetProximoItemLista();
+        for(int i=0;i< this.NumeroDeColunas;i++){
+            DadosColuna = this.DadosTabela.get(i);
+            while(DadosColuna != null){
+               DadosColuna.GetDadosItem().PostagensCurtidas.RemoverItem(post);
+               DadosColuna = DadosColuna.GetProximoItemLista();
+            }
         }
-        DadosFollows = Alvo.Seguidores.GetPrimeiroItem();
-        while(DadosFollows != null){
-            DadosFollows.GetDadosItem().Seguindo.RemoverItem(Alvo);
-            DadosFollows = DadosFollows.GetProximoItemLista();
-        }
-        
-        DadosPosts = Alvo.Postagens.GetPrimeiroItem();
-        while(DadosPosts != null){
-            //TODO implementar a remoção da lista de custidas
-            Alvo.Postagens.RemoverItem(DadosPosts.GetDadosItem());
-            DadosPosts = DadosPosts.GetProximoItemLista();
-        }
-        
+         
         return Const.Sucesso;
     }
-    public int RemoverTodasAsCurtidasDeUmPost(Postagem post){
+    public Perfil DeletarPerfil(Perfil AtualUser, Perfil Alvo){
+        boolean AtualAlvo = AtualUser.equals(Alvo);
         
-        return Const.Sucesso;
+        if(Alvo == null) return AtualUser;
+        
+        // remoção do follow de outros perfis em cima deste
+        ItemLista Seguidores = Alvo.Seguidores.GetPrimeiroItem();
+        while(Seguidores != null){
+            Seguidores.GetDadosItem().Seguindo.RemoverItem(Alvo);
+            Seguidores = Seguidores.GetProximoItemLista();
+        }
+        
+        // remoção dos perfis que o alvo segue
+        ItemLista Seguindo = Alvo.Seguindo.GetPrimeiroItem();
+        while(Seguindo != null){
+            Seguindo.GetDadosItem().Seguidores.RemoverItem(Alvo);
+            Seguindo = Seguindo.GetProximoItemLista();
+        }
+        
+        // remoção do index desse perfil em postagens que ele curtiu
+        ItemListaPost PostagensCurtidas = Alvo.PostagensCurtidas.GetPrimeiroItem();
+        while(PostagensCurtidas != null){
+            PostagensCurtidas.GetDadosItem().Curtidas.RemovePerfilByObjetc(Alvo);
+            PostagensCurtidas = PostagensCurtidas.GetProximoItemLista();
+        }
+        
+        // remoção do index das postagens de perfis que a curtiram
+        ItemListaPost Postagens = Alvo.Postagens.GetPrimeiroItem();
+        while(Postagens != null){
+            Postagens.GetDadosItem().Curtidas.RemoverTodasAsCurtidasDeUmPost( Postagens.GetDadosItem());
+            Postagens = Postagens.GetProximoItemLista();
+        }
+        
+        this.RemovePerfilByObjetc(Alvo);
+        return (!AtualAlvo) ? AtualUser : null;
     }
 }

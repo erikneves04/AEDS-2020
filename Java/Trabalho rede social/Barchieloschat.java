@@ -32,8 +32,8 @@ public class Barchieloschat {
             System.out.println("[00] Encerrar.");
             System.out.println("[01] Ativar um perfil.");
             System.out.println("[02] Criar um novo perfil.");
-            System.out.println("[03] .");
-            System.out.println("[04] .");
+            System.out.println("[03] Deletar perfil atual.");
+            System.out.println("[04] Deletar outro perfil.");
             System.out.println("[05] Imprimir TODOS os perfis cadastrados.");
             System.out.println("[06] Alterar informacoes do perfil atual.");
             System.out.println("[07] Alterar dados de outro perfil.");
@@ -73,14 +73,13 @@ public class Barchieloschat {
                     /* EXECUÇÕES:
                     * Chamada da função que remove o perfil atual do usuario.
                     */
-                    String aux = InputEscolha.nextLine();
-                    System.out.println(aux);
+                    AtualUser = Usuarios.DeletarPerfil(AtualUser,AtualUser);
                 break;
                 case 4:
                     /* EXECUÇÕES:
                     * Chamada da função que remove um perfil.
                     */
-
+                    AtualUser = Usuarios.DeletarPerfil(AtualUser,Usuarios.GetPerfil(Interact.GetUserName(Usuarios)));
                 break;
                 case 5:
                     /* EXECUÇÕES:
