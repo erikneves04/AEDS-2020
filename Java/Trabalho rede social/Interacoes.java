@@ -15,10 +15,10 @@ public class Interacoes {
         Scanner Input = new Scanner(System.in);
         Perfil NovoPerfil = new Perfil();
         String UserName = null;
-        String Name = "null";
+        String Name;
         
-        //System.out.print("Digite seu nome completo: ");
-        //Name = Input.nextLine();
+        System.out.print("Digite seu nome completo: ");
+        Name = Input.nextLine();
         
         boolean UserNameDisponivel = false;
         while(!UserNameDisponivel){

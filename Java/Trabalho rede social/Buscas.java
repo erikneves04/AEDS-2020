@@ -40,14 +40,10 @@ public class Buscas {
             if((ProfundidadeAtual+1) < Const.DistanciaPerfis)NumeroDeLoadsPorNivel[ProfundidadeAtual+1] += LenQue_CarregadosPeloAtua;
             ContagemDeCarregamentos++;
             ArestrasCarregadas[Atual.GetIdPerfil()] = true;
-            System.out.println("Loads do nivel("+ProfundidadeAtual+"): "+NumeroDeLoadsPorNivel[ProfundidadeAtual]);
             if(NumeroDeLoadsPorNivel[ProfundidadeAtual] == ContagemDeCarregamentos){
                 ProfundidadeAtual++;
                 ContagemDeCarregamentos = 0;
-                System.out.println("Carregamentos: "+ContagemDeCarregamentos+" Nivel: "+ProfundidadeAtual);
-            }
-            
-            System.out.println("Atual: "+Atual.GetUserName()+" Count: "+ContagemDeCarregamentos+" Nivel: "+ProfundidadeAtual);
+            }            
             
             if(!Fila.ListaVazia()){
                 Atual = Fila.RemoverItem_MODOFILA();
