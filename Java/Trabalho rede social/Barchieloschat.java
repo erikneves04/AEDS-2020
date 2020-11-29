@@ -3,10 +3,11 @@
  * @author Erik Neves
  * @date 2020-11-25
 */
+
 import java.util.Scanner;
 
 public class Barchieloschat {
-    public static void main(String[] args) {
+    public static void main(String[] args){
         
         // Declaração de varíaveis - INICIO
         Scanner InputEscolha = new Scanner(System.in);
@@ -14,6 +15,7 @@ public class Barchieloschat {
         int Escolha_do_usuario = Const.Variavel_de_inicio;
         HashTable Usuarios = new HashTable();
         Interacoes Interact = new Interacoes();
+        DataBase Data = new DataBase();
         Perfil AtualUser = null;
         // Declaração de varíaveis - FIM
         
@@ -22,6 +24,12 @@ public class Barchieloschat {
         System.out.println("| BEM VINDO AO BARCHIELO'S CHAT |");
         System.out.println("+-------------------------------+\n");
         
+        /* Load dos dados presentes nos aquivos */
+        try{
+            Data.LoadData(Usuarios);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         
         // EXECUÇÃO DO LOOP PARA TER ACESSO AOS MODULOS DO SOFTWARE - INICIO
         while(Escolha_do_usuario != Const.Encerrar_loop){
@@ -41,6 +49,8 @@ public class Barchieloschat {
             System.out.println("[09] Fazer/Deletar uma postagem.");
             System.out.println("[10] Visitar perfis.");
             System.out.println("[11] .");
+            //System.out.println("[12] Load data.");
+            //System.out.println("[13] Save data.");
             System.out.print("Escolha: ");
             Escolha_do_usuario = Integer.parseInt(InputEscolha.nextLine());
             System.out.println("");
@@ -124,6 +134,12 @@ public class Barchieloschat {
                     */
                     
                 break;
+                case 12:
+                    //Data.LoadData(Usuarios);
+                break;
+                case 13:
+                    //Data.SaveData(Usuarios);
+                break;
                 default:
                     /* EXECUÇÕES:
                     * Impressão informando escolha invalida dentre as opções.
@@ -135,6 +151,12 @@ public class Barchieloschat {
             }
         }
         // EXECUÇÃO DO LOOP PARA TER ACESSO AOS MODULOS DO SOFTWARE - FIM
-    }
-    
+        
+        /* Salvamento dos dados presentes na memoria */
+        try{
+            Data.SaveData(Usuarios);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }      
 }

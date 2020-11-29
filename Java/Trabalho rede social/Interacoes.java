@@ -15,15 +15,37 @@ public class Interacoes {
         Scanner Input = new Scanner(System.in);
         Perfil NovoPerfil = new Perfil();
         String UserName = null;
-        String Name;
+        String Name = "null";
         
-        System.out.print("Digite seu nome completo: ");
-        Name = Input.nextLine();
+        boolean TamanhoValido = false;
+        while(!TamanhoValido){
+            TamanhoValido = true;
+            System.out.print("Digite seu nome completo: ");
+            Name = Input.nextLine();
+            
+            int LenString = Name.length();
+            if(LenString >= Const.TamanhoMaximoString){
+                System.out.println("| Tamanho maximo excedido. Numero maximo de caracteres: "+Const.TamanhoMaximoString+" |");
+                TamanhoValido = false;
+            }
+        }     
+        
         
         boolean UserNameDisponivel = false;
         while(!UserNameDisponivel){
-            System.out.print("Digite o nome de usuario: ");
-            UserName = Input.nextLine();
+            TamanhoValido = false;
+            while(!TamanhoValido){
+                TamanhoValido = true;
+                System.out.print("Digite o nome de usuario: ");
+                UserName = Input.nextLine();
+                
+                int LenString = Name.length();
+                if(LenString >= Const.TamanhoMaximoString){
+                    System.out.println("| Tamanho maximo excedido. Numero maximo de caracteres: "+Const.TamanhoMaximoString+" |");
+                    TamanhoValido = false;
+                }
+            }
+            
             if(table.PerfilExistente(UserName)){
                 System.out.println("| O nome " +UserName+ " ja esta em uso! |");
             }else{
@@ -70,15 +92,35 @@ public class Interacoes {
                 case 0:
                 break;
                 case 1:
-                    System.out.println("Digite seu nome: ");
-                    Aux = Input.next();
+                    boolean TamanhoValido = false;
+                    while(!TamanhoValido){
+                        TamanhoValido = true;
+                        System.out.print("Digite seu nome: ");
+                        Aux = Input.nextLine();
+
+                        int LenString = Aux.length();
+                        if(LenString >= Const.TamanhoMaximoString){
+                            System.out.println("| Tamanho maximo excedido. Numero maximo de caracteres: "+Const.TamanhoMaximoString+" |");
+                            TamanhoValido = false;
+                        }
+                    }
                     DataAux.SetNomeCompleto(Aux);
                 break;
                 case 2:
                     boolean UsuarioDisponivel = false;
                     while(!UsuarioDisponivel){
-                        System.out.print("Digite o nome de usuario: ");
-                        Aux = Input.nextLine();
+                        TamanhoValido = false;
+                        while(!TamanhoValido){
+                            TamanhoValido = true;
+                            System.out.print("Digite o nome de usuario: ");
+                            Aux = Input.nextLine();
+
+                            int LenString = Aux.length();
+                            if(LenString >= Const.TamanhoMaximoString){
+                                System.out.println("| Tamanho maximo excedido. Numero maximo de caracteres: "+Const.TamanhoMaximoString+" |");
+                                TamanhoValido = false;
+                            }
+                        }
                         UsuarioDisponivel = !table.PerfilExistente(Aux);
                         if(!UsuarioDisponivel){
                             System.out.println("\n| O nome de usuario " + Aux + " ja esta em uso |\n");
@@ -272,10 +314,21 @@ public class Interacoes {
     private Postagem CriarNovaPostagem(Perfil AtualUser){
         Scanner Input = new Scanner(System.in);
         Postagem NovoPost = new Postagem();
-        String ConteudoPost;
+        String ConteudoPost = "null";
         
-        System.out.print("Digite o conteudo da postagem: ");
-        ConteudoPost = Input.nextLine();
+        boolean TamanhoValido = false;
+        while(!TamanhoValido){
+            TamanhoValido = true;
+            System.out.print("Digite o conteudo da postagem: ");
+            ConteudoPost = Input.nextLine();
+
+            int LenString = ConteudoPost.length();
+            if(LenString >= Const.TamanhoMaximoString){
+                System.out.println("| Tamanho maximo excedido. Numero maximo de caracteres: "+Const.TamanhoMaximoString+" |");
+                TamanhoValido = false;
+            }
+        }
+
         
         NovoPost.InserirDadosPostagem(COntagemIdentificadoresPosts++, ConteudoPost, AtualUser.GetUserName());
         

@@ -14,9 +14,8 @@ public class ListaEncadeadaPosts {
         
         return Const.Sucesso;
     }
-    public ItemListaPost GetPrimeiroItem(){
-        return this.Primeiro;
-    }
+    public ItemListaPost GetPrimeiroItem(){return this.Primeiro;}
+    public int GetNumeroDeItens(){return this.NumeroDeItens;}
     
     public int InserirNovoItem(Postagem NovaPostagem){
         ItemListaPost NovoItem = new ItemListaPost();
