@@ -1,5 +1,3 @@
-package mainlistaencadeada;
-
 /**
  * A linked list that encapsulates its elements and facilitates access to them,
  *                  facilitating hash tables for example.

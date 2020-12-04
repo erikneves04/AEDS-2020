@@ -1,8 +1,5 @@
-package mainlistaencadeada;
-
 /**
- * List item responsible for encapsulating data DataType and allowing this reference of the 
- *                          anterior and posterior.
+ * List item responsible for encapsulating data DataType and allowing this reference of the posterior.
  * @author Erik Neves
  * @param <DataType> Type of data that will be stored and manipulated.
  */
@@ -14,7 +11,6 @@ public class ItemLista<DataType> {
      * Method responsible for initialize the data for this object.
      * @param Data The object to be stored.
      * @param prox Item after the current item.
-     * @param ant Item before the current item.
      */
     public void InicializarItem(DataType Data, ItemLista<DataType> prox){
         this.dados = Data;
