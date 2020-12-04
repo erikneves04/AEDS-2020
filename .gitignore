@@ -43,3 +43,17 @@ Java/Pilha/Item_pilha.class
 Java/Arvore Binaria/Main_arvoreBinaria.class
 Java/Arvore Binaria/Arvore.class
 Java/Arvore Binaria/Item_arvore.class
+
+Java/Trabalho rede social/Barchieloschat.class
+Java/Trabalho rede social/Buscas.class
+Java/Trabalho rede social/Const.class
+Java/Trabalho rede social/DataBase.class
+Java/Trabalho rede social/HashTable.class
+Java/Trabalho rede social/Interacoes.class
+Java/Trabalho rede social/ItemLista.class
+Java/Trabalho rede social/ItemListaPost.class
+Java/Trabalho rede social/ListaEncadeadaPerfis.class
+Java/Trabalho rede social/ListaEncadeadaPosts.class
+Java/Trabalho rede social/Perfil.class
+Java/Trabalho rede social/Postagem.class
+Java/Trabalho rede social/SaveModel.class

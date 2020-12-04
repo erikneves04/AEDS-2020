@@ -11,6 +11,10 @@ public class HashTable {
     private int NumeroDeColunas = 0;
     private ArrayList<ItemLista> DadosTabela = new ArrayList<>();
     
+    public int GetNumeroDeColunas(){return this.NumeroDeColunas;}
+    public ItemLista GetColuna(int index){return this.DadosTabela.get(index);}
+    public int GetNumeroDePerfis(){return this.NumeroDePerfis;}
+    
     private int GetIndexPerfil(String user){
         int count = 0;
         byte[] bytes = new byte[user.length()];
