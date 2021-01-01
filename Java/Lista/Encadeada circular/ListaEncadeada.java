@@ -112,6 +112,27 @@ public class ListaEncadeada<DataType>{
     public boolean EmptyList(){return (this.NumeroDeItens == 0);}
     
     /**
+     * Method responsible for check if a data exists in this list.
+     * @param data Target.
+     * @return true if the data exist.
+    */
+    public boolean ExistingData(DataType data){
+        boolean DadoContido = false;
+        
+        ItemLista<DataType> DadosLista = this.primeiro;
+        
+        for(int i=0;i<this.NumeroDeItens;i++){
+            if(data.equals(DadosLista.GetDadosItem())){
+                DadoContido = true;
+                break;
+            }
+            DadosLista = DadosLista.GetProximo();
+        }
+        
+        return DadoContido;
+    }
+
+    /**
      * Method responsible for replace the data stored in a certain position.
      * @param NewData The object to be stored.
      * @param index Element position.
