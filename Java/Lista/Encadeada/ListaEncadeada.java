@@ -15,11 +15,11 @@ public class ListaEncadeada<DataType>{
     public int GetNElements(){return this.NumeroDeItens;}
     
     /**
-     * Method responsible for add new data at the beginning of the list.
+     * Method responsible for adding new data at the end of the list.
      * @param NewData The object to be stored.
     */
     public void add(DataType NewData){
-        this.add(NewData,0);
+        this.add(NewData,this.NumeroDeItens);
     }
     
     /**
@@ -29,13 +29,12 @@ public class ListaEncadeada<DataType>{
      * @throws IndexOutOfBoundsException if index is less than 0 or index is greater than the number of itensin the list + 1.
     */
     public void add(DataType NewData, int index) throws IndexOutOfBoundsException{
-        if(index < 0 || index > (this.NumeroDeItens + 1)){
+        if(index < 0 || index > this.NumeroDeItens){
             throw new IndexOutOfBoundsException("List size: "+this.NumeroDeItens+" index: "+index);
         }
         
-        ItemLista<DataType> NovoItem =  new ItemLista<>();
         if(index == 0){
-            NovoItem.InicializarItem(NewData, this.primeiro);
+            ItemLista<DataType> NovoItem =  new ItemLista<>(NewData, this.primeiro);
             this.primeiro = NovoItem;
         }else{
             DataType DadoAnterior = this.GetDataIndex(index-1);
@@ -45,8 +44,8 @@ public class ListaEncadeada<DataType>{
                 DadosLista = DadosLista.GetProximo();
             }
             
+            ItemLista<DataType> NovoItem =  new ItemLista<>(NewData,DadosLista.GetProximo());
             DadosLista.SetProximo(NovoItem);
-            NovoItem.InicializarItem(NewData,DadosLista.GetProximo());
         }
         this.NumeroDeItens++;
     }
@@ -172,15 +171,16 @@ public class ListaEncadeada<DataType>{
         private DataType dados;
         private ItemLista<DataType> proximo;
         
+
         /**
-        * Method responsible for initialize the data for this object.
-        * @param Data The object to be stored.
-        * @param prox Item after the current item.
+         * Builder responsible for initialize the data for this object.
+         * @param Data The object to be stored.
+         * @param prox Item after the current item.
         */
-        public void InicializarItem(DataType Data, ItemLista<DataType> prox){
+        public ItemLista(DataType Data, ItemLista<DataType> prox){
             this.dados = Data;
             this.proximo = prox;
-        }
+        }  
         
         /**
         * Method responsible for replace the currently saved object with another one.

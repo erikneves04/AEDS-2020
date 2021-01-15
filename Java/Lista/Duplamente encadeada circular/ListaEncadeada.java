@@ -15,11 +15,11 @@ public class ListaEncadeada<DataType>{
     public int GetNElements(){return this.NumeroDeItens;}
     
     /**
-     * Method responsible for add new data at the beginning of the list.
+     * Method responsible for adding new data at the end of the list.
      * @param NewData The object to be stored.
     */
     public void add(DataType NewData){
-        this.add(NewData,0);
+        this.add(NewData,this.NumeroDeItens);
     }
     
     /**
@@ -33,14 +33,13 @@ public class ListaEncadeada<DataType>{
             throw new IndexOutOfBoundsException("List size: "+this.NumeroDeItens+" index: "+index);
         }
         
-        ItemLista<DataType> NovoItem =  new ItemLista<>();
         if(index == 0){
             ItemLista<DataType> UltimoItem = this.primeiro;
             for(int i=0;i<(this.NumeroDeItens-1);i++){UltimoItem = UltimoItem.GetProximo();}
             if(UltimoItem == null){
-                NovoItem.InicializarItem(NewData, NovoItem, NovoItem);
+                ItemLista<DataType> NovoItem =  new ItemLista<>(NewData, NovoItem, NovoItem);
             }else{
-                NovoItem.InicializarItem(NewData, this.primeiro,UltimoItem);
+                ItemLista<DataType> NovoItem =  new ItemLista<>(NewData, this.primeiro,UltimoItem);
                 UltimoItem.SetProximo(NovoItem);
             }
             if(this.primeiro != null){this.primeiro.SetAnterior(NovoItem);}
@@ -53,9 +52,9 @@ public class ListaEncadeada<DataType>{
                 DadosLista = DadosLista.GetProximo();
             }
             
+            ItemLista<DataType> NovoItem =  new ItemLista<>(NewData,DadosLista.GetProximo(), DadosLista);
             DadosLista.SetProximo(NovoItem);
             if(DadosLista.GetProximo() != null){DadosLista.GetProximo().SetAnterior(NovoItem);}
-            NovoItem.InicializarItem(NewData,DadosLista.GetProximo(), DadosLista);
         }
         this.NumeroDeItens++;
     }
@@ -189,12 +188,12 @@ public class ListaEncadeada<DataType>{
         private ItemLista<DataType> anterior;
         
         /**
-        * Method responsible for initialize the data for this object.
-        * @param Data The object to be stored.
-        * @param prox Item after the current item.
-        * @param ant Item before the current item.
+         * Builder responsible for initialize the data for this object.
+         * @param Data The object to be stored.
+         * @param prox Item after the current item.
+         * @param ant Item before the current item.
         */
-        public void InicializarItem(DataType Data, ItemLista<DataType> prox, ItemLista<DataType> ant){
+        public ItemLista(DataType Data, ItemLista<DataType> prox, ItemLista<DataType> ant){
             this.dados = Data;
             this.proximo = prox;
             this.anterior = ant;
