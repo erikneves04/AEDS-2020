@@ -3,12 +3,22 @@
  * You can request a column and you will receive a linked list containing your data,
  *         changing this list will also change the data in the table.
  * @author Erik Neves
- * @param <DataType>
+ * @param <DataType> Type of data to be manipulated
  */
-public class HashTable<DataType> {
+public class HashTable<DataType extends HashTable.HashMethods> {
     
+    /**
+     * Responsible interface to assist the communication of the table code with object data.
+     */
+    public static interface HashMethods{
+        /**
+         * Method responsible for calculating code the hash code of this object.
+         * @return HashCode os this object.
+         */
+        public int GetHashCode();
+    }
+ 
     private int NumeroDeColunas = 0;
-    public boolean state = false;
     private ListaEncadeada<DataType>[] Datas;
     
     /**
@@ -20,10 +30,10 @@ public class HashTable<DataType> {
     /**
      * Method responsible for add a new object to the hash table.
      * @param NewData The object to be stored.
-     * @param HashCode Hash code of the object.
      * @throws IndexOutOfBoundsException if HashCode is less than 0.
     */
-    public void add(DataType NewData, int HashCode) throws IndexOutOfBoundsException{       
+    public void add(DataType NewData) throws IndexOutOfBoundsException{       
+        int HashCode = NewData.GetHashCode();
         if(HashCode < 0){throw new IndexOutOfBoundsException("Hash codes less than zero are not accepted.(index: "+HashCode+")");}
         if(this.NumeroDeColunas == 0 || HashCode > this.NumeroDeColunas){
             ListaEncadeada<DataType>[] NewVector = new ListaEncadeada[HashCode];
@@ -33,17 +43,17 @@ public class HashTable<DataType> {
             this.Datas = NewVector;
             this.NumeroDeColunas = HashCode;
         }
-        this.getColumn(HashCode).add(NewData);
+        this.getColumn(HashCode-1).add(NewData);
     }
     
     /**
      * Method responsible for remove an item from the table.
      * @param Target Object to have its reference removed from the table.
-     * @param HashCode Hash code of the object.
      * @return true if the data has been found and removed.
      * @throws IndexOutOfBoundsException if HashCode is less than 0 or HashCode is greater than the number of columns in the table.
     */
-    public boolean remove(DataType Target, int HashCode) throws IndexOutOfBoundsException{
+    public boolean remove(DataType Target) throws IndexOutOfBoundsException{
+        int HashCode = Target.GetHashCode();
         if(HashCode < 0 || HashCode > this.NumeroDeColunas){throw new IndexOutOfBoundsException("HashTable size: "+this.NumeroDeColunas+" HashCode: "+HashCode);}
         ListaEncadeada<DataType> ColunaHash = this.getColumn(HashCode);
         boolean Removed = false;
@@ -64,7 +74,7 @@ public class HashTable<DataType> {
     */
     public ListaEncadeada<DataType> getColumn(int HashCode) throws IndexOutOfBoundsException{
         if(HashCode < 0 || HashCode > this.NumeroDeColunas){throw new IndexOutOfBoundsException("HashTable size: "+this.NumeroDeColunas+" HashCode: "+HashCode);}
-        return this.Datas[HashCode - 1];
+        return this.Datas[HashCode];
     }
     
 }
