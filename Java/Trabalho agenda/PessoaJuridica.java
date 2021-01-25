@@ -25,8 +25,6 @@ public class PessoaJuridica extends Pessoa {
      * Metodo responsavel por comparar dois numeros.
      * @param numero Dado para a comparação(retorna verdadeiro se forem iguais).
      */
-    private boolean Valida(String numero){
-        return (this.Numero.equals(numero));
-    }
+    private boolean Valida(String numero){return (this.Numero.equals(numero));}
     
 }

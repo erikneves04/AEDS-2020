@@ -2,53 +2,7 @@
  * Classe com os dados de um endereço, com seus respectivos getters e setters.
  * @author Erik Neves
  */
-public class Endereco {
-    
-    /** 
-     * Variavel estatica responsavel por armazenar o Id disponivel atual.
-     */
-    private static int CalculoIDs = 1;
-    /**
-     *  Metodo estatico responsável setar a variavel "CalculoIDs" para que ela se inicie em determinado Id. 
-     * @param Id Identificador inicial.
-     */
-    public static void SetIDInicial(int Id){
-        Endereco.CalculoIDs = Id;
-    }
-    
-    /**
-     * Variavel reponsavel por armazenar o Id deste endereço.
-     */
-    public final int Id = Endereco.CalculoIDs++;
-    
-    /**
-     * Variavel reponsavel por armazenar o logradouro deste endereço.
-     */
-    private String Logradouro;
-    /**
-     * Variavel reponsavel por armazenar o numero deste endereço.
-     */
-    private int Numero;
-    /**
-     * Variavel reponsavel por armazenar o complemento deste endereço.
-     */
-    private String Complemento;
-    /**
-     * Variavel reponsavel por armazenar o bairro deste endereço.
-     */
-    private String Bairro;
-    /**
-     * Variavel reponsavel por armazenar o cidade deste endereço.
-     */
-    private String Cidade;
-    /**
-     * Variavel reponsavel por armazenar o estado deste endereço.
-     */
-    private String Estado;
-    /**
-     * Variavel reponsavel por armazenar o cep deste endereço.
-     */
-    private String CEP;
+public class Endereco extends EnderecoContainer {
     
     /**
      * Construtor responsavel por inicializar os dados deste objeto.
@@ -61,6 +15,7 @@ public class Endereco {
      * @param cep 
      */
     public Endereco(String logradouro, int numero, String complemento, String bairro, String cidade, String estado, String cep){
+        super();
         this.Logradouro = logradouro;
         this.Numero = numero;
         this.Complemento = complemento;
