@@ -1,25 +1,14 @@
 /**
- * Classe com os dados de um endereço, com seus respectivos getters e setters.
+ * Classe com os dados de um endereço, com seus atributos copiados de um Endereco e definidos 
+ *              como publicos somente para acesso fora da classe registro.
  * @author Erik Neves
  */
 public class EnderecoContainer {
     
-    /** 
-     * Variavel estatica responsavel por armazenar o Id disponivel atual.
-     */
-    private static int CalculoIDs = 1;
-    /**
-     *  Metodo estatico responsável setar a variavel "CalculoIDs" para que ela se inicie em determinado Id. 
-     * @param Id Identificador inicial.
-     */
-    public static void SetIDInicial(int Id){
-        EnderecoContainer.CalculoIDs = Id;
-    }
-    
     /**
      * Variavel reponsavel por armazenar o Id deste endereço.
      */
-    public final int Id = EnderecoContainer.CalculoIDs++;
+    public final int Id;
     
     /**
      * Variavel reponsavel por armazenar o logradouro deste endereço.
@@ -52,6 +41,7 @@ public class EnderecoContainer {
     
     /**
      * Construtor responsavel por inicializar os dados deste objeto.
+     * @param Id
      * @param logradouro
      * @param numero
      * @param complemento
@@ -60,7 +50,8 @@ public class EnderecoContainer {
      * @param estado
      * @param cep 
      */
-    public EnderecoContainer(String logradouro, int numero, String complemento, String bairro, String cidade, String estado, String cep){
+    public EnderecoContainer(int Id,String logradouro, int numero, String complemento, String bairro, String cidade, String estado, String cep){
+        this.Id = Id;
         this.Logradouro = logradouro;
         this.Numero = numero;
         this.Complemento = complemento;
@@ -69,8 +60,4 @@ public class EnderecoContainer {
         this.Estado = estado;
         this.CEP = cep;
     }
-    /**
-     * Construtor default.
-     */
-    public EnderecoContainer(){}
 }

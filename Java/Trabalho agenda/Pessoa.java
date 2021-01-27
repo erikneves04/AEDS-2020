@@ -4,18 +4,24 @@
  */
 abstract class Pessoa {
 
+    public final String TipoPessoa;
+    
+    public Pessoa(String tpy){
+        this.TipoPessoa = tpy;
+    }
+    
     /**
-     * Variavel reponsavel por armazenar o numero dessa pessoa.
+     * Variavel reponsavel por armazenar o numero(CPF ou CNPJ) desta pessoa.
      */
     protected String Numero;
     
     /**
-     * Metodo responsavel por setar o numero dessa pessoa.
+     * Metodo responsavel por setar o numero(CPF ou CNPJ) desta pessoa.
      * @param numero Dado que ira sobreescrever o antigo.
      */
     public abstract void SetNumero(String numero);
     /**
-     * Metodo de retorno da variavel numero deste objeto.
+     * Metodo de retorno da variavel numero(CPF ou CNPJ) desta pessoa.
      * @return String com o numero
      */
     public String GetNumero(){return this.Numero;}
