@@ -1,3 +1,5 @@
+// Importações
+import java.util.ArrayList;
 /**
  * Classe que engloba os dados de uma pessoa, seja ela fisica ou jurica.
  * Tambem é responsavel por manipular seus telefones, enderecos, nome e identificador(CPF ou CNPJ).
@@ -16,11 +18,11 @@ public class Registro {
     /**
      * Lista duplamente encadeada responsavel por armazenar os telefones deste registro.
      */
-    private final ListaEncadeada<Telefone> Telefones = new ListaEncadeada<>();
+    private final ArrayList<Telefone> Telefones = new ArrayList<>();
     /**
      * Lista duplamente encadeada responsavel por armazenar os enderecos deste registro.
      */
-    private final ListaEncadeada<Endereco> Enderecos = new ListaEncadeada<>();
+    private final ArrayList<Endereco> Enderecos = new ArrayList<>();
     
     /**
      * Construtor resposavel por inicializar os dados e criar o objeto de acordo com o 
@@ -75,6 +77,7 @@ public class Registro {
      */
     public void AddTelefone(String telefone) throws IllegalStateException{
         this.Telefones.add(new Telefone(telefone));
+        
     }
 
     /**
@@ -82,8 +85,8 @@ public class Registro {
      * @param telefone Alvo
      */
     public void RemoveTelefone(String telefone){
-        for(int i=0;i<this.Telefones.GetNElements();i++){
-            if(telefone.equals(this.Telefones.GetDataIndex(i).GetTelefone())){
+        for(int i=0;i<this.Telefones.size();i++){
+            if(telefone.equals(this.Telefones.get(i).GetTelefone())){
                 this.Telefones.remove(i);
                 break;
             }
@@ -95,9 +98,9 @@ public class Registro {
      * @return String[] - contendo todos os telefones.
      */
     public String[] ObtemTelefones(){ 
-        String[] ArrayTelefones = new String[this.Telefones.GetNElements()];  
-        for(int i=0;i<this.Telefones.GetNElements();i++){
-            ArrayTelefones[i] = this.Telefones.GetDataIndex(i).GetTelefone();
+        String[] ArrayTelefones = new String[this.Telefones.size()];  
+        for(int i=0;i<this.Telefones.size();i++){
+            ArrayTelefones[i] = this.Telefones.get(i).GetTelefone();
         }  
         return ArrayTelefones;    
     }
@@ -121,8 +124,8 @@ public class Registro {
      * @param Id identificador do alvo.
      */
     public void RemoveEndereco(int Id){ 
-        for(int i=0;i<this.Enderecos.GetNElements();i++){
-            if(this.Enderecos.GetDataIndex(i).GetId() == Id){
+        for(int i=0;i<this.Enderecos.size();i++){
+            if(this.Enderecos.get(i).GetId() == Id){
                 this.Enderecos.remove(i);
                 break;
             }
@@ -130,13 +133,40 @@ public class Registro {
     }
     
     /**
+     * Sobreescreve os dados salvos de um endereco pelos passados como parametro
+     * @param Id Identificador do alvo.
+     * @param logradouro
+     * @param numero
+     * @param complemento
+     * @param bairro
+     * @param cidade
+     * @param estado
+     * @param cep
+     */
+    public void AlterarDadosEndereco(int Id,String logradouro, int numero, String complemento, String bairro, String cidade, String estado, String cep){
+        for(int i=0;i<this.Enderecos.size();i++){
+            Endereco aux = this.Enderecos.get(i);
+            if(aux.GetId() == Id){
+                aux.SetLogradouro(logradouro);
+                aux.SetNumero(numero);
+                aux.SetComplemento(complemento);
+                aux.SetBairro(bairro);
+                aux.SetCidade(cidade);
+                aux.SetEstado(estado);
+                aux.SetCEP(cep);
+                break;
+            }        
+        }   
+    }
+    
+    /**
      * Metodo responsavel por copiar e carregar os enderecos deste registro em um array.
      * @return EnderecoContainer[] - contendo todos os enderecos.
      */
     public EnderecoContainer[] ObtemEnderecos(){
-        EnderecoContainer[] ArrayEnderecos = new EnderecoContainer[this.Enderecos.GetNElements()];
-        for(int i=0;i<this.Enderecos.GetNElements();i++){
-            Endereco aux = this.Enderecos.GetDataIndex(i);
+        EnderecoContainer[] ArrayEnderecos = new EnderecoContainer[this.Enderecos.size()];
+        for(int i=0;i<this.Enderecos.size();i++){
+            Endereco aux = this.Enderecos.get(i);
             ArrayEnderecos[i] = new EnderecoContainer(aux.GetId(),aux.GetLogradouro(),aux.GetNumero(),aux.GetComplemento(),aux.GetBairro(),aux.GetCidade(),aux.GetEstado(),aux.GetCEP());
         }  
         return ArrayEnderecos;
@@ -154,21 +184,21 @@ public class Registro {
         System.out.println("Nome: "+this.Nome+"\nIdentificacao: "+pessoa.Numero);
         
         System.out.println("+-----------------------------------+");
-        System.out.println("| Este registro possui: "+this.Telefones.GetNElements()+" telefones.");
-        for(int i=0;i<this.Telefones.GetNElements();i++){
-            if(i == this.Telefones.GetNElements() - 1){
-                System.out.println("| "+this.Telefones.GetDataIndex(i).GetTelefone()+" |");
+        System.out.println("| Este registro possui: "+this.Telefones.size()+" telefones.");
+        for(int i=0;i<this.Telefones.size();i++){
+            if(i == this.Telefones.size() - 1){
+                System.out.println("| "+this.Telefones.get(i).GetTelefone()+" |");
             }else{
-                System.out.println("| "+this.Telefones.GetDataIndex(i).GetTelefone()+" | "+this.Telefones.GetDataIndex(i+1).GetTelefone());
+                System.out.println("| "+this.Telefones.get(i).GetTelefone()+" | "+this.Telefones.get(i+1).GetTelefone());
                 i++;
             }
         }
         
         System.out.println("+-----------------------------------+");
-        System.out.println("| Este registro possui: "+this.Enderecos.GetNElements()+" enderecos.");
-        for(int i=0;i<this.Enderecos.GetNElements();i++){
+        System.out.println("| Este registro possui: "+this.Enderecos.size()+" enderecos.");
+        for(int i=0;i<this.Enderecos.size();i++){
             System.out.println("+-----------------------------------+");
-            Endereco aux = this.Enderecos.GetDataIndex(i);
+            Endereco aux = this.Enderecos.get(i);
             System.out.println("| Id: "+aux.GetId());
             System.out.println("| Logradouro: "+aux.GetLogradouro());
             System.out.println("| Numero: "+aux.GetNumero());
