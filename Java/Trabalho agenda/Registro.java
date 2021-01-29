@@ -209,6 +209,7 @@ public class Registro {
             System.out.println("| Cep: "+aux.GetCEP()); 
         }
         System.out.println("+-----------------------------------+\n");
+        
     }
     
 }
