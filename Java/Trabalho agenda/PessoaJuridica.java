@@ -10,10 +10,10 @@ public class PessoaJuridica extends Pessoa {
     /**
      * Construtor responsagel por inicializar o numero(CNPJ) dessa pessoa.
      * @param numero
+     * @throws IllegalStateException Exceção levantada caso o numero não seja um CNPJ valido.
      */
-    public PessoaJuridica(String numero){
-        super("Juridica");
-        if(!this.Valida(numero)){
+    public PessoaJuridica(String numero) throws IllegalStateException{
+        if(!PessoaJuridica.Valida(numero)){
             throw new IllegalStateException(PessoaJuridica.MensagemException);
         }
         this.Numero = numero;
@@ -22,17 +22,18 @@ public class PessoaJuridica extends Pessoa {
     /**
      * Metodo responsavel por setar o numero(CNPJ) dessa pessoa.
      * @param numero Dado que ira sobreescrever o antigo.
+     * @throws IllegalStateException Exceção levantada caso o numero não seja um CNPJ valido.
      */
     @Override
-    public void SetNumero(String numero) {
-        if(!this.Valida(numero)){
+    public void SetNumero(String numero) throws IllegalStateException{
+        if(!PessoaJuridica.Valida(numero)){
             throw new IllegalStateException(PessoaJuridica.MensagemException);
         }
         this.Numero = numero;
     }
     
     /**
-     * Metodo responsavel por por validar o formato de um CPF
+     * Metodo responsavel por por validar o formato de um CNPJ
      * @param numero a ser validado
      * @return true caso seja valido
      */

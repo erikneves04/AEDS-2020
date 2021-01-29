@@ -3,12 +3,6 @@
  * @author Erik Neves
  */
 abstract class Pessoa {
-
-    public final String TipoPessoa;
-    
-    public Pessoa(String tpy){
-        this.TipoPessoa = tpy;
-    }
     
     /**
      * Variavel reponsavel por armazenar o numero(CPF ou CNPJ) desta pessoa.
@@ -25,5 +19,5 @@ abstract class Pessoa {
      * @return String com o numero
      */
     public String GetNumero(){return this.Numero;}
-    
+
 }

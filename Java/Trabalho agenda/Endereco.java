@@ -9,7 +9,7 @@ public class Endereco {
      */
     private static int CalculoIDs = 1;
     /**
-     *  Metodo estatico responsável setar a variavel "CalculoIDs" para que ela se inicie em determinado Id. 
+     * Metodo estatico responsável setar a variavel "CalculoIDs" para que ela se inicie em determinado Id. 
      * @param Id Identificador inicial.
      */
     public static void SetIDInicial(int Id){
@@ -72,13 +72,13 @@ public class Endereco {
     
     /**
      * Metodo de retorno da variavel id deste objeto.
-     * @return int contendo o valor da variavel id.
+     * @return int.
      */
     public int GetId(){return this.Id;}
     
     /**
      * Metodo responsavel por setar o valor da variavel logradouro.
-     * @param logradouro Dado que ira sobreescrever o antigo.
+     * @param logradouro novo dado.
      */
     public void SetLogradouro(String logradouro){this.Logradouro = logradouro;}
     /**
@@ -89,7 +89,7 @@ public class Endereco {
     
     /**
      * Metodo responsavel por setar o valor da variavel numero.
-     * @param numero Dado que ira sobreescrever o antigo.
+     * @param numero novo dado.
      */
     public void SetNumero(int numero){this.Numero = numero;}
     /**
@@ -100,7 +100,7 @@ public class Endereco {
     
     /**
      * Metodo responsavel por setar o valor da variavel complemento.
-     * @param complemento Dado que ira sobreescrever o antigo.
+     * @param complemento novo dado.
      */
     public void SetComplemento(String complemento){this.Complemento = complemento;}
     /**
@@ -111,7 +111,7 @@ public class Endereco {
     
     /**
      * Metodo responsavel por setar o valor da variavel bairro.
-     * @param bairro Dado que ira sobreescrever o antigo.
+     * @param bairro novo dado.
      */
     public void SetBairro(String bairro){this.Bairro = bairro;}
     /**
@@ -122,7 +122,7 @@ public class Endereco {
     
     /**
      * Metodo responsavel por setar o valor da variavel cidade.
-     * @param cidade Dado que ira sobreescrever o antigo.
+     * @param cidade novo dado.
      */
     public void SetCidade(String cidade){this.Cidade = cidade;}
     /**
@@ -133,7 +133,7 @@ public class Endereco {
     
     /**
      * Metodo responsavel por setar o valor da variavel estado.
-     * @param estado Dado que ira sobreescrever o antigo.
+     * @param estado novo dado.
      */
     public void SetEstado(String estado){this.Estado = estado;}
     /**
@@ -144,7 +144,7 @@ public class Endereco {
     
     /**
      * Metodo responsavel por setar o valor da variavel cep.
-     * @param cep Dado que ira sobreescrever o antigo.
+     * @param cep novo dado.
      */
     public void SetCEP(String cep){this.CEP = cep;}
     /**

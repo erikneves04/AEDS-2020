@@ -3,17 +3,17 @@
  * @author Erik Neves
  */
 public class PessoaFisica extends Pessoa{
-
+    
     private static final int NumeroDeCaracteresCPF = 11;
     private static final String MensagemException = "Numero de cpf invalido.Formato de 11 digitos.";
     
     /**
      * Construtor responsagel por inicializar o numero(CPF) dessa pessoa.
      * @param numero
+     * @throws IllegalStateException Exceção levantada caso o numero não seja um CPF valido.
      */
-    public PessoaFisica(String numero){
-        super("Fisica");
-        if(!this.Valida(numero)){
+    public PessoaFisica(String numero) throws IllegalStateException{
+        if(!PessoaFisica.Valida(numero)){
             throw new IllegalStateException(PessoaFisica.MensagemException);
         }
         this.Numero = numero;
@@ -22,10 +22,11 @@ public class PessoaFisica extends Pessoa{
     /**
      * Metodo responsavel por setar o numero(CPF) dessa pessoa.
      * @param numero Dado que ira sobreescrever o antigo.
+     * @throws IllegalStateException Exceção levantada caso o numero não seja um CPF valido.
      */
     @Override
     public void SetNumero(String numero) throws IllegalStateException{
-        if(!this.Valida(numero)){
+        if(!PessoaFisica.Valida(numero)){
             throw new IllegalStateException(PessoaFisica.MensagemException);
         }
         this.Numero = numero;
